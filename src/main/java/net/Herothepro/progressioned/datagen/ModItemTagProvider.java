@@ -21,8 +21,22 @@ public class ModItemTagProvider extends ItemTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(ItemTags.PICKAXES)
-                .add(ModItems.FLINT_PICK.get());
+                .add(ModItems.FLINT_PICK.get())
+                .add(ModItems.COPPER_PICKAXE.get());
         tag(ItemTags.AXES)
-                .add(ModItems.FLINT_AXE.get());
+                .add(ModItems.FLINT_AXE.get())
+                .add(ModItems.COPPER_AXE.get());
+        tag(ItemTags.SHOVELS)
+                .add(ModItems.FLINT_SHOVEL.get())
+                .add(ModItems.COPPER_SHOVEL.get());
+        tag(ItemTags.SWORDS)
+                .add(ModItems.FLINT_SPEAR.get())
+                .add(ModItems.FLINT_KNIFE.get())
+                .add(ModItems.BONE_SPEAR.get())
+                .add(ModItems.BONE_SWORD.get())
+                .add(ModItems.COPPER_SPEAR.get())
+                .add(ModItems.COPPER_SWORD.get());
+        tag(ItemTags.HOES)
+                .add(ModItems.COPPER_HOE.get());
     }
 }

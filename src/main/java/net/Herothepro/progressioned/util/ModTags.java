@@ -13,7 +13,13 @@ public class ModTags {
     public static class Blocks {
 
         public static final TagKey<Block> NEEDS_FLINT_TOOL = createTag("needs_flint_tool");
-        public static final TagKey<Block> INCORRECT_FOR_FLINT_TOOL = createTag("incorrect_flint_tool");
+        public static final TagKey<Block> INCORRECT_FOR_FLINT_TOOL = createTag("incorrect_for_flint_tool");
+
+        public static final TagKey<Block> NEEDS_BONE_TOOL = createTag("needs_bone_tool");
+        public static final TagKey<Block> INCORRECT_FOR_BONE_TOOL = createTag("incorrect_for_bone_tool");
+
+        public static final TagKey<Block> NEEDS_COPPER_TOOL = createTag("needs_copper_tool");
+        public static final TagKey<Block> INCORRECT_FOR_COPPER_TOOL = createTag("incorrect_for_copper_tool");
 
         private static TagKey<Block> createTag(String name) {
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, name));
@@ -21,8 +27,6 @@ public class ModTags {
     }
 
     public static class Items {
-
-
 
         private static TagKey<Item> createTag(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, name));}

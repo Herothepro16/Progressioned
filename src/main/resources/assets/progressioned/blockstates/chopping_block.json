@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "progressioned:block/chopping_block"
+    }
+  }
+}

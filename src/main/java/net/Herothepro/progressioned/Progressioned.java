@@ -1,8 +1,8 @@
 package net.Herothepro.progressioned;
 
+import net.Herothepro.progressioned.block.ModBlocks;
 import net.Herothepro.progressioned.item.ModCreativeModeTabs;
 import net.Herothepro.progressioned.item.ModItems;
-import net.minecraft.world.item.CreativeModeTabs;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -22,11 +22,8 @@ public class Progressioned {
     public static final String MOD_ID = "progressioned";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-
-    // The constructor for the mod class is the first code that is run when your mod is loaded.
-    // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public Progressioned(IEventBus modEventBus, ModContainer modContainer) {
-        // Register the commonSetup method for modloading
+
         modEventBus.addListener(this::commonSetup);
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (ExampleMod) to respond directly to events.
@@ -37,9 +34,10 @@ public class Progressioned {
 
         ModItems.register(modEventBus);
 
+        ModBlocks.register(modEventBus);
+
         modEventBus.addListener(this::addCreative);
 
-        // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
@@ -49,7 +47,6 @@ public class Progressioned {
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
     }
 
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
     }
