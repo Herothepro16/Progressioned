@@ -19,7 +19,12 @@ public class ModBlockTagProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(BlockTags.MINEABLE_WITH_AXE)
-                .addTag(BlockTags.LOGS);
+                .addTag(ModTags.Blocks.POSTS)
+                .addTag(BlockTags.LOGS)
+                .add(ModBlocks.CHOPPING_BLOCK.get());
+
+        tag(BlockTags.LOGS_THAT_BURN)
+                .addTag(ModTags.Blocks.POSTS);
 
         tag(ModTags.Blocks.NEEDS_FLINT_TOOL)
                 .addTag(BlockTags.LOGS);
@@ -33,5 +38,23 @@ public class ModBlockTagProvider extends BlockTagsProvider {
 
         tag(ModTags.Blocks.NEEDS_COPPER_TOOL)
                 .addTag(BlockTags.IRON_ORES);
+
+        tag(ModTags.Blocks.POSTS)
+                .add(ModBlocks.OAK_POST.get())
+                .add(ModBlocks.SPRUCE_POST.get())
+                .add(ModBlocks.BIRCH_POST.get())
+                .add(ModBlocks.JUNGLE_POST.get())
+                .add(ModBlocks.DARK_OAK_POST.get())
+                .add(ModBlocks.CHERRY_POST.get())
+                .add(ModBlocks.MANGROVE_POST.get())
+                .add(ModBlocks.ACACIA_POST.get())
+                .add(ModBlocks.STRIPPED_OAK_POST.get())
+                .add(ModBlocks.STRIPPED_SPRUCE_POST.get())
+                .add(ModBlocks.STRIPPED_BIRCH_POST.get())
+                .add(ModBlocks.STRIPPED_JUNGLE_POST.get())
+                .add(ModBlocks.STRIPPED_DARK_OAK_POST.get())
+                .add(ModBlocks.STRIPPED_CHERRY_POST.get())
+                .add(ModBlocks.STRIPPED_MANGROVE_POST.get())
+                .add(ModBlocks.STRIPPED_ACACIA_POST.get());
     }
 }

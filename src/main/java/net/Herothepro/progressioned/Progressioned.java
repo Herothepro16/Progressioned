@@ -1,8 +1,11 @@
 package net.Herothepro.progressioned;
 
 import net.Herothepro.progressioned.block.ModBlocks;
+import net.Herothepro.progressioned.block.custom.entity.ModBlockEntities;
+import net.Herothepro.progressioned.entity.ModEntities;
 import net.Herothepro.progressioned.item.ModCreativeModeTabs;
 import net.Herothepro.progressioned.item.ModItems;
+import net.Herothepro.progressioned.recipe.ModRecipes;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -16,6 +19,7 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+
 
 @Mod(Progressioned.MOD_ID)
 public class Progressioned {
@@ -36,7 +40,13 @@ public class Progressioned {
 
         ModBlocks.register(modEventBus);
 
+        ModBlockEntities.register(modEventBus);
+
+        ModEntities.register(modEventBus);
+
         modEventBus.addListener(this::addCreative);
+
+        ModRecipes.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }

@@ -1,10 +1,15 @@
 package net.Herothepro.progressioned.block;
 
 import net.Herothepro.progressioned.Progressioned;
+import net.Herothepro.progressioned.block.custom.ChoppingBlock;
+import net.Herothepro.progressioned.block.custom.PostBlock;
 import net.Herothepro.progressioned.item.ModItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -16,7 +21,48 @@ public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS =
             DeferredRegister.createBlocks(Progressioned.MOD_ID);
 
-private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
+    public static final DeferredBlock<ChoppingBlock> CHOPPING_BLOCK = BLOCKS.register("chopping_block",
+            () -> new ChoppingBlock(BlockBehaviour.Properties.of()
+                    .strength(2.0f)
+                    .sound(SoundType.WOOD)
+                    .requiresCorrectToolForDrops()));
+
+    public static final DeferredBlock<PostBlock> OAK_POST = BLOCKS.register("oak_post",
+            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG).noOcclusion()));
+    public static final DeferredBlock<PostBlock> SPRUCE_POST = BLOCKS.register("spruce_post",
+            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_LOG).noOcclusion()));
+    public static final DeferredBlock<PostBlock> BIRCH_POST = BLOCKS.register("birch_post",
+            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BIRCH_LOG).noOcclusion()));
+    public static final DeferredBlock<PostBlock> JUNGLE_POST = BLOCKS.register("jungle_post",
+            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_LOG).noOcclusion()));
+    public static final DeferredBlock<PostBlock> ACACIA_POST = BLOCKS.register("acacia_post",
+            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_LOG).noOcclusion()));
+    public static final DeferredBlock<PostBlock> DARK_OAK_POST = BLOCKS.register("dark_oak_post",
+            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_OAK_LOG).noOcclusion()));
+    public static final DeferredBlock<PostBlock> MANGROVE_POST = BLOCKS.register("mangrove_post",
+            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MANGROVE_LOG).noOcclusion()));
+    public static final DeferredBlock<PostBlock> CHERRY_POST = BLOCKS.register("cherry_post",
+            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_LOG).noOcclusion()));
+
+    public static final DeferredBlock<PostBlock> STRIPPED_OAK_POST = BLOCKS.register("stripped_oak_post",
+            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG).noOcclusion()));
+    public static final DeferredBlock<PostBlock> STRIPPED_SPRUCE_POST = BLOCKS.register("stripped_spruce_post",
+            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_LOG).noOcclusion()));
+    public static final DeferredBlock<PostBlock> STRIPPED_BIRCH_POST = BLOCKS.register("stripped_birch_post",
+            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BIRCH_LOG).noOcclusion()));
+    public static final DeferredBlock<PostBlock> STRIPPED_JUNGLE_POST = BLOCKS.register("stripped_jungle_post",
+            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_LOG).noOcclusion()));
+    public static final DeferredBlock<PostBlock> STRIPPED_ACACIA_POST = BLOCKS.register("stripped_acacia_post",
+            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_LOG).noOcclusion()));
+    public static final DeferredBlock<PostBlock> STRIPPED_DARK_OAK_POST = BLOCKS.register("stripped_dark_oak_post",
+            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_OAK_LOG).noOcclusion()));
+    public static final DeferredBlock<PostBlock> STRIPPED_MANGROVE_POST = BLOCKS.register("stripped_mangrove_post",
+            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MANGROVE_LOG).noOcclusion()));
+    public static final DeferredBlock<PostBlock> STRIPPED_CHERRY_POST = BLOCKS.register("stripped_cherry_post",
+            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_LOG).noOcclusion()));
+
+
+    private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
     DeferredBlock<T> toReturn = BLOCKS.register(name, block);
     registerBlockItem(name , toReturn);
     return toReturn;

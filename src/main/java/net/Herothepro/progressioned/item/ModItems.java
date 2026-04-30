@@ -8,7 +8,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -28,15 +30,25 @@ public class ModItems {
     public static final DeferredItem<Item> PLANT_STRING = ITEMS.register("plant_string",
             () -> new Item(new Item.Properties()));
 
-    public static final DeferredItem<Item> FIBER_MESH = ITEMS.register("fiber_mesh",
-            () -> new FibermeshItem());
+    public static final DeferredItem<HoeItem> FIBER_MESH = ITEMS.register("fiber_mesh",
+            () -> new HoeItem(ModToolTiers.FIBER_MESH, new Item.Properties()));
+
+    public static final DeferredItem<AxeItem> FLINT_SAW = ITEMS.register("flint_saw",
+            () -> new AxeItem(ModToolTiers.FLINT, new Item.Properties()
+                    .attributes(AxeItem.createAttributes(ModToolTiers.FLINT,3f,-3.2f))));
+    public static final DeferredItem<AxeItem> IRON_SAW = ITEMS.register("iron_saw",
+            () -> new AxeItem(Tiers.IRON, new Item.Properties()
+                    .attributes(AxeItem.createAttributes(Tiers.IRON,3f,-3.2f))));
+    public static final DeferredItem<AxeItem> DIAMOND_SAW = ITEMS.register("diamond_saw",
+            () -> new AxeItem(Tiers.DIAMOND, new Item.Properties()
+                    .attributes(AxeItem.createAttributes(Tiers.DIAMOND,3f,-3.2f))));
 
     public static final DeferredItem<PickaxeItem> FLINT_PICK = ITEMS.register("flint_pickaxe",
             () -> new PickaxeItem(ModToolTiers.FLINT , new Item.Properties()
                     .attributes(PickaxeItem.createAttributes(ModToolTiers.FLINT,0.5f,-2.8f))));
     public static final DeferredItem<AxeItem> FLINT_AXE = ITEMS.register("flint_axe",
             () -> new AxeItem(ModToolTiers.FLINT , new Item.Properties()
-                    .attributes(AxeItem.createAttributes(ModToolTiers.FLINT,4,-3.2f))));
+                    .attributes(AxeItem.createAttributes(ModToolTiers.FLINT,5,-3.2f))));
     public static final DeferredItem<SwordItem> FLINT_KNIFE = ITEMS.register("flint_knife",
             () -> new SwordItem(ModToolTiers.FLINT , new Item.Properties()
                     .attributes(SwordItem.createAttributes(ModToolTiers.FLINT,1.5f,-2.4f))));
@@ -48,28 +60,7 @@ public class ModItems {
                     .attributes(ItemAttributeModifiers.builder()
                             .add(Attributes.ATTACK_DAMAGE,
                                     new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID,
-                                            4.0, AttributeModifier.Operation.ADD_VALUE),
-                                    EquipmentSlotGroup.MAINHAND)
-                            .add(Attributes.ATTACK_SPEED,
-                                    new AttributeModifier(Item.BASE_ATTACK_SPEED_ID,
-                                            -2.4, AttributeModifier.Operation.ADD_VALUE),
-                                    EquipmentSlotGroup.MAINHAND)
-                            .add(Attributes.ENTITY_INTERACTION_RANGE,
-                                    new AttributeModifier(
-                                            ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "flint_spear_range"),
-                                            0.5, AttributeModifier.Operation.ADD_VALUE),
-                                    EquipmentSlotGroup.MAINHAND)
-                            .build())));
-
-    public static final DeferredItem<SwordItem> BONE_SWORD = ITEMS.register("bone_sword",
-            () -> new SwordItem(ModToolTiers.BONE , new Item.Properties()
-                    .attributes(SwordItem.createAttributes(ModToolTiers.BONE,3f,-2.5f))));
-    public static final DeferredItem<SwordItem> BONE_SPEAR = ITEMS.register("bone_spear",
-            () -> new SwordItem(ModToolTiers.BONE, new Item.Properties()
-                    .attributes(ItemAttributeModifiers.builder()
-                            .add(Attributes.ATTACK_DAMAGE,
-                                    new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID,
-                                            4, AttributeModifier.Operation.ADD_VALUE),
+                                            3, AttributeModifier.Operation.ADD_VALUE),
                                     EquipmentSlotGroup.MAINHAND)
                             .add(Attributes.ATTACK_SPEED,
                                     new AttributeModifier(Item.BASE_ATTACK_SPEED_ID,
@@ -77,7 +68,73 @@ public class ModItems {
                                     EquipmentSlotGroup.MAINHAND)
                             .add(Attributes.ENTITY_INTERACTION_RANGE,
                                     new AttributeModifier(
-                                            ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "bone_spear_range"),
+                                            ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "amethyst_bone_spear_range"),
+                                            0.5, AttributeModifier.Operation.ADD_VALUE),
+                                    EquipmentSlotGroup.MAINHAND)
+                            .build())));
+
+    public static final DeferredItem<SwordItem> BONE_SWORD = ITEMS.register("bone_sword",
+            () -> new SwordItem(ModToolTiers.BONE , new Item.Properties()
+                    .attributes(SwordItem.createAttributes(ModToolTiers.BONE,3.75f,-2.4f))));
+    public static final DeferredItem<SwordItem> BONE_CLUB = ITEMS.register("bone_club",
+            () -> new SwordItem(ModToolTiers.BONE , new Item.Properties()
+                    .attributes(SwordItem.createAttributes(ModToolTiers.BONE,3.5f,-2.3f))));
+    public static final DeferredItem<SwordItem> BONE_SPEAR = ITEMS.register("bone_spear",
+            () -> new SwordItem(ModToolTiers.BONE, new Item.Properties()
+                    .attributes(ItemAttributeModifiers.builder()
+                            .add(Attributes.ATTACK_DAMAGE,
+                                    new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID,
+                                            4.25, AttributeModifier.Operation.ADD_VALUE),
+                                    EquipmentSlotGroup.MAINHAND)
+                            .add(Attributes.ATTACK_SPEED,
+                                    new AttributeModifier(Item.BASE_ATTACK_SPEED_ID,
+                                            -3, AttributeModifier.Operation.ADD_VALUE),
+                                    EquipmentSlotGroup.MAINHAND)
+                            .add(Attributes.ENTITY_INTERACTION_RANGE,
+                                    new AttributeModifier(
+                                            ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "amethyst_bone_spear_range"),
+                                            0.5, AttributeModifier.Operation.ADD_VALUE),
+                                    EquipmentSlotGroup.MAINHAND)
+                            .build())));
+
+    public static final DeferredItem<SwordItem> AMETHYST_BONE_SWORD = ITEMS.register("amethyst_bone_sword",
+            () -> new SwordItem(ModToolTiers.AMETHYST_BONE , new Item.Properties()
+                    .attributes(SwordItem.createAttributes(ModToolTiers.AMETHYST_BONE,6f,-2.4f))));
+    public static final DeferredItem<SwordItem> AMETHYST_BONE_SPEAR = ITEMS.register("amethyst_bone_spear",
+            () -> new SwordItem(ModToolTiers.AMETHYST_BONE, new Item.Properties()
+                    .attributes(ItemAttributeModifiers.builder()
+                            .add(Attributes.ATTACK_DAMAGE,
+                                    new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID,
+                                            5, AttributeModifier.Operation.ADD_VALUE),
+                                    EquipmentSlotGroup.MAINHAND)
+                            .add(Attributes.ATTACK_SPEED,
+                                    new AttributeModifier(Item.BASE_ATTACK_SPEED_ID,
+                                            -2.8, AttributeModifier.Operation.ADD_VALUE),
+                                    EquipmentSlotGroup.MAINHAND)
+                            .add(Attributes.ENTITY_INTERACTION_RANGE,
+                                    new AttributeModifier(
+                                            ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "amethyst_bone_spear_range"),
+                                            0.5, AttributeModifier.Operation.ADD_VALUE),
+                                    EquipmentSlotGroup.MAINHAND)
+                            .build())));
+
+    public static final DeferredItem<SwordItem> GOLDEN_BONE_SWORD = ITEMS.register("golden_bone_sword",
+            () -> new SwordItem(ModToolTiers.GOLDEN_BONE , new Item.Properties()
+                    .attributes(SwordItem.createAttributes(ModToolTiers.GOLDEN_BONE,5f,-2.4f))));
+    public static final DeferredItem<SwordItem> GOLDEN_BONE_SPEAR = ITEMS.register("golden_bone_spear",
+            () -> new SwordItem(ModToolTiers.GOLDEN_BONE, new Item.Properties()
+                    .attributes(ItemAttributeModifiers.builder()
+                            .add(Attributes.ATTACK_DAMAGE,
+                                    new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID,
+                                            4.5, AttributeModifier.Operation.ADD_VALUE),
+                                    EquipmentSlotGroup.MAINHAND)
+                            .add(Attributes.ATTACK_SPEED,
+                                    new AttributeModifier(Item.BASE_ATTACK_SPEED_ID,
+                                            -3, AttributeModifier.Operation.ADD_VALUE),
+                                    EquipmentSlotGroup.MAINHAND)
+                            .add(Attributes.ENTITY_INTERACTION_RANGE,
+                                    new AttributeModifier(
+                                            ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "golden_bone_spear_range"),
                                             0.5, AttributeModifier.Operation.ADD_VALUE),
                                     EquipmentSlotGroup.MAINHAND)
                             .build())));
@@ -90,7 +147,7 @@ public class ModItems {
                     .attributes(PickaxeItem.createAttributes(ModToolTiers.COPPER,1f,-2.8f))));
     public static final DeferredItem<AxeItem> COPPER_AXE = ITEMS.register("copper_axe",
             () -> new AxeItem(ModToolTiers.COPPER , new Item.Properties()
-                    .attributes(AxeItem.createAttributes(ModToolTiers.COPPER,5f,-3.1f))));
+                    .attributes(AxeItem.createAttributes(ModToolTiers.COPPER,6f,-3.1f))));
     public static final DeferredItem<ShovelItem> COPPER_SHOVEL = ITEMS.register("copper_shovel",
             () -> new ShovelItem(ModToolTiers.COPPER , new Item.Properties()
                     .attributes(ShovelItem.createAttributes(ModToolTiers.COPPER,1.5f,-3f))));
@@ -115,6 +172,30 @@ public class ModItems {
                                     EquipmentSlotGroup.MAINHAND)
                             .build())));
 
+    public static final DeferredItem<BlockItem> CHOPPING_BLOCK = ITEMS.register("chopping_block",
+            () -> new BlockItem(ModBlocks.CHOPPING_BLOCK.get(), new Item.Properties()));
+
+    public static final DeferredItem<BlockItem> OAK_POST = registerBlockItem("oak_post", ModBlocks.OAK_POST);
+    public static final DeferredItem<BlockItem> SPRUCE_POST = registerBlockItem("spruce_post", ModBlocks.SPRUCE_POST);
+    public static final DeferredItem<BlockItem> BIRCH_POST = registerBlockItem("birch_post", ModBlocks.BIRCH_POST);
+    public static final DeferredItem<BlockItem> JUNGLE_POST = registerBlockItem("jungle_post", ModBlocks.JUNGLE_POST);
+    public static final DeferredItem<BlockItem> ACACIA_POST = registerBlockItem("acacia_post", ModBlocks.ACACIA_POST);
+    public static final DeferredItem<BlockItem> DARK_OAK_POST = registerBlockItem("dark_oak_post", ModBlocks.DARK_OAK_POST);
+    public static final DeferredItem<BlockItem> MANGROVE_POST = registerBlockItem("mangrove_post", ModBlocks.MANGROVE_POST);
+    public static final DeferredItem<BlockItem> CHERRY_POST = registerBlockItem("cherry_post", ModBlocks.CHERRY_POST);
+
+    public static final DeferredItem<BlockItem> STRIPPED_OAK_POST = registerBlockItem("stripped_oak_post", ModBlocks.STRIPPED_OAK_POST);
+    public static final DeferredItem<BlockItem> STRIPPED_SPRUCE_POST = registerBlockItem("stripped_spruce_post", ModBlocks.STRIPPED_SPRUCE_POST);
+    public static final DeferredItem<BlockItem> STRIPPED_BIRCH_POST = registerBlockItem("stripped_birch_post", ModBlocks.STRIPPED_BIRCH_POST);
+    public static final DeferredItem<BlockItem> STRIPPED_JUNGLE_POST = registerBlockItem("stripped_jungle_post", ModBlocks.STRIPPED_JUNGLE_POST);
+    public static final DeferredItem<BlockItem> STRIPPED_ACACIA_POST = registerBlockItem("stripped_acacia_post", ModBlocks.STRIPPED_ACACIA_POST);
+    public static final DeferredItem<BlockItem> STRIPPED_DARK_OAK_POST = registerBlockItem("stripped_dark_oak_post", ModBlocks.STRIPPED_DARK_OAK_POST);
+    public static final DeferredItem<BlockItem> STRIPPED_MANGROVE_POST = registerBlockItem("stripped_mangrove_post", ModBlocks.STRIPPED_MANGROVE_POST);
+    public static final DeferredItem<BlockItem> STRIPPED_CHERRY_POST = registerBlockItem("stripped_cherry_post", ModBlocks.STRIPPED_CHERRY_POST);
+
+    private static DeferredItem<BlockItem> registerBlockItem(String name, DeferredBlock<? extends Block> block) {
+        return ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+    }
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

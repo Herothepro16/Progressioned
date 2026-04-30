@@ -6,6 +6,10 @@
  "item.progressioned.fiber_mesh": "Fiber Mesh",
  "item.progressioned.sharp_bone": "Sharp Bone",
 
+ "item.progressioned.flint_saw": "Flint Saw",
+ "item.progressioned.iron_saw": "Iron Saw",
+ "item.progressioned.diamond_saw": "Diamond Saw",
+
  "item.progressioned.flint_pickaxe": "Flint Pickaxe",
  "item.progressioned.flint_axe": "Flint Hatchet",
  "item.progressioned.flint_shovel": "Flint Shovel",
@@ -14,6 +18,13 @@
 
  "item.progressioned.bone_sword": "Bone Cleaver",
  "item.progressioned.bone_spear": "Bone Spear",
+ "item.progressioned.bone_club": "Bone Club",
+
+ "item.progressioned.amethyst_bone_sword": "Amethyst Bone Cleaver",
+ "item.progressioned.amethyst_bone_spear": "Amethyst Bone Spear",
+
+ "item.progressioned.golden_bone_sword": "Golden Bone Cleaver",
+ "item.progressioned.golden_bone_spear": "Golden Bone Spear",
 
  "item.progressioned.copper_sword": "Copper Sword",
  "item.progressioned.copper_pickaxe": "Copper Pickaxe",
@@ -22,5 +33,28 @@
  "item.progressioned.copper_hoe": "Copper Hoe",
  "item.progressioned.copper_spear": "Copper Spear",
 
- "creativetab.progressioned.stuff": "Progressioned Items"
+ "block.progressioned.chopping_block": "Chopping Block",
+
+ "block.progressioned.oak_post": "Oak Post",
+ "block.progressioned.spruce_post": "Spruce Post",
+ "block.progressioned.birch_post": "Birch Post",
+ "block.progressioned.jungle_post": "Jungle Post",
+ "block.progressioned.acacia_post": "Acacia Post",
+ "block.progressioned.dark_oak_post": "Dark Oak Post",
+ "block.progressioned.mangrove_post": "Mangrove Post",
+ "block.progressioned.cherry_post": "Cherry Post",
+
+ "block.progressioned.stripped_oak_post": "Stripped Oak Post",
+ "block.progressioned.stripped_spruce_post": "Stripped Spruce Post",
+ "block.progressioned.stripped_birch_post": "Stripped Birch Post",
+ "block.progressioned.stripped_jungle_post": "Stripped Jungle Post",
+ "block.progressioned.stripped_acacia_post": "Stripped Acacia Post",
+ "block.progressioned.stripped_dark_oak_post": "Stripped Dark Oak Post",
+ "block.progressioned.stripped_mangrove_post": "Stripped Mangrove Post",
+ "block.progressioned.stripped_cherry_post": "Stripped Cherry Post",
+
+ "creativetab.progressioned.stuff": "Progressioned Items",
+
+ "category.progressioned.chopping": "Chopping Block",
+ "emi.category.progressioned.chopping": "Chopping Block"
 }

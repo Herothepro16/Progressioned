@@ -6,6 +6,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredItem;
 
@@ -22,6 +24,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.PLANT_STRING.get());
         basicItem(ModItems.FIBER_MESH.get());
         basicItem(ModItems.SHARP_BONE.get());
+        basicItem(ModItems.FLINT_SAW.get());
+        basicItem(ModItems.IRON_SAW.get());
+        basicItem(ModItems.DIAMOND_SAW.get());
 
         handheldItem(ModItems.FLINT_PICK.get());
         handheldItem(ModItems.FLINT_AXE.get());
@@ -31,6 +36,10 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         handheldItem(ModItems.BONE_SWORD.get());
         handheldItem(ModItems.BONE_SPEAR.get());
+        handheldItem(ModItems.AMETHYST_BONE_SWORD.get());
+        handheldItem(ModItems.AMETHYST_BONE_SPEAR.get());
+        handheldItem(ModItems.GOLDEN_BONE_SWORD.get());
+        handheldItem(ModItems.GOLDEN_BONE_SPEAR.get());
 
         handheldItem(ModItems.COPPER_SWORD.get());
         handheldItem(ModItems.COPPER_PICKAXE.get());
@@ -38,6 +47,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheldItem(ModItems.COPPER_SHOVEL.get());
         handheldItem(ModItems.COPPER_HOE.get());
         handheldItem(ModItems.COPPER_SPEAR.get());
+
 
 
     }
