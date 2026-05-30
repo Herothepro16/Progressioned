@@ -1,6 +1,5 @@
 package net.Herothepro.progressioned.datagen;
 
-import com.mojang.datafixers.types.templates.Tag;
 import net.Herothepro.progressioned.Progressioned;
 import net.Herothepro.progressioned.block.ModBlocks;
 import net.Herothepro.progressioned.item.ModItems;
@@ -11,6 +10,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
@@ -84,6 +84,19 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.PLANT_FIBER)
                 .requires(Items.WHEAT_SEEDS, 3)
                 .unlockedBy("has_wheat_seeds", has(Items.WHEAT_SEEDS)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.FIRE_STICK)
+                .requires(Items.STICK, 2)
+                .unlockedBy("has_sticks", has(Items.STICK)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.PORCELAIN_CLAY_BALL)
+                .requires(Items.CLAY_BALL, 1)
+                .requires(Items.BONE_MEAL, 2)
+                .unlockedBy("has_bone_meal", has(Items.BONE_MEAL)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.UNFIRED_CLAY_BUCKET.get())
+                .pattern("   ")
+                .pattern("C C")
+                .pattern(" C ")
+                .define('C', Items.CLAY_BALL)
+                .unlockedBy("has_clay_ball", has(Items.CLAY_BALL)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_SWORD.get())
                 .pattern(" C ")
                 .pattern(" C ")
@@ -143,8 +156,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy("has_sharp_bone", has(ModItems.SHARP_BONE)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BONE_CLUB.get())
                 .pattern(" B ")
-                .pattern(" B ")
                 .pattern(" C ")
+                .pattern("   ")
                 .define('B', Items.BONE)
                 .define('C', ModItems.SHARP_BONE)
                 .unlockedBy("has_sharp_bone", has(ModItems.SHARP_BONE)).save(recipeOutput);
@@ -179,6 +192,23 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('A', Items.GOLD_INGOT)
                 .unlockedBy("has_bone_spear", has(ModItems.BONE_SPEAR)).save(recipeOutput);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.CAMPFIRE)
+                .pattern(" N ")
+                .pattern("NCN")
+                .pattern(" F ")
+                .define('N', Items.NETHERRACK)
+                .define('F', Items.FLINT_AND_STEEL)
+                .define('C', ModBlocks.CAMPFIRE_BASE.get())
+                .unlockedBy("has_flint_and_steel", has(Items.FLINT_AND_STEEL))
+                .save(recipeOutput,ResourceLocation.fromNamespaceAndPath("progressioned", "campfire_override"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.FURNACE)
+                .pattern("SSS")
+                .pattern("SCS")
+                .pattern("SSS")
+                .define('S', Items.STONE)
+                .define('C', Items.COAL_BLOCK)
+                .unlockedBy("has_stone", has(Items.STONE))
+                .save(recipeOutput,ResourceLocation.fromNamespaceAndPath("progressioned", "furnace_override"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CHOPPING_BLOCK.get())
                 .pattern(" L ")
                 .pattern(" F ")
@@ -186,7 +216,121 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('L', ItemTags.LOGS)
                 .define('F', ModItems.FLINT_SHARD)
                 .unlockedBy("has_flint_shard", has(ModItems.FLINT_SHARD)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.PORCELAIN_KILN.get())
+                .pattern("PPP")
+                .pattern("P P")
+                .pattern("BBB")
+                .define('P', ModItems.PORCELAIN_CLAY_BRICK)
+                .define('B', Items.CLAY)
+                .unlockedBy("has_porcelain_clay_brick", has(ModItems.PORCELAIN_CLAY_BRICK)).save(recipeOutput);
 
+        SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(ModItems.PORCELAIN_CLAY_BALL.get()), RecipeCategory.MISC,
+                 ModItems.PORCELAIN_CLAY_BRICK.get(), 0.35f, 600                                        )
+                .unlockedBy("has_porcelain_clay_ball", has(ModItems.PORCELAIN_CLAY_BALL.get()))
+                .save(recipeOutput);
+
+        //wooden tool recipes
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.WOODEN_SWORD)
+                .pattern(" T ")
+                .pattern("PT ")
+                .pattern(" S ")
+                .define('T', ItemTags.PLANKS)
+                .define('S', Items.STICK)
+                .define('P', ModItems.PLANT_STRING)
+                .unlockedBy("has_planks", has(ItemTags.PLANKS))
+                .save(recipeOutput,ResourceLocation.fromNamespaceAndPath("progressioned", "wooden_sword"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.WOODEN_PICKAXE)
+                .pattern("TTT")
+                .pattern(" SP")
+                .pattern(" S ")
+                .define('T', ItemTags.PLANKS)
+                .define('S', Items.STICK)
+                .define('P', ModItems.PLANT_STRING)
+                .unlockedBy("has_planks", has(ItemTags.PLANKS))
+                .save(recipeOutput,ResourceLocation.fromNamespaceAndPath("progressioned", "wooden_pickaxe"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.WOODEN_AXE)
+                .pattern("TT ")
+                .pattern("TSP")
+                .pattern(" S ")
+                .define('T', ItemTags.PLANKS)
+                .define('S', Items.STICK)
+                .define('P', ModItems.PLANT_STRING)
+                .unlockedBy("has_planks", has(ItemTags.PLANKS))
+                .save(recipeOutput,ResourceLocation.fromNamespaceAndPath("progressioned", "wooden_axe"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.WOODEN_SHOVEL)
+                .pattern(" T ")
+                .pattern("PS ")
+                .pattern(" S ")
+                .define('T', ItemTags.PLANKS)
+                .define('S', Items.STICK)
+                .define('P', ModItems.PLANT_STRING)
+                .unlockedBy("has_planks", has(ItemTags.PLANKS))
+                .save(recipeOutput,ResourceLocation.fromNamespaceAndPath("progressioned", "wooden_shovel"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.WOODEN_HOE)
+                .pattern("TTP")
+                .pattern(" S ")
+                .pattern(" S ")
+                .define('T', ItemTags.PLANKS)
+                .define('S', Items.STICK)
+                .define('P', ModItems.PLANT_STRING)
+                .unlockedBy("has_planks", has(ItemTags.PLANKS))
+                .save(recipeOutput,ResourceLocation.fromNamespaceAndPath("progressioned", "wooden_hoe"));
+
+        //stone tool recipes
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.STONE_SWORD)
+                .pattern(" T ")
+                .pattern("PT ")
+                .pattern(" S ")
+                .define('T', Items.STONE)
+                .define('S', Items.STICK)
+                .define('P', ModItems.PLANT_STRING)
+                .unlockedBy("has_stone", has(Items.STONE))
+                .save(recipeOutput,ResourceLocation.fromNamespaceAndPath("progressioned", "stone_sword"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.STONE_PICKAXE)
+                .pattern("TTT")
+                .pattern(" SP")
+                .pattern(" S ")
+                .define('T', Items.STONE)
+                .define('S', Items.STICK)
+                .define('P', ModItems.PLANT_STRING)
+                .unlockedBy("has_stone", has(Items.STONE))
+                .save(recipeOutput,ResourceLocation.fromNamespaceAndPath("progressioned", "stone_pickaxe"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.STONE_AXE)
+                .pattern("TT ")
+                .pattern("TSP")
+                .pattern(" S ")
+                .define('T', Items.STONE)
+                .define('S', Items.STICK)
+                .define('P', ModItems.PLANT_STRING)
+                .unlockedBy("has_stone", has(Items.STONE))
+                .save(recipeOutput,ResourceLocation.fromNamespaceAndPath("progressioned", "stone_axe"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.STONE_SHOVEL)
+                .pattern(" T ")
+                .pattern("PS ")
+                .pattern(" S ")
+                .define('T', Items.STONE)
+                .define('S', Items.STICK)
+                .define('P', ModItems.PLANT_STRING)
+                .unlockedBy("has_stone", has(Items.STONE))
+                .save(recipeOutput,ResourceLocation.fromNamespaceAndPath("progressioned", "stone_shovel"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.STONE_HOE)
+                .pattern("TTP")
+                .pattern(" S ")
+                .pattern(" S ")
+                .define('T', Items.STONE)
+                .define('S', Items.STICK)
+                .define('P', ModItems.PLANT_STRING)
+                .unlockedBy("has_stone", has(Items.STONE))
+                .save(recipeOutput,ResourceLocation.fromNamespaceAndPath("progressioned", "stone_hoe"));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CAMPFIRE_BASE.get())
+                .pattern("PSP")
+                .pattern("S S")
+                .pattern("PSP")
+                .define('P', ModTags.Items.POSTS)
+                .define('S', Items.STICK)
+                .unlockedBy("has_any_post", has(ModTags.Items.POSTS))
+                .save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FLINT_SAW.get())
                 .pattern("SSS")
                 .pattern("LFC")

@@ -1,13 +1,16 @@
 package net.Herothepro.progressioned.datagen;
 
 import net.Herothepro.progressioned.Progressioned;
+import net.Herothepro.progressioned.block.ModBlocks;
 import net.Herothepro.progressioned.item.ModItems;
 import net.Herothepro.progressioned.util.ModTags;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
@@ -51,7 +54,32 @@ public class ModItemTagProvider extends ItemTagsProvider {
         tag(ModTags.Items.SAWS)
                 .add(ModItems.FLINT_SAW.get())
                 .add(ModItems.IRON_SAW.get())
-                .add(ModItems.DIAMOND_SAW.get())
-                .addOptionalTag(ResourceLocation.fromNamespaceAndPath("c", "saws"));
+                .add(ModItems.DIAMOND_SAW.get());
+        tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "saws")))
+                .add(ModItems.FLINT_SAW.get())
+                .add(ModItems.IRON_SAW.get())
+                .add(ModItems.DIAMOND_SAW.get());
+        tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c","buckets")))
+                .add(ModItems.CLAY_BUCKET.get())
+                .add(ModItems.CLAY_WATER_BUCKET.get())
+                .add(ModItems.CLAY_LAVA_BUCKET.get());
+        tag(ModTags.Items.POSTS)
+                .add(ModItems.OAK_POST.get())
+                .add(ModItems.SPRUCE_POST.get())
+                .add(ModItems.BIRCH_POST.get())
+                .add(ModItems.JUNGLE_POST.get())
+                .add(ModItems.DARK_OAK_POST.get())
+                .add(ModItems.CHERRY_POST.get())
+                .add(ModItems.MANGROVE_POST.get())
+                .add(ModItems.ACACIA_POST.get())
+                .add(ModItems.STRIPPED_OAK_POST.get())
+                .add(ModItems.STRIPPED_SPRUCE_POST.get())
+                .add(ModItems.STRIPPED_BIRCH_POST.get())
+                .add(ModItems.STRIPPED_JUNGLE_POST.get())
+                .add(ModItems.STRIPPED_DARK_OAK_POST.get())
+                .add(ModItems.STRIPPED_CHERRY_POST.get())
+                .add(ModItems.STRIPPED_MANGROVE_POST.get())
+                .add(ModItems.STRIPPED_ACACIA_POST.get());
+
     }
 }

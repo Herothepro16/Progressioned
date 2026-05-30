@@ -26,6 +26,13 @@ public class ModRecipes {
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<DamagingShapelessRecipe>> DAMAGING_SHAPELESS_SERIALIZER =
             SERIALIZERS.register("damaging_shapeless", DamagingShapelessRecipe.Serializer::new);
 
+    public static final DeferredHolder<RecipeType<?>, RecipeType<KilnRecipe>> KILN_TYPE =
+            TYPES.register("porcelain_kiln", () -> RecipeType.simple(
+                    ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "porcelain_kiln")));
+
+    public static final DeferredHolder<RecipeSerializer<?>, KilnRecipe.Serializer> KILN_SERIALIZER =
+            SERIALIZERS.register("porcelain_kiln", KilnRecipe.Serializer::new);
+
     public static void register(IEventBus eventBus) {
         SERIALIZERS.register(eventBus);
         TYPES.register(eventBus);

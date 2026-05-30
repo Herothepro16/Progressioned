@@ -18,6 +18,8 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         dropSelf(ModBlocks.CHOPPING_BLOCK.get());
+        dropSelf(ModBlocks.CAMPFIRE_BASE.get());
+        dropSelf(ModBlocks.PORCELAIN_KILN.get());
         dropSelf(ModBlocks.OAK_POST.get());
         dropSelf(ModBlocks.BIRCH_POST.get());
         dropSelf(ModBlocks.SPRUCE_POST.get());

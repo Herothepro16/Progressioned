@@ -24,9 +24,19 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.PLANT_STRING.get());
         basicItem(ModItems.FIBER_MESH.get());
         basicItem(ModItems.SHARP_BONE.get());
-        basicItem(ModItems.FLINT_SAW.get());
-        basicItem(ModItems.IRON_SAW.get());
-        basicItem(ModItems.DIAMOND_SAW.get());
+        basicItem(ModItems.PORCELAIN_CLAY_BALL.get());
+        basicItem(ModItems.PORCELAIN_CLAY_BRICK.get());
+
+        basicItem(ModItems.UNFIRED_CLAY_BUCKET.get());
+        basicItem(ModItems.CLAY_BUCKET.get());
+        basicItem(ModItems.CLAY_WATER_BUCKET.get());
+        basicItem(ModItems.CLAY_LAVA_BUCKET.get());
+
+        handheldItem(ModItems.FIRE_STICK.get());
+
+        handheldItem(ModItems.FLINT_SAW.get());
+        handheldItem(ModItems.IRON_SAW.get());
+        handheldItem(ModItems.DIAMOND_SAW.get());
 
         handheldItem(ModItems.FLINT_PICK.get());
         handheldItem(ModItems.FLINT_AXE.get());
@@ -48,7 +58,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheldItem(ModItems.COPPER_HOE.get());
         handheldItem(ModItems.COPPER_SPEAR.get());
 
-
+        basicItem(ModItems.CAMPFIRE_BASE.get());
 
     }
     private ItemModelBuilder itemModelBuilder(DeferredItem<?> item) {

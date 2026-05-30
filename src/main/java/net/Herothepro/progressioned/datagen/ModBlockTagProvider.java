@@ -6,6 +6,8 @@ import net.Herothepro.progressioned.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
@@ -21,17 +23,29 @@ public class ModBlockTagProvider extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_AXE)
                 .addTag(ModTags.Blocks.POSTS)
                 .addTag(BlockTags.LOGS)
-                .add(ModBlocks.CHOPPING_BLOCK.get());
+                .add(ModBlocks.CHOPPING_BLOCK.get())
+                .add(ModBlocks.CAMPFIRE_BASE.get());
 
         tag(BlockTags.LOGS_THAT_BURN)
                 .addTag(ModTags.Blocks.POSTS);
+
+        tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                .add(ModBlocks.PORCELAIN_KILN.get());
 
         tag(ModTags.Blocks.NEEDS_FLINT_TOOL)
                 .addTag(BlockTags.LOGS);
 
         tag(ModTags.Blocks.INCORRECT_FOR_FLINT_TOOL)
+                .addTag(BlockTags.NEEDS_STONE_TOOL)
                 .addTag(BlockTags.NEEDS_IRON_TOOL)
                 .addTag(BlockTags.NEEDS_DIAMOND_TOOL);
+
+        tag(ModTags.Blocks.INCORRECT_FOR_COPPER_TOOL)
+                .addTag(BlockTags.NEEDS_IRON_TOOL)
+                .addTag(BlockTags.NEEDS_DIAMOND_TOOL);
+
+        tag(BlockTags.INFINIBURN_OVERWORLD)
+                .add(Blocks.COAL_BLOCK);
 
         tag(BlockTags.INCORRECT_FOR_STONE_TOOL)
                 .addTag(BlockTags.IRON_ORES);

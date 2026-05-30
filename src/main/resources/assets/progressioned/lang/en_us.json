@@ -5,6 +5,14 @@
  "item.progressioned.plant_string": "Plant String",
  "item.progressioned.fiber_mesh": "Fiber Mesh",
  "item.progressioned.sharp_bone": "Sharp Bone",
+ "item.progressioned.fire_stick": "Fire Stick",
+ "item.progressioned.porcelain_clay_ball": "Porcelain Clay Ball",
+ "item.progressioned.porcelain_clay_brick": "Porcelain Clay Brick",
+
+ "item.progressioned.unfired_clay_bucket": "Unfired Clay Bucket",
+ "item.progressioned.clay_bucket": "Clay Bucket",
+ "item.progressioned.clay_water_bucket": "Clay Water Bucket",
+ "item.progressioned.clay_lava_bucket": "Clay Lava Bucket",
 
  "item.progressioned.flint_saw": "Flint Saw",
  "item.progressioned.iron_saw": "Iron Saw",
@@ -34,6 +42,8 @@
  "item.progressioned.copper_spear": "Copper Spear",
 
  "block.progressioned.chopping_block": "Chopping Block",
+ "block.progressioned.campfire_base": "Campfire Base",
+ "block.progressioned.porcelain_kiln": "Porcelain Kiln",
 
  "block.progressioned.oak_post": "Oak Post",
  "block.progressioned.spruce_post": "Spruce Post",
@@ -55,6 +65,10 @@
 
  "creativetab.progressioned.stuff": "Progressioned Items",
 
- "category.progressioned.chopping": "Chopping Block",
- "emi.category.progressioned.chopping": "Chopping Block"
+ "emi.category.progressioned.chopping": "Chopping Block",
+ "emi.category.progressioned.porcelain_kiln": "Porcelain Kiln",
+
+ "tag.item.c.saws": "Saws",
+ "tag.item.progressioned.posts": "Posts",
+ "tag.item.progressioned.saws": "Saws"
 }

@@ -1,0 +1,6 @@
+{
+  "type": "progressioned:porcelain_kiln",
+  "ingredient": { "item": "minecraft:cobblestone" },
+  "result": { "id": "minecraft:stone", "count": 1 },
+  "cooktime": 300
+}

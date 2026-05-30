@@ -1,0 +1,6 @@
+{
+  "type": "progressioned:porcelain_kiln",
+  "ingredient": { "item": "minecraft:cobbled_deepslate" },
+  "result": { "id": "minecraft:deepslate", "count": 1 },
+  "cooktime": 300
+}

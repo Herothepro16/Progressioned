@@ -2,7 +2,6 @@ package net.Herothepro.progressioned;
 
 import net.Herothepro.progressioned.block.ModBlocks;
 import net.Herothepro.progressioned.block.custom.entity.ModBlockEntities;
-import net.Herothepro.progressioned.entity.ModEntities;
 import net.Herothepro.progressioned.item.ModCreativeModeTabs;
 import net.Herothepro.progressioned.item.ModItems;
 import net.Herothepro.progressioned.recipe.ModRecipes;
@@ -41,8 +40,6 @@ public class Progressioned {
         ModBlocks.register(modEventBus);
 
         ModBlockEntities.register(modEventBus);
-
-        ModEntities.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
 

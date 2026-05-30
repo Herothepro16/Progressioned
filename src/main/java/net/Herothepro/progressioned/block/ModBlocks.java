@@ -1,7 +1,9 @@
 package net.Herothepro.progressioned.block;
 
 import net.Herothepro.progressioned.Progressioned;
+import net.Herothepro.progressioned.block.custom.CampfireBaseBlock;
 import net.Herothepro.progressioned.block.custom.ChoppingBlock;
+import net.Herothepro.progressioned.block.custom.KilnBlock;
 import net.Herothepro.progressioned.block.custom.PostBlock;
 import net.Herothepro.progressioned.item.ModItems;
 import net.minecraft.world.item.BlockItem;
@@ -26,6 +28,17 @@ public class ModBlocks {
                     .strength(2.0f)
                     .sound(SoundType.WOOD)
                     .requiresCorrectToolForDrops()));
+
+    public static final DeferredBlock<CampfireBaseBlock> CAMPFIRE_BASE = BLOCKS.register("campfire_base",
+            () -> new CampfireBaseBlock(BlockBehaviour.Properties.of()
+                    .strength(2.0f)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()));
+
+    public static final DeferredBlock<KilnBlock> PORCELAIN_KILN = BLOCKS.register("porcelain_kiln",
+            () -> new KilnBlock(BlockBehaviour.Properties.of()
+                    .strength(2.0f)
+                    .lightLevel(state -> state.getValue(KilnBlock.LIT) ? 13 : 0)));
 
     public static final DeferredBlock<PostBlock> OAK_POST = BLOCKS.register("oak_post",
             () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG).noOcclusion()));

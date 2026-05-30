@@ -25,7 +25,14 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.PLANT_FIBER.get());
                         output.accept(ModItems.PLANT_STRING.get());
                         output.accept(ModItems.FIBER_MESH.get());
+                        output.accept(ModItems.FIRE_STICK.get());
                         output.accept(ModItems.SHARP_BONE.get());
+                        output.accept(ModItems.PORCELAIN_CLAY_BALL.get());
+                        output.accept(ModItems.PORCELAIN_CLAY_BRICK.get());
+                        output.accept(ModItems.UNFIRED_CLAY_BUCKET.get());
+                        output.accept(ModItems.CLAY_BUCKET.get());
+                        output.accept(ModItems.CLAY_WATER_BUCKET.get());
+                        output.accept(ModItems.CLAY_LAVA_BUCKET.get());
                         output.accept(ModItems.FLINT_PICK.get());
                         output.accept(ModItems.FLINT_AXE.get());
                         output.accept(ModItems.FLINT_SHOVEL.get());
@@ -48,6 +55,8 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.IRON_SAW.get());
                         output.accept(ModItems.DIAMOND_SAW.get());
                         output.accept(new ItemStack(ModItems.CHOPPING_BLOCK.get()));
+                        output.accept(new ItemStack(ModItems.CAMPFIRE_BASE.get()));
+                        output.accept(new ItemStack(ModItems.PORCELAIN_KILN.get()));
                         output.accept(ModBlocks.OAK_POST);
                         output.accept(ModBlocks.SPRUCE_POST);
                         output.accept(ModBlocks.BIRCH_POST);

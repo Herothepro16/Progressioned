@@ -2,6 +2,10 @@ package net.Herothepro.progressioned.item;
 
 import net.Herothepro.progressioned.Progressioned;
 import net.Herothepro.progressioned.block.ModBlocks;
+import net.Herothepro.progressioned.item.custom.ClayEmptyBucketItem;
+import net.Herothepro.progressioned.item.custom.ClayLavaBucketItem;
+import net.Herothepro.progressioned.item.custom.ClayWaterBucketItem;
+import net.Herothepro.progressioned.item.custom.FireStickItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -30,8 +34,16 @@ public class ModItems {
     public static final DeferredItem<Item> PLANT_STRING = ITEMS.register("plant_string",
             () -> new Item(new Item.Properties()));
 
+    public static final DeferredItem<Item> PORCELAIN_CLAY_BALL = ITEMS.register("porcelain_clay_ball",
+            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> PORCELAIN_CLAY_BRICK = ITEMS.register("porcelain_clay_brick",
+            () -> new Item(new Item.Properties()));
+
     public static final DeferredItem<HoeItem> FIBER_MESH = ITEMS.register("fiber_mesh",
             () -> new HoeItem(ModToolTiers.FIBER_MESH, new Item.Properties()));
+
+    public static final DeferredItem<FireStickItem> FIRE_STICK = ITEMS.register("fire_stick",
+            () -> new FireStickItem(new Item.Properties().stacksTo(1)));
 
     public static final DeferredItem<AxeItem> FLINT_SAW = ITEMS.register("flint_saw",
             () -> new AxeItem(ModToolTiers.FLINT, new Item.Properties()
@@ -42,6 +54,15 @@ public class ModItems {
     public static final DeferredItem<AxeItem> DIAMOND_SAW = ITEMS.register("diamond_saw",
             () -> new AxeItem(Tiers.DIAMOND, new Item.Properties()
                     .attributes(AxeItem.createAttributes(Tiers.DIAMOND,3f,-3.2f))));
+
+    public static final DeferredItem<Item> UNFIRED_CLAY_BUCKET = ITEMS.register("unfired_clay_bucket",
+            () -> new Item(new Item.Properties().stacksTo(4)));
+    public static final DeferredItem<Item> CLAY_BUCKET = ITEMS.register("clay_bucket",
+            () -> new ClayEmptyBucketItem(new Item.Properties().stacksTo(4)));
+    public static final DeferredItem<Item> CLAY_WATER_BUCKET = ITEMS.register("clay_water_bucket",
+            () -> new ClayWaterBucketItem(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<Item> CLAY_LAVA_BUCKET = ITEMS.register("clay_lava_bucket",
+            () -> new ClayLavaBucketItem(new  Item.Properties().stacksTo(1)));
 
     public static final DeferredItem<PickaxeItem> FLINT_PICK = ITEMS.register("flint_pickaxe",
             () -> new PickaxeItem(ModToolTiers.FLINT , new Item.Properties()
@@ -174,6 +195,10 @@ public class ModItems {
 
     public static final DeferredItem<BlockItem> CHOPPING_BLOCK = ITEMS.register("chopping_block",
             () -> new BlockItem(ModBlocks.CHOPPING_BLOCK.get(), new Item.Properties()));
+    public static final DeferredItem<BlockItem> CAMPFIRE_BASE = ITEMS.register("campfire_base",
+            () -> new BlockItem(ModBlocks.CAMPFIRE_BASE.get(), new Item.Properties()));
+    public static final DeferredItem<BlockItem> PORCELAIN_KILN = ITEMS.register("porcelain_kiln",
+            () -> new BlockItem(ModBlocks.PORCELAIN_KILN.get(), new Item.Properties()));
 
     public static final DeferredItem<BlockItem> OAK_POST = registerBlockItem("oak_post", ModBlocks.OAK_POST);
     public static final DeferredItem<BlockItem> SPRUCE_POST = registerBlockItem("spruce_post", ModBlocks.SPRUCE_POST);

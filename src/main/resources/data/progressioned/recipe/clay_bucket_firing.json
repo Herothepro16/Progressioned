@@ -1,0 +1,6 @@
+{
+  "type": "progressioned:porcelain_kiln",
+  "ingredient": { "item": "progressioned:unfired_clay_bucket" },
+  "result": { "id": "progressioned:clay_bucket", "count": 1 },
+  "cooktime": 600
+}

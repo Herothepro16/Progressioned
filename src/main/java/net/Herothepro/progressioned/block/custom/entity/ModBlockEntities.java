@@ -12,10 +12,15 @@ public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES =
             DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Progressioned.MOD_ID);
 
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ChoppingBlockEntity>> CHOPPING_BLOCK_BE =
             BLOCK_ENTITY_TYPES.register("chopping_block",
                     () -> BlockEntityType.Builder.of(ChoppingBlockEntity::new,
                             ModBlocks.CHOPPING_BLOCK.get()).build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<KilnBlockEntity>> KILN_BE =
+            BLOCK_ENTITY_TYPES.register("porcelain_kiln",
+                    () -> BlockEntityType.Builder.of(KilnBlockEntity::new, ModBlocks.PORCELAIN_KILN.get()).build(null));
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITY_TYPES.register(eventBus);

@@ -7,24 +7,30 @@ import net.Herothepro.progressioned.recipe.ChoppingRecipe;
 import net.Herothepro.progressioned.recipe.ModRecipes;
 import net.Herothepro.progressioned.util.ModTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -32,16 +38,19 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 
-import java.util.List;
 import java.util.Optional;
 
-public class ChoppingBlock extends BaseEntityBlock {
+public class ChoppingBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
     public static final MapCodec<ChoppingBlock> CODEC = simpleCodec(ChoppingBlock::new);
-    protected static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 6, 16);
-    private static final int HITS_REQUIRED = 5;
+    protected static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 6, 15);
+
+    // 1. Define the Waterlogged property
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public ChoppingBlock(Properties properties) {
         super(properties);
+        // 2. Set the default state to NOT waterlogged
+        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -77,6 +86,35 @@ public class ChoppingBlock extends BaseEntityBlock {
         return new ChoppingBlockEntity(pos, state);
     }
 
+    // 3. Make sure it detects if it's being placed inside water
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
+        return this.defaultBlockState().setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
+    }
+
+    // 4. Return the correct fluid state based on whether it is waterlogged
+    @Override
+    protected FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    // 5. Tell the engine to tick the water fluid if a block updates around it
+    @Override
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
+                                     LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+        if (state.getValue(WATERLOGGED)) {
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+        }
+        return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+    }
+
+    // 6. Register the property to your block's state definition builder
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(WATERLOGGED);
+    }
+
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
                                                Player player, BlockHitResult hitResult) {
@@ -94,7 +132,6 @@ public class ChoppingBlock extends BaseEntityBlock {
             return InteractionResult.SUCCESS;
         }
 
-        // Retrieve log with empty hand
         if (!be.getStoredLog().isEmpty() && held.isEmpty()) {
             if (!level.isClientSide) {
                 spawnItem(level, pos, be.getStoredLog().copy());
