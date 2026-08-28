@@ -5,6 +5,8 @@ import net.Herothepro.progressioned.block.custom.entity.ModBlockEntities;
 import net.Herothepro.progressioned.item.ModCreativeModeTabs;
 import net.Herothepro.progressioned.item.ModItems;
 import net.Herothepro.progressioned.recipe.ModRecipes;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FireBlock;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -49,6 +51,10 @@ public class Progressioned {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            FireBlock fire = (FireBlock) Blocks.FIRE;
+            fire.setFlammable(Blocks.COAL_BLOCK, 0, 0);
+        });
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {

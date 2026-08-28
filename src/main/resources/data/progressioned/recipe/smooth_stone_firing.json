@@ -1,0 +1,6 @@
+{
+  "type": "progressioned:porcelain_kiln",
+  "ingredient": { "item": "minecraft:stone" },
+  "result": { "id": "minecraft:smooth_stone", "count": 1 },
+  "cooktime": 300
+}

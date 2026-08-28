@@ -44,12 +44,10 @@ public class ChoppingBlock extends BaseEntityBlock implements SimpleWaterloggedB
     public static final MapCodec<ChoppingBlock> CODEC = simpleCodec(ChoppingBlock::new);
     protected static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 6, 15);
 
-    // 1. Define the Waterlogged property
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public ChoppingBlock(Properties properties) {
         super(properties);
-        // 2. Set the default state to NOT waterlogged
         this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
     }
 
@@ -86,20 +84,17 @@ public class ChoppingBlock extends BaseEntityBlock implements SimpleWaterloggedB
         return new ChoppingBlockEntity(pos, state);
     }
 
-    // 3. Make sure it detects if it's being placed inside water
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
         return this.defaultBlockState().setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
     }
 
-    // 4. Return the correct fluid state based on whether it is waterlogged
     @Override
     protected FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
-    // 5. Tell the engine to tick the water fluid if a block updates around it
     @Override
     protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
                                      LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
@@ -109,7 +104,6 @@ public class ChoppingBlock extends BaseEntityBlock implements SimpleWaterloggedB
         return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }
 
-    // 6. Register the property to your block's state definition builder
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED);

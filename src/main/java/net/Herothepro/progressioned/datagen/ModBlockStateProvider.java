@@ -7,6 +7,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
@@ -17,6 +18,19 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
+        blockWithItem(ModBlocks.CHARCOAL_BLOCK);
+
+        blockWithItem(ModBlocks.PORCELAIN_BRICKS);
+
+        slabBlock(ModBlocks.PORCELAIN_BRICK_SLAB.get(),
+                blockTexture(ModBlocks.PORCELAIN_BRICKS.get()), blockTexture(ModBlocks.PORCELAIN_BRICKS.get()));
+        blockItem(ModBlocks.PORCELAIN_BRICK_SLAB);
+
+        stairsBlock(ModBlocks.PORCELAIN_BRICK_STAIRS.get(), blockTexture(ModBlocks.PORCELAIN_BRICKS.get()));
+        blockItem(ModBlocks.PORCELAIN_BRICK_STAIRS);
+
+        wallBlock(ModBlocks.PORCELAIN_BRICK_WALL.get(), blockTexture(ModBlocks.PORCELAIN_BRICKS.get()));
+
         postBlock(ModBlocks.OAK_POST);
         postBlock(ModBlocks.SPRUCE_POST);
         postBlock(ModBlocks.BIRCH_POST);
@@ -42,12 +56,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
                     net.minecraft.core.Direction facing = state.getValue(net.Herothepro.progressioned.block.custom.KilnBlock.FACING);
                     boolean lit = state.getValue(net.Herothepro.progressioned.block.custom.KilnBlock.LIT);
 
-                    int yRot = switch (facing) {
-                        case SOUTH -> 180;
-                        case EAST  -> 90;
-                        case WEST  -> 270;
-                        default    -> 0;
-                    };
+                    int yRot = switch (facing) {case SOUTH -> 180;case EAST  -> 90;case WEST  -> 270;default    -> 0;};
 
                     String modelName = lit ? "porcelain_kiln_on" : "porcelain_kiln";
 
@@ -61,7 +70,13 @@ public class ModBlockStateProvider extends BlockStateProvider {
     private void blockWithItem(DeferredBlock<?> deferredBlock) {
         simpleBlockWithItem(deferredBlock.get(), cubeAll(deferredBlock.get()));
     }
-    // helper method
+    private void blockItem(DeferredBlock<?> deferredBlock) {
+        simpleBlockItem(deferredBlock.get(), new ModelFile.UncheckedModelFile("progressioned:block/" + deferredBlock.getId().getPath()));
+    }
+
+    private void blockItem(DeferredBlock<?> deferredBlock, String appendix) {
+        simpleBlockItem(deferredBlock.get(), new ModelFile.UncheckedModelFile("progressioned:block/" + deferredBlock.getId().getPath() + appendix));
+    }
     private void postBlock(DeferredBlock<PostBlock> block) {
         String name = block.getId().getPath();
         this.axisBlock((RotatedPillarBlock) block.get(),

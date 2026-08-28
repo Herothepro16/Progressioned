@@ -21,7 +21,7 @@ public class ChoppingBlockRenderer implements BlockEntityRenderer<ChoppingBlockE
 
         poseStack.pushPose();
         poseStack.translate(0.5, 0.60, 0.5);
-        poseStack.mulPose(Axis.XP.rotationDegrees(0)); // lay log on its side
+        poseStack.mulPose(Axis.XP.rotationDegrees(0));
         poseStack.scale(1f, 1f, 1f);
 
         Minecraft.getInstance().getItemRenderer().renderStatic(

@@ -2,6 +2,7 @@ package net.Herothepro.progressioned.util;
 
 import net.Herothepro.progressioned.Progressioned;
 import net.Herothepro.progressioned.recipe.DamagingShapelessRecipe;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
@@ -31,30 +32,39 @@ public class ModServerEvents {
             ItemStack result = shapeless.getResultItem(null);
             if (!result.is(ItemTags.PLANKS)) return false;
 
-            boolean hasLog = shapeless.getIngredients().stream()
-                    .anyMatch(ing -> Arrays.stream(ing.getItems())
-                            .anyMatch(stack -> stack.is(ItemTags.LOGS)));
+            String logModId = "unknown";
+            List<Ingredient> logIngredients = new ArrayList<>();
 
-            if (!hasLog) return false;
+            for (Ingredient ing : shapeless.getIngredients()) {
+                boolean isLog = Arrays.stream(ing.getItems()).anyMatch(stack -> stack.is(ItemTags.LOGS));
+                if (isLog) {
+                    logIngredients.add(ing);
+                    for (ItemStack stack : ing.getItems()) {
+                        if (stack.is(ItemTags.LOGS)) {
+                            logModId = BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace();
+                            break;
+                        }
+                    }
+                }
+            }
 
-            // Replace with damaging version
-            List<Ingredient> ingredients = shapeless.getIngredients().stream()
-                    .filter(ing -> Arrays.stream(ing.getItems())
-                            .anyMatch(stack -> stack.is(ItemTags.LOGS)))
-                    .collect(java.util.stream.Collectors.toList());
+            if (logIngredients.isEmpty()) return false;
+
+            String plankModId = BuiltInRegistries.ITEM.getKey(result.getItem()).getNamespace();
+
+            String uniquePath = "replaced/" + logModId + "_to_" + plankModId + "_" + holder.id().getPath();
+            ResourceLocation newId = ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, uniquePath);
 
             toAdd.add(new RecipeHolder<>(
-                    ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID,
-                            "replaced/" + holder.id().getPath()),
+                    newId,
                     new DamagingShapelessRecipe("", CraftingBookCategory.MISC,
-                            result.copy(), ingredients,
+                            result.copy(), logIngredients,
                             Ingredient.of(ModTags.Items.SAWS), 1)));
 
-            return true; // remove original
+            return true;
         });
 
         allRecipes.addAll(toAdd);
         recipeManager.replaceRecipes(allRecipes);
     }
-
 }

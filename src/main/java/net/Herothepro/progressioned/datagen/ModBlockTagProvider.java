@@ -24,13 +24,20 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .addTag(ModTags.Blocks.POSTS)
                 .addTag(BlockTags.LOGS)
                 .add(ModBlocks.CHOPPING_BLOCK.get())
-                .add(ModBlocks.CAMPFIRE_BASE.get());
+                .add(ModBlocks.CAMPFIRE_BASE.get())
+                .add(ModBlocks.WORKSTONE.get());
 
         tag(BlockTags.LOGS_THAT_BURN)
                 .addTag(ModTags.Blocks.POSTS);
 
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(ModBlocks.PORCELAIN_KILN.get());
+                .add(ModBlocks.PORCELAIN_KILN.get())
+                .add(ModBlocks.CHARCOAL_BLOCK.get())
+                .add(ModBlocks.PORCELAIN_BRICKS.get())
+                .add(ModBlocks.PORCELAIN_BRICK_SLAB.get())
+                .add(ModBlocks.PORCELAIN_BRICK_STAIRS.get())
+                .add(ModBlocks.PORCELAIN_BRICK_WALL.get())
+                .add(ModBlocks.WORKSTONE.get());
 
         tag(ModTags.Blocks.NEEDS_FLINT_TOOL)
                 .addTag(BlockTags.LOGS);
@@ -45,13 +52,21 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .addTag(BlockTags.NEEDS_DIAMOND_TOOL);
 
         tag(BlockTags.INFINIBURN_OVERWORLD)
-                .add(Blocks.COAL_BLOCK);
+                .add(Blocks.COAL_BLOCK)
+                .add(ModBlocks.CHARCOAL_BLOCK.get());
 
         tag(BlockTags.INCORRECT_FOR_STONE_TOOL)
                 .addTag(BlockTags.IRON_ORES);
 
         tag(ModTags.Blocks.NEEDS_COPPER_TOOL)
                 .addTag(BlockTags.IRON_ORES);
+
+        tag(BlockTags.SLABS)
+                .add(ModBlocks.PORCELAIN_BRICK_SLAB.get());
+        tag(BlockTags.STAIRS)
+                .add(ModBlocks.PORCELAIN_BRICK_STAIRS.get());
+        tag(BlockTags.WALLS)
+                .add(ModBlocks.PORCELAIN_BRICK_WALL.get());
 
         tag(ModTags.Blocks.POSTS)
                 .add(ModBlocks.OAK_POST.get())

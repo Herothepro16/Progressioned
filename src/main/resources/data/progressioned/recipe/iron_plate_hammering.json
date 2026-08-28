@@ -1,0 +1,12 @@
+{
+  "type": "progressioned:workstone_hammering",
+  "ingredient": {
+    "item": "minecraft:iron_ingot"
+  },
+  "input_count": 2,
+  "result": {
+    "id": "progressioned:iron_plate",
+    "count": 1
+  },
+  "hits": 3
+}

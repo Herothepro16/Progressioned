@@ -28,7 +28,11 @@ public class ModTags {
     }
 
     public static class Items {
+        public static final TagKey<Item> KNIVES = createTag("knives");
+
         public static final TagKey<Item> SAWS = createTag("saws");
+
+        public static final TagKey<Item> HAMMERS = createTag("hammers");
 
         public static final TagKey<Item> POSTS = createTag("posts");
 

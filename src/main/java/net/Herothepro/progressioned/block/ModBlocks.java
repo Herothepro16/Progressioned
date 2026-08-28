@@ -1,16 +1,11 @@
 package net.Herothepro.progressioned.block;
 
 import net.Herothepro.progressioned.Progressioned;
-import net.Herothepro.progressioned.block.custom.CampfireBaseBlock;
-import net.Herothepro.progressioned.block.custom.ChoppingBlock;
-import net.Herothepro.progressioned.block.custom.KilnBlock;
-import net.Herothepro.progressioned.block.custom.PostBlock;
+import net.Herothepro.progressioned.block.custom.*;
 import net.Herothepro.progressioned.item.ModItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -23,22 +18,34 @@ public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS =
             DeferredRegister.createBlocks(Progressioned.MOD_ID);
 
+    public static final DeferredBlock<Block> CHARCOAL_BLOCK = BLOCKS.register("charcoal_block",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COAL_BLOCK)));
+
+    public static final DeferredBlock<Block> PORCELAIN_BRICKS = BLOCKS.register("porcelain_bricks",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS)));
+    public static final DeferredBlock<SlabBlock> PORCELAIN_BRICK_SLAB = BLOCKS.register("porcelain_brick_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICK_SLAB)));
+    public static final DeferredBlock<StairBlock> PORCELAIN_BRICK_STAIRS = BLOCKS.register("porcelain_brick_stairs",
+            () -> new StairBlock(ModBlocks.PORCELAIN_BRICKS.get().defaultBlockState()
+                    ,BlockBehaviour.Properties.ofFullCopy(Blocks.BRICK_STAIRS)));
+    public static final DeferredBlock<WallBlock> PORCELAIN_BRICK_WALL = BLOCKS.register("porcelain_brick_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICK_WALL)));
+
     public static final DeferredBlock<ChoppingBlock> CHOPPING_BLOCK = BLOCKS.register("chopping_block",
             () -> new ChoppingBlock(BlockBehaviour.Properties.of()
-                    .strength(2.0f)
-                    .sound(SoundType.WOOD)
-                    .requiresCorrectToolForDrops()));
+                    .strength(2.0f).sound(SoundType.WOOD).requiresCorrectToolForDrops()));
+
+    public static final DeferredBlock<WorkstoneBlock> WORKSTONE = BLOCKS.register("workstone",
+            () -> new WorkstoneBlock(BlockBehaviour.Properties.of()
+                    .strength(2.0f).sound(SoundType.STONE).requiresCorrectToolForDrops()));
 
     public static final DeferredBlock<CampfireBaseBlock> CAMPFIRE_BASE = BLOCKS.register("campfire_base",
             () -> new CampfireBaseBlock(BlockBehaviour.Properties.of()
-                    .strength(2.0f)
-                    .sound(SoundType.WOOD)
-                    .noOcclusion()));
+                    .strength(2.0f).sound(SoundType.WOOD).noOcclusion()));
 
     public static final DeferredBlock<KilnBlock> PORCELAIN_KILN = BLOCKS.register("porcelain_kiln",
             () -> new KilnBlock(BlockBehaviour.Properties.of()
-                    .strength(2.0f)
-                    .lightLevel(state -> state.getValue(KilnBlock.LIT) ? 13 : 0)));
+                    .noOcclusion().strength(2.0f).lightLevel(state -> state.getValue(KilnBlock.LIT) ? 13 : 0)));
 
     public static final DeferredBlock<PostBlock> OAK_POST = BLOCKS.register("oak_post",
             () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG).noOcclusion()));

@@ -34,9 +34,21 @@ public class ModItems {
     public static final DeferredItem<Item> PLANT_STRING = ITEMS.register("plant_string",
             () -> new Item(new Item.Properties()));
 
+    public static final DeferredItem<Item> STRAW = ITEMS.register("straw",
+            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> STRAW_CORD = ITEMS.register("straw_cord",
+            () -> new Item(new Item.Properties()));
+
     public static final DeferredItem<Item> PORCELAIN_CLAY_BALL = ITEMS.register("porcelain_clay_ball",
             () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> PORCELAIN_CLAY_BRICK = ITEMS.register("porcelain_clay_brick",
+            () -> new Item(new Item.Properties()));
+
+    public static final DeferredItem<Item> COPPER_PLATE = ITEMS.register("copper_plate",
+            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> IRON_PLATE = ITEMS.register("iron_plate",
+            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> GOLD_PLATE = ITEMS.register("gold_plate",
             () -> new Item(new Item.Properties()));
 
     public static final DeferredItem<HoeItem> FIBER_MESH = ITEMS.register("fiber_mesh",
@@ -45,15 +57,35 @@ public class ModItems {
     public static final DeferredItem<FireStickItem> FIRE_STICK = ITEMS.register("fire_stick",
             () -> new FireStickItem(new Item.Properties().stacksTo(1)));
 
-    public static final DeferredItem<AxeItem> FLINT_SAW = ITEMS.register("flint_saw",
-            () -> new AxeItem(ModToolTiers.FLINT, new Item.Properties()
-                    .attributes(AxeItem.createAttributes(ModToolTiers.FLINT,3f,-3.2f))));
+    public static final DeferredItem<AxeItem> COPPER_SAW = ITEMS.register("copper_saw",
+            () -> new AxeItem(ModToolTiers.COPPER, new Item.Properties()
+                    .attributes(AxeItem.createAttributes(ModToolTiers.COPPER,2f,-3.2f))));
     public static final DeferredItem<AxeItem> IRON_SAW = ITEMS.register("iron_saw",
             () -> new AxeItem(Tiers.IRON, new Item.Properties()
                     .attributes(AxeItem.createAttributes(Tiers.IRON,3f,-3.2f))));
     public static final DeferredItem<AxeItem> DIAMOND_SAW = ITEMS.register("diamond_saw",
             () -> new AxeItem(Tiers.DIAMOND, new Item.Properties()
-                    .attributes(AxeItem.createAttributes(Tiers.DIAMOND,3f,-3.2f))));
+                    .attributes(AxeItem.createAttributes(Tiers.DIAMOND,4f,-3.2f))));
+
+    public static final DeferredItem<PickaxeItem> COPPER_HAMMER = ITEMS.register("copper_hammer",
+            () -> new PickaxeItem(ModToolTiers.COPPER, new Item.Properties()
+                    .attributes(PickaxeItem.createAttributes(ModToolTiers.COPPER,2.5f,-3.2f))));
+    public static final DeferredItem<PickaxeItem> IRON_HAMMER = ITEMS.register("iron_hammer",
+            () -> new PickaxeItem(Tiers.IRON, new Item.Properties()
+                    .attributes(PickaxeItem.createAttributes(Tiers.IRON,3f,-3.2f))));
+    public static final DeferredItem<PickaxeItem> DIAMOND_HAMMER = ITEMS.register("diamond_hammer",
+            () -> new PickaxeItem(Tiers.DIAMOND, new Item.Properties()
+                    .attributes(PickaxeItem.createAttributes(Tiers.DIAMOND,4f,-3.2f))));
+
+    public static final DeferredItem<SwordItem> COPPER_KNIFE = ITEMS.register("copper_knife",
+            () -> new SwordItem(ModToolTiers.COPPER, new Item.Properties()
+                    .attributes(SwordItem.createAttributes(ModToolTiers.COPPER,2.5f,-2.8f))));
+    public static final DeferredItem<SwordItem> IRON_KNIFE = ITEMS.register("iron_knife",
+            () -> new SwordItem(Tiers.IRON, new Item.Properties()
+                    .attributes(SwordItem.createAttributes(Tiers.IRON,1f,-2.8f))));
+    public static final DeferredItem<SwordItem> DIAMOND_KNIFE = ITEMS.register("diamond_knife",
+            () -> new SwordItem(Tiers.DIAMOND, new Item.Properties()
+                    .attributes(SwordItem.createAttributes(Tiers.DIAMOND,0f,-2.8f))));
 
     public static final DeferredItem<Item> UNFIRED_CLAY_BUCKET = ITEMS.register("unfired_clay_bucket",
             () -> new Item(new Item.Properties().stacksTo(4)));
@@ -192,6 +224,17 @@ public class ModItems {
                                             0.5, AttributeModifier.Operation.ADD_VALUE),
                                     EquipmentSlotGroup.MAINHAND)
                             .build())));
+    public static final DeferredItem<BlockItem> CHARCOAL_BLOCK = ITEMS.register("charcoal_block",
+            () -> new BlockItem(ModBlocks.CHARCOAL_BLOCK.get(), new Item.Properties()));
+
+    public static final DeferredItem<BlockItem> PORCELAIN_BRICKS = ITEMS.register("porcelain_bricks",
+            () -> new BlockItem(ModBlocks.PORCELAIN_BRICKS.get(), new Item.Properties()));
+    public static final DeferredItem<BlockItem> PORCELAIN_BRICK_SLAB = ITEMS.register("porcelain_brick_slab",
+            () -> new BlockItem(ModBlocks.PORCELAIN_BRICK_SLAB.get(), new Item.Properties()));
+    public static final DeferredItem<BlockItem> PORCELAIN_BRICK_STAIRS = ITEMS.register("porcelain_brick_stairs",
+            () -> new BlockItem(ModBlocks.PORCELAIN_BRICK_STAIRS.get(), new Item.Properties()));
+    public static final DeferredItem<BlockItem> PORCELAIN_BRICK_WALL = ITEMS.register("porcelain_brick_wall",
+            () -> new BlockItem(ModBlocks.PORCELAIN_BRICK_WALL.get(), new Item.Properties()));
 
     public static final DeferredItem<BlockItem> CHOPPING_BLOCK = ITEMS.register("chopping_block",
             () -> new BlockItem(ModBlocks.CHOPPING_BLOCK.get(), new Item.Properties()));
@@ -199,6 +242,8 @@ public class ModItems {
             () -> new BlockItem(ModBlocks.CAMPFIRE_BASE.get(), new Item.Properties()));
     public static final DeferredItem<BlockItem> PORCELAIN_KILN = ITEMS.register("porcelain_kiln",
             () -> new BlockItem(ModBlocks.PORCELAIN_KILN.get(), new Item.Properties()));
+    public static final DeferredItem<BlockItem> WORKSTONE = ITEMS.register("workstone",
+            () -> new BlockItem(ModBlocks.WORKSTONE.get(), new Item.Properties()));
 
     public static final DeferredItem<BlockItem> OAK_POST = registerBlockItem("oak_post", ModBlocks.OAK_POST);
     public static final DeferredItem<BlockItem> SPRUCE_POST = registerBlockItem("spruce_post", ModBlocks.SPRUCE_POST);

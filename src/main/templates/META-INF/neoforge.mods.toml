@@ -95,3 +95,5 @@ primitive tool tiers — Flint, Bone, and Copper — before you can progress fur
 # stop your mod loading on the server for example.
 #[features.${mod_id}]
 #openGLVersion="[3.2,)"
+[[mixins]]
+config = "progressioned.mixins.json"

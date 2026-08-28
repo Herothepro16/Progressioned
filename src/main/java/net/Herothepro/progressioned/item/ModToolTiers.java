@@ -16,7 +16,7 @@ public class ModToolTiers {
     public static final Tier GOLDEN_BONE = new SimpleTier(ModTags.Blocks.INCORRECT_FOR_BONE_TOOL,
             350, 2.8f,0f,22, ()-> Ingredient.of(Items.GOLD_INGOT));
     public static final Tier COPPER = new SimpleTier(ModTags.Blocks.INCORRECT_FOR_COPPER_TOOL,
-            190, 5.0f,0f,12, ()-> Ingredient.of(Items.COPPER_INGOT));
+            190, 5.0f,0f,13, ()-> Ingredient.of(Items.COPPER_INGOT));
     public static final Tier FIBER_MESH = new SimpleTier(ModTags.Blocks.INCORRECT_FOR_FLINT_TOOL,
             16, 0f,0f,0, ()-> Ingredient.of(ModItems.PLANT_STRING));
 }

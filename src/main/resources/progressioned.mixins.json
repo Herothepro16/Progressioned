@@ -1,0 +1,8 @@
+{
+  "required": true,
+  "package": "net.Herothepro.progressioned.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "RecipeManagerMixin"
+  ]
+}

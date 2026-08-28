@@ -3,6 +3,8 @@
  "item.progressioned.flint_shard": "Flint Shard",
  "item.progressioned.plant_fiber": "Plant Fiber",
  "item.progressioned.plant_string": "Plant String",
+ "item.progressioned.straw": "Straw",
+ "item.progressioned.straw_cord": "Straw Cord",
  "item.progressioned.fiber_mesh": "Fiber Mesh",
  "item.progressioned.sharp_bone": "Sharp Bone",
  "item.progressioned.fire_stick": "Fire Stick",
@@ -14,9 +16,21 @@
  "item.progressioned.clay_water_bucket": "Clay Water Bucket",
  "item.progressioned.clay_lava_bucket": "Clay Lava Bucket",
 
- "item.progressioned.flint_saw": "Flint Saw",
+ "item.progressioned.copper_plate": "Copper Plate",
+ "item.progressioned.iron_plate": "Iron Plate",
+ "item.progressioned.gold_plate": "Gold Plate",
+
+ "item.progressioned.copper_knife": "Copper Knife",
+ "item.progressioned.iron_knife": "Iron Knife",
+ "item.progressioned.diamond_knife": "Diamond Knife",
+
+ "item.progressioned.copper_saw": "Copper Saw",
  "item.progressioned.iron_saw": "Iron Saw",
  "item.progressioned.diamond_saw": "Diamond Saw",
+
+ "item.progressioned.copper_hammer": "Copper Hammer",
+ "item.progressioned.iron_hammer": "Iron Hammer",
+ "item.progressioned.diamond_hammer": "Diamond Hammer",
 
  "item.progressioned.flint_pickaxe": "Flint Pickaxe",
  "item.progressioned.flint_axe": "Flint Hatchet",
@@ -41,9 +55,14 @@
  "item.progressioned.copper_hoe": "Copper Hoe",
  "item.progressioned.copper_spear": "Copper Spear",
 
+ "block.progressioned.charcoal_block": "Block of Charcoal",
+ "block.progressioned.porcelain_bricks": "Porcelain Bricks",
+ "block.progressioned.porcelain_brick_slab": "Porcelain Brick Slab",
+ "block.progressioned.porcelain_brick_stairs": "Porcelain Brick Stairs",
  "block.progressioned.chopping_block": "Chopping Block",
  "block.progressioned.campfire_base": "Campfire Base",
  "block.progressioned.porcelain_kiln": "Porcelain Kiln",
+ "block.progressioned.workstone": "Workstone",
 
  "block.progressioned.oak_post": "Oak Post",
  "block.progressioned.spruce_post": "Spruce Post",
@@ -67,8 +86,10 @@
 
  "emi.category.progressioned.chopping": "Chopping Block",
  "emi.category.progressioned.porcelain_kiln": "Porcelain Kiln",
+ "emi.category.progressioned.workstone": "Workstone",
 
- "tag.item.c.saws": "Saws",
  "tag.item.progressioned.posts": "Posts",
- "tag.item.progressioned.saws": "Saws"
+ "tag.item.progressioned.knives": "Knives",
+ "tag.item.progressioned.saws": "Saws",
+ "tag.item.progressioned.hammers": "Hammers"
 }

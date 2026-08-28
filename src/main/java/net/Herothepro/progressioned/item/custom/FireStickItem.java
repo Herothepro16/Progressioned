@@ -58,7 +58,6 @@ public class FireStickItem extends Item {
 
         int usedTicks = USE_DURATION - remainingUseDuration;
 
-        // Alternate hit sounds every 8 ticks to simulate rubbing
         if (usedTicks % 8 == 0) {
             level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
                     SoundEvents.WOOD_HIT, SoundSource.PLAYERS, 0.5f,

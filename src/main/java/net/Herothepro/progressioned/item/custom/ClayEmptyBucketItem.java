@@ -48,7 +48,6 @@ public class ClayEmptyBucketItem extends Item {
                 Fluid fluid = fluidState.getType();
 
                 Item filledBucket = null;
-                // Only accept water or lava
                 if (fluid == Fluids.WATER) {
                     filledBucket = ModItems.CLAY_WATER_BUCKET.get();
                 } else if (fluid == Fluids.LAVA) {

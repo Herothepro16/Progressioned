@@ -60,6 +60,11 @@ public class KilnBlock extends BaseEntityBlock {
     }
 
     @Override
+    public boolean useShapeForLightOcclusion(BlockState state) {
+        return true;
+    }
+
+    @Override
     public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
     }

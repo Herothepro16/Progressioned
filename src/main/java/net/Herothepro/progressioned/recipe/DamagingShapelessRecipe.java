@@ -61,7 +61,6 @@ public class DamagingShapelessRecipe implements CraftingRecipe {
             if (stack.isEmpty()) continue;
 
             if (!toolFound && damagingTool.test(stack)) {
-                // Check tool has enough durability
                 if (stack.getDamageValue() + damageAmount > stack.getMaxDamage()) return false;
                 toolFound = true;
                 continue;
@@ -101,7 +100,6 @@ public class DamagingShapelessRecipe implements CraftingRecipe {
                 if (damaged.getDamageValue() < damaged.getMaxDamage()) {
                     remaining.set(i, damaged);
                 }
-                // if broken, return empty (item destroyed)
             }
         }
         return remaining;

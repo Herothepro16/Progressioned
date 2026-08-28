@@ -9,9 +9,11 @@ import net.Herothepro.progressioned.Progressioned;
 import net.Herothepro.progressioned.block.ModBlocks;
 import net.Herothepro.progressioned.integration.jei.category.ChoppingCategory;
 import net.Herothepro.progressioned.integration.jei.category.KilnCategory;
+import net.Herothepro.progressioned.integration.jei.category.WorkstoneCategory;
 import net.Herothepro.progressioned.recipe.ChoppingRecipe;
 import net.Herothepro.progressioned.recipe.KilnRecipe;
 import net.Herothepro.progressioned.recipe.ModRecipes;
+import net.Herothepro.progressioned.recipe.WorkstoneRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -34,23 +36,28 @@ public class ProgressionedJEIPlugin implements IModPlugin {
                 registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new KilnCategory(
                 registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new WorkstoneCategory(
+                registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
 
-        // Register Chopping recipes using the wrapper type defined inside its category
         List<ChoppingRecipe> choppingRecipes = recipeManager
                 .getAllRecipesFor(ModRecipes.CHOPPING_TYPE.get())
                 .stream().map(RecipeHolder::value).toList();
         registration.addRecipes(ChoppingCategory.RECIPE_TYPE, choppingRecipes);
 
-        // Register Kiln recipes using its type wrapper
         List<KilnRecipe> kilnRecipes = recipeManager
                 .getAllRecipesFor(ModRecipes.KILN_TYPE.get())
                 .stream().map(RecipeHolder::value).toList();
         registration.addRecipes(KilnCategory.RECIPE_TYPE, kilnRecipes);
+
+        List<WorkstoneRecipe> workstoneRecipes = recipeManager
+                .getAllRecipesFor(ModRecipes.WORKSTONE_TYPE.get())
+                .stream().map(RecipeHolder::value).toList();
+        registration.addRecipes(WorkstoneCategory.RECIPE_TYPE, workstoneRecipes);
     }
 
     @Override
@@ -62,5 +69,9 @@ public class ProgressionedJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(
                 new ItemStack(ModBlocks.PORCELAIN_KILN.get().asItem()),
                 KilnCategory.RECIPE_TYPE);
+
+        registration.addRecipeCatalyst(
+                new ItemStack(ModBlocks.WORKSTONE.get().asItem()),
+                WorkstoneCategory.RECIPE_TYPE);
     }
 }

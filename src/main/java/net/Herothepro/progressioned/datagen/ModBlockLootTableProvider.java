@@ -18,8 +18,21 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         dropSelf(ModBlocks.CHOPPING_BLOCK.get());
+
+        dropSelf(ModBlocks.WORKSTONE.get());
+
         dropSelf(ModBlocks.CAMPFIRE_BASE.get());
+
         dropSelf(ModBlocks.PORCELAIN_KILN.get());
+
+        dropSelf(ModBlocks.CHARCOAL_BLOCK.get());
+
+        dropSelf(ModBlocks.PORCELAIN_BRICKS.get());
+        add(ModBlocks.PORCELAIN_BRICK_SLAB.get(),
+            block -> createSlabItemTable(ModBlocks.PORCELAIN_BRICK_SLAB.get()));
+        dropSelf(ModBlocks.PORCELAIN_BRICK_STAIRS.get());
+        dropSelf(ModBlocks.PORCELAIN_BRICK_WALL.get());
+
         dropSelf(ModBlocks.OAK_POST.get());
         dropSelf(ModBlocks.BIRCH_POST.get());
         dropSelf(ModBlocks.SPRUCE_POST.get());

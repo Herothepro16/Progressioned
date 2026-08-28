@@ -20,7 +20,13 @@ public class ModBlockEntities {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<KilnBlockEntity>> KILN_BE =
             BLOCK_ENTITY_TYPES.register("porcelain_kiln",
-                    () -> BlockEntityType.Builder.of(KilnBlockEntity::new, ModBlocks.PORCELAIN_KILN.get()).build(null));
+                    () -> BlockEntityType.Builder.of(KilnBlockEntity::new,
+                            ModBlocks.PORCELAIN_KILN.get()).build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WorkstoneBlockEntity>> WORKSTONE_BE =
+            BLOCK_ENTITY_TYPES.register("workstone",
+                    () -> BlockEntityType.Builder.of(WorkstoneBlockEntity::new,
+                            ModBlocks.WORKSTONE.get()).build(null));
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITY_TYPES.register(eventBus);
