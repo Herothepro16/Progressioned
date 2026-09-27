@@ -20,6 +20,10 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> CHARCOAL_BLOCK = BLOCKS.register("charcoal_block",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COAL_BLOCK)));
+    public static final DeferredBlock<Block> THATCH = BLOCKS.register("thatch",
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK)));
+    public static final DeferredBlock<RotatableSlabBlock> THATCH_SLAB = BLOCKS.register("thatch_slab",
+            () -> new RotatableSlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK)));
 
     public static final DeferredBlock<Block> PORCELAIN_BRICKS = BLOCKS.register("porcelain_bricks",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS)));

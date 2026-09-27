@@ -36,7 +36,7 @@ displayName="${mod_name}" #mandatory
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
 
 # A file name (in the root of the mod JAR) containing a logo for display
-#logoFile="examplemod.png" #optional
+logoFile="logo.png"
 
 # A text field displayed in the mod UI
 #credits="" #optional
@@ -46,9 +46,7 @@ authors="Herothepro16"
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-Progressioned is a mod that makes the early game of Minecraft feel more grounded and rewarding.
-Instead of immediately punching trees and jumping straight to iron, you'll work your way up through
-primitive tool tiers — Flint, Bone, and Copper — before you can progress further.
+Progressioned is a mod that makes the early game of Minecraft feel more longer and more impactful with new mechanics , workstations and new tools and weapons.
 '''
 
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.

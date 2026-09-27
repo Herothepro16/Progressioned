@@ -1,6 +1,7 @@
 package net.Herothepro.progressioned.util;
 
 import net.Herothepro.progressioned.Progressioned;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -35,6 +36,8 @@ public class ModTags {
         public static final TagKey<Item> HAMMERS = createTag("hammers");
 
         public static final TagKey<Item> POSTS = createTag("posts");
+
+        public static final TagKey<Item> COMMON_KNIVES = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "tools/knife"));
 
         private static TagKey<Item> createTag(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, name));

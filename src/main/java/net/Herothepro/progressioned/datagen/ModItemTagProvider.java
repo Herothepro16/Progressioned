@@ -56,6 +56,7 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModItems.DIAMOND_KNIFE.get());
 
         tag(ItemTags.HOES)
+                .add(ModItems.FLINT_HOE.get())
                 .add(ModItems.COPPER_HOE.get());
 
         tag(ModTags.Items.KNIVES)

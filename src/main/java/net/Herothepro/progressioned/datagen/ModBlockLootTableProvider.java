@@ -27,6 +27,10 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
 
         dropSelf(ModBlocks.CHARCOAL_BLOCK.get());
 
+        dropSelf(ModBlocks.THATCH.get());
+        add(ModBlocks.THATCH_SLAB.get(),
+                block -> createSlabItemTable(ModBlocks.THATCH_SLAB.get()));
+
         dropSelf(ModBlocks.PORCELAIN_BRICKS.get());
         add(ModBlocks.PORCELAIN_BRICK_SLAB.get(),
             block -> createSlabItemTable(ModBlocks.PORCELAIN_BRICK_SLAB.get()));

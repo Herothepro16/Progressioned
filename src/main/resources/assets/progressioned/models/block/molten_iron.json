@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "progressioned:block/fluid/molten_metal_still"
+  }
+}

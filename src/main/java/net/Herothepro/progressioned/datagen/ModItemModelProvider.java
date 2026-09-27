@@ -2,14 +2,15 @@ package net.Herothepro.progressioned.datagen;
 
 import net.Herothepro.progressioned.Progressioned;
 import net.Herothepro.progressioned.block.ModBlocks;
+import net.Herothepro.progressioned.fluid.FluidHolder;
+import net.Herothepro.progressioned.fluid.ModFluids;
 import net.Herothepro.progressioned.item.ModItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
-import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -59,6 +60,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheldItem(ModItems.FLINT_AXE.get());
         handheldItem(ModItems.FLINT_KNIFE.get());
         handheldItem(ModItems.FLINT_SHOVEL.get());
+        handheldItem(ModItems.FLINT_HOE.get());
         handheldItem(ModItems.FLINT_SPEAR.get());
 
         handheldItem(ModItems.BONE_SWORD.get());

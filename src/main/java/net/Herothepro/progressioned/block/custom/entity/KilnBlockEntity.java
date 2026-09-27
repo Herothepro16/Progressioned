@@ -1,5 +1,6 @@
 package net.Herothepro.progressioned.block.custom.entity;
 
+import net.Herothepro.progressioned.ModConfig;
 import net.Herothepro.progressioned.block.custom.KilnBlock;
 import net.Herothepro.progressioned.recipe.KilnRecipe;
 import net.Herothepro.progressioned.recipe.ModRecipes;
@@ -7,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -15,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.Optional;
 
@@ -48,7 +51,17 @@ public class KilnBlockEntity extends BlockEntity {
 
     public static boolean isAboveFire(Level level, BlockPos pos) {
         BlockState below = level.getBlockState(pos.below());
-        return below.is(Blocks.FIRE);
+        boolean isFire = below.is(Blocks.FIRE);
+
+        if (ModConfig.ALLOW_CAMPFIRE_HEATING.get()) {
+            boolean isLitCampfire = below.is(BlockTags.CAMPFIRES)
+                    && below.hasProperty(BlockStateProperties.LIT)
+                    && below.getValue(BlockStateProperties.LIT);
+
+            return isFire || isLitCampfire;
+        }
+
+        return isFire;
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, KilnBlockEntity be) {

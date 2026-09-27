@@ -2,6 +2,7 @@ package net.Herothepro.progressioned.item;
 
 import net.Herothepro.progressioned.Progressioned;
 import net.Herothepro.progressioned.block.ModBlocks;
+import net.Herothepro.progressioned.fluid.ModFluids;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -41,6 +42,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.FLINT_PICK.get());
                         output.accept(ModItems.FLINT_AXE.get());
                         output.accept(ModItems.FLINT_SHOVEL.get());
+                        output.accept(ModItems.FLINT_HOE.get());
                         output.accept(ModItems.FLINT_KNIFE.get());
                         output.accept(ModItems.FLINT_SPEAR.get());
                         output.accept(ModItems.BONE_SWORD.get());
@@ -66,6 +68,8 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.IRON_HAMMER.get());
                         output.accept(ModItems.DIAMOND_HAMMER.get());
                         output.accept(new ItemStack(ModItems.CHOPPING_BLOCK.get()));
+                        output.accept(new ItemStack(ModItems.THATCH.get()));
+                        output.accept(new ItemStack(ModItems.THATCH_SLAB.get()));
                         output.accept(new ItemStack(ModItems.CHARCOAL_BLOCK.get()));
                         output.accept(new ItemStack(ModItems.PORCELAIN_BRICKS.get()));
                         output.accept(new ItemStack(ModItems.PORCELAIN_BRICK_SLAB.get()));
@@ -90,6 +94,9 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.STRIPPED_DARK_OAK_POST);
                         output.accept(ModBlocks.STRIPPED_MANGROVE_POST);
                         output.accept(ModBlocks.STRIPPED_CHERRY_POST);
+                        output.accept(ModFluids.MOLTEN_IRON.bucket().get());
+                        output.accept(ModFluids.MOLTEN_COPPER.bucket().get());
+                        output.accept(ModFluids.MOLTEN_GOLD.bucket().get());
 
                     }).build());
 

@@ -16,6 +16,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.StonecutterRecipe;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.FalseCondition;
@@ -47,6 +48,11 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('F', ModItems.FLINT_SHARD.get()).define('S', Items.STICK)
                 .define('P', ModItems.PLANT_STRING.get())
                 .unlockedBy("has_flint_shard", has(ModItems.FLINT_SHARD.get())).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FLINT_HOE.get())
+                .pattern("CF ").pattern("PS ").pattern(" S ")
+                .define('F', ModItems.FLINT_SHARD.get()).define('C', ModItems.FLINT_CHIP.get())
+                .define('S', Items.STICK).define('P', ModItems.PLANT_STRING.get())
+                .unlockedBy("has_flint_chip", has(ModItems.FLINT_CHIP.get())).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FLINT_KNIFE.get())
                 .pattern(" C ").pattern("S  ").pattern("   ")
                 .define('C', ModItems.FLINT_CHIP.get()).define('S', Items.STICK)
@@ -92,26 +98,56 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .requires(Items.CLAY_BALL, 1)
                 .requires(Items.BONE_MEAL, 2)
                 .unlockedBy("has_bone_meal", has(Items.BONE_MEAL)).save(recipeOutput);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.UNFIRED_CLAY_BUCKET.get())
                 .pattern("   ").pattern("C C").pattern(" C ")
                 .define('C', Items.CLAY_BALL)
                 .unlockedBy("has_clay_ball", has(Items.CLAY_BALL)).save(recipeOutput);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PORCELAIN_BRICKS.get())
                 .pattern("PP ").pattern("PP ").pattern("   ")
                 .define('P', ModItems.PORCELAIN_CLAY_BRICK.get())
                 .unlockedBy("has_porcelain_clay_brick", has(ModItems.PORCELAIN_CLAY_BRICK.get())).save(recipeOutput);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PORCELAIN_BRICK_SLAB.get(), 6)
                 .pattern("   ").pattern("PPP").pattern("   ")
                 .define('P', ModItems.PORCELAIN_BRICKS.get())
                 .unlockedBy("has_porcelain_clay_bricks", has(ModItems.PORCELAIN_BRICKS.get())).save(recipeOutput);
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModItems.PORCELAIN_BRICKS.get()), RecipeCategory.MISC,
+                        ModItems.PORCELAIN_BRICK_SLAB.get(),2)
+                .unlockedBy("has_porcelain_bricks", has(ModBlocks.PORCELAIN_BRICKS.get()))
+                .save(recipeOutput, "porcelain_brick_slab_from_stonecutting");
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PORCELAIN_BRICK_STAIRS.get(), 4)
                 .pattern("P  ").pattern("PP ").pattern("PPP")
                 .define('P', ModItems.PORCELAIN_BRICKS.get())
                 .unlockedBy("has_porcelain_clay_bricks", has(ModItems.PORCELAIN_BRICKS.get())).save(recipeOutput);
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModItems.PORCELAIN_BRICKS.get()), RecipeCategory.MISC,
+                        ModItems.PORCELAIN_BRICK_STAIRS.get(),1)
+                .unlockedBy("has_porcelain_bricks", has(ModBlocks.PORCELAIN_BRICKS.get()))
+                .save(recipeOutput, "porcelain_brick_stairs_from_stonecutting");
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PORCELAIN_BRICK_WALL.get(), 6)
                 .pattern("   ").pattern("PPP").pattern("PPP")
                 .define('P', ModItems.PORCELAIN_BRICKS.get())
                 .unlockedBy("has_porcelain_clay_bricks", has(ModItems.PORCELAIN_BRICKS.get())).save(recipeOutput);
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModItems.PORCELAIN_BRICKS.get()), RecipeCategory.MISC,
+                        ModItems.PORCELAIN_BRICK_WALL.get(),1)
+                .unlockedBy("has_porcelain_bricks", has(ModBlocks.PORCELAIN_BRICKS.get()))
+                .save(recipeOutput, "porcelain_brick_wall_from_stonecutting");
+
+        // Thatch Stuff
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.STRAW , 4)
+                .requires(ModItems.THATCH, 1)
+                .unlockedBy("has_thatch", has(ModBlocks.THATCH.get())).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.THATCH.get())
+                .pattern("SS ").pattern("SS ").pattern("   ")
+                .define('S', ModItems.STRAW)
+                .unlockedBy("has_straw", has(ModItems.STRAW)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.THATCH_SLAB.get(), 6)
+                .pattern("   ").pattern("TTT").pattern("   ")
+                .define('T', ModItems.THATCH.get())
+                .unlockedBy("has_thatch", has(ModItems.THATCH.get())).save(recipeOutput);
 
         // Copper Tool Recipes
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_SWORD.get())
@@ -199,8 +235,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(recipeOutput);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CAMPFIRE_BASE.get())
-                .pattern("PSP").pattern("S S").pattern("PSP")
-                .define('P', ModTags.Items.POSTS).define('S', Items.STICK)
+                .pattern("PP ").pattern("PP ").pattern("   ")
+                .define('P', ModTags.Items.POSTS)
                 .unlockedBy("has_any_post", has(ModTags.Items.POSTS))
                 .save(recipeOutput);
 

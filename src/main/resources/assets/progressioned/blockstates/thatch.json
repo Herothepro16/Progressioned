@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=y": {
+      "model": "progressioned:block/thatch"
+    },
+    "axis=z": {
+      "model": "progressioned:block/thatch",
+      "x": 90
+    },
+    "axis=x": {
+      "model": "progressioned:block/thatch",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

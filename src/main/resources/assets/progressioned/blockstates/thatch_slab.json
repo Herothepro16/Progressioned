@@ -1,0 +1,37 @@
+{
+  "multipart": [
+    {
+      "when": { "type": "bottom|double", "bottom_facing": "north" },
+      "apply": { "model": "progressioned:block/thatch_slab" }
+    },
+    {
+      "when": { "type": "bottom|double", "bottom_facing": "east" },
+      "apply": { "model": "progressioned:block/thatch_slab", "y": 90 }
+    },
+    {
+      "when": { "type": "bottom|double", "bottom_facing": "south" },
+      "apply": { "model": "progressioned:block/thatch_slab", "y": 180 }
+    },
+    {
+      "when": { "type": "bottom|double", "bottom_facing": "west" },
+      "apply": { "model": "progressioned:block/thatch_slab", "y": 270 }
+    },
+
+    {
+      "when": { "type": "top|double", "top_facing": "north" },
+      "apply": { "model": "progressioned:block/thatch_slab_top" }
+    },
+    {
+      "when": { "type": "top|double", "top_facing": "east" },
+      "apply": { "model": "progressioned:block/thatch_slab_top", "y": 90 }
+    },
+    {
+      "when": { "type": "top|double", "top_facing": "south" },
+      "apply": { "model": "progressioned:block/thatch_slab_top", "y": 180 }
+    },
+    {
+      "when": { "type": "top|double", "top_facing": "west" },
+      "apply": { "model": "progressioned:block/thatch_slab_top", "y": 270 }
+    }
+  ]
+}

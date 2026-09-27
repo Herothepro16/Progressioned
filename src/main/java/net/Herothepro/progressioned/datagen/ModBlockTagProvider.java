@@ -39,6 +39,10 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.PORCELAIN_BRICK_WALL.get())
                 .add(ModBlocks.WORKSTONE.get());
 
+        tag(BlockTags.MINEABLE_WITH_HOE)
+                .add(ModBlocks.THATCH.get())
+                .add(ModBlocks.THATCH_SLAB.get());
+
         tag(ModTags.Blocks.NEEDS_FLINT_TOOL)
                 .addTag(BlockTags.LOGS);
 

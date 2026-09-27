@@ -16,6 +16,13 @@
  "item.progressioned.clay_water_bucket": "Clay Water Bucket",
  "item.progressioned.clay_lava_bucket": "Clay Lava Bucket",
 
+ "item.progressioned.molten_iron_bucket": "Molten Iron Bucket",
+ "fluid_type.progressioned.molten_iron": "Molten Iron",
+ "item.progressioned.molten_copper_bucket": "Molten Copper Bucket",
+ "fluid_type.progressioned.molten_copper": "Molten Copper",
+ "item.progressioned.molten_gold_bucket": "Molten Gold Bucket",
+ "fluid_type.progressioned.molten_gold": "Molten Gold",
+
  "item.progressioned.copper_plate": "Copper Plate",
  "item.progressioned.iron_plate": "Iron Plate",
  "item.progressioned.gold_plate": "Gold Plate",
@@ -35,6 +42,7 @@
  "item.progressioned.flint_pickaxe": "Flint Pickaxe",
  "item.progressioned.flint_axe": "Flint Hatchet",
  "item.progressioned.flint_shovel": "Flint Shovel",
+ "item.progressioned.flint_hoe": "Flint Hoe",
  "item.progressioned.flint_knife": "Flint Knife",
  "item.progressioned.flint_spear": "Flint Spear",
 
@@ -56,9 +64,12 @@
  "item.progressioned.copper_spear": "Copper Spear",
 
  "block.progressioned.charcoal_block": "Block of Charcoal",
+ "block.progressioned.thatch": "Thatch",
+ "block.progressioned.thatch_slab": "Thatch Slab",
  "block.progressioned.porcelain_bricks": "Porcelain Bricks",
  "block.progressioned.porcelain_brick_slab": "Porcelain Brick Slab",
  "block.progressioned.porcelain_brick_stairs": "Porcelain Brick Stairs",
+ "block.progressioned.porcelain_brick_wall": "Porcelain Brick Wall",
  "block.progressioned.chopping_block": "Chopping Block",
  "block.progressioned.campfire_base": "Campfire Base",
  "block.progressioned.porcelain_kiln": "Porcelain Kiln",

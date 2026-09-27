@@ -94,7 +94,7 @@ public class ModItems {
     public static final DeferredItem<Item> CLAY_WATER_BUCKET = ITEMS.register("clay_water_bucket",
             () -> new ClayWaterBucketItem(new Item.Properties().stacksTo(1)));
     public static final DeferredItem<Item> CLAY_LAVA_BUCKET = ITEMS.register("clay_lava_bucket",
-            () -> new ClayLavaBucketItem(new  Item.Properties().stacksTo(1)));
+            () -> new ClayLavaBucketItem(new Item.Properties().stacksTo(1)));
 
     public static final DeferredItem<PickaxeItem> FLINT_PICK = ITEMS.register("flint_pickaxe",
             () -> new PickaxeItem(ModToolTiers.FLINT , new Item.Properties()
@@ -108,6 +108,9 @@ public class ModItems {
     public static final DeferredItem<ShovelItem> FLINT_SHOVEL = ITEMS.register("flint_shovel",
             () -> new ShovelItem(ModToolTiers.FLINT , new Item.Properties()
                     .attributes(ShovelItem.createAttributes(ModToolTiers.FLINT,0.25f,-3f))));
+    public static final DeferredItem<HoeItem> FLINT_HOE = ITEMS.register("flint_hoe",
+            () -> new HoeItem(ModToolTiers.FLINT , new Item.Properties()
+                    .attributes(HoeItem.createAttributes(ModToolTiers.FLINT,0f,-2.4f))));
     public static final DeferredItem<SwordItem> FLINT_SPEAR = ITEMS.register("flint_spear",
             () -> new SwordItem(ModToolTiers.FLINT, new Item.Properties()
                     .attributes(ItemAttributeModifiers.builder()
@@ -224,8 +227,14 @@ public class ModItems {
                                             0.5, AttributeModifier.Operation.ADD_VALUE),
                                     EquipmentSlotGroup.MAINHAND)
                             .build())));
+
     public static final DeferredItem<BlockItem> CHARCOAL_BLOCK = ITEMS.register("charcoal_block",
             () -> new BlockItem(ModBlocks.CHARCOAL_BLOCK.get(), new Item.Properties()));
+
+    public static final DeferredItem<BlockItem> THATCH = ITEMS.register("thatch",
+            () -> new BlockItem(ModBlocks.THATCH.get(), new Item.Properties()));
+    public static final DeferredItem<BlockItem> THATCH_SLAB = ITEMS.register("thatch_slab",
+            () -> new BlockItem(ModBlocks.THATCH_SLAB.get(), new Item.Properties()));
 
     public static final DeferredItem<BlockItem> PORCELAIN_BRICKS = ITEMS.register("porcelain_bricks",
             () -> new BlockItem(ModBlocks.PORCELAIN_BRICKS.get(), new Item.Properties()));
