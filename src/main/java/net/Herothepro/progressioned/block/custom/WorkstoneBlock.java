@@ -194,9 +194,9 @@ public class WorkstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
                                 be.shrinkInput(recipe.inputCount());
                                 be.growOutput(recipe.output().copy());
                                 be.setHits(0);
-                                level.playSound(null, pos, SoundEvents.SMITHING_TABLE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+                                level.playSound(null, pos, SoundEvents.SMITHING_TABLE_USE, SoundSource.BLOCKS, 0.75F, 0.9F);
                             } else {
-                                level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 0.7F, 1.5F);
+                                level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 0.5F, 5.9F);
                             }
                         }
                     }
