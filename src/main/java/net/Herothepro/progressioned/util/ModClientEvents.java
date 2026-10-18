@@ -1,11 +1,13 @@
 package net.Herothepro.progressioned.util;
 
 import net.Herothepro.progressioned.Progressioned;
+import net.Herothepro.progressioned.block.ModBlocks;
 import net.Herothepro.progressioned.block.custom.entity.ModBlockEntities;
-import net.Herothepro.progressioned.block.custom.entity.renderer.ChoppingBlockRenderer;
-import net.Herothepro.progressioned.block.custom.entity.renderer.KilnBlockEntityRenderer;
-import net.Herothepro.progressioned.block.custom.entity.renderer.WorkstoneBlockEntityRenderer;
+import net.Herothepro.progressioned.block.custom.entity.renderer.*;
 import net.Herothepro.progressioned.item.ModItems;
+import net.Herothepro.progressioned.util.gui.HeaterScreen;
+import net.Herothepro.progressioned.util.gui.MelterScreen;
+import net.Herothepro.progressioned.util.gui.ModMenuTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -16,6 +18,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
@@ -26,12 +29,13 @@ public class ModClientEvents {
 
         @SubscribeEvent
         public static void registerBERs(EntityRenderersEvent.RegisterRenderers event) {
-            event.registerBlockEntityRenderer(ModBlockEntities.CHOPPING_BLOCK_BE.get(),
-                    ChoppingBlockRenderer::new);
-            event.registerBlockEntityRenderer(ModBlockEntities.KILN_BE.get(),
-                    KilnBlockEntityRenderer::new);
-            event.registerBlockEntityRenderer(ModBlockEntities.WORKSTONE_BE.get(),
-                    WorkstoneBlockEntityRenderer::new);
+            event.registerBlockEntityRenderer(ModBlockEntities.CHOPPING_BLOCK_BE.get(), ChoppingBlockRenderer::new);
+            event.registerBlockEntityRenderer(ModBlockEntities.KILN_BE.get(), KilnBlockEntityRenderer::new);
+            event.registerBlockEntityRenderer(ModBlockEntities.WORKSTONE_BE.get(), WorkstoneBlockEntityRenderer::new);
+            event.registerBlockEntityRenderer(ModBlockEntities.MELTER_BE.get(), MelterBlockEntityRenderer::new);
+            event.registerBlockEntityRenderer(ModBlockEntities.FAUCET_BE.get(), FaucetBlockEntityRenderer::new);
+            event.registerBlockEntityRenderer(ModBlockEntities.TABLE_BE.get(), TableBlockEntityRenderer::new);
+            event.registerBlockEntityRenderer(ModBlockEntities.BASIN_BE.get(), BasinBlockEntityRenderer::new);
         }
 
         @SubscribeEvent
@@ -41,6 +45,12 @@ public class ModClientEvents {
                             (clientContainer, parent) -> new ModConfigScreen(parent))
             );
         }
+
+        @SubscribeEvent
+        public static void registerScreens(RegisterMenuScreensEvent event) {
+            event.register(ModMenuTypes.HEATER_MENU.get(), HeaterScreen::new);
+            event.register(ModMenuTypes.MELTER_MENU.get(), MelterScreen::new);
+        }
     }
 
     @EventBusSubscriber(modid = Progressioned.MOD_ID, value = Dist.CLIENT)
@@ -49,7 +59,6 @@ public class ModClientEvents {
         @SubscribeEvent
         public static void onItemTooltip(ItemTooltipEvent event) {
             ItemStack stack = event.getItemStack();
-
             Component description = null;
 
             if (stack.is(ModItems.FLINT_SHARD.get())) {
@@ -76,21 +85,33 @@ public class ModClientEvents {
                 description = Component.literal("[").withStyle(ChatFormatting.WHITE)
                         .append(Component.literal("Obtained by breaking fully grown Wheat with a knife").withStyle(ChatFormatting.GRAY))
                         .append(Component.literal("]").withStyle(ChatFormatting.WHITE));
-            } else if (stack.is(ModItems.CHOPPING_BLOCK.get())) {
+            } else if (stack.is(ModBlocks.CHOPPING_BLOCK.asItem())) {
                 description = Component.literal("[").withStyle(ChatFormatting.WHITE)
                         .append(Component.literal("Right click with any Log then hit multiple times with an axe to get posts").withStyle(ChatFormatting.GRAY))
                         .append(Component.literal("]").withStyle(ChatFormatting.WHITE));
-            } else if (stack.is(ModItems.CAMPFIRE_BASE.get())) {
+            } else if (stack.is(ModBlocks.CAMPFIRE_BASE.asItem())) {
                 description = Component.literal("[").withStyle(ChatFormatting.WHITE)
                         .append(Component.literal("Right click with any coal to turn it into an unlit campfire").withStyle(ChatFormatting.GRAY))
                         .append(Component.literal("]").withStyle(ChatFormatting.WHITE));
-            } else if (stack.is(ModItems.PORCELAIN_KILN.get())) {
+            } else if (stack.is(ModBlocks.PORCELAIN_KILN.asItem())) {
                 description = Component.literal("[").withStyle(ChatFormatting.WHITE)
                         .append(Component.literal("Put above fire to smelt items inside it").withStyle(ChatFormatting.GRAY))
                         .append(Component.literal("]").withStyle(ChatFormatting.WHITE));
-            } else if (stack.is(ModItems.WORKSTONE.get())) {
+            } else if (stack.is(ModBlocks.WORKSTONE.asItem())) {
                 description = Component.literal("[").withStyle(ChatFormatting.WHITE)
-                        .append(Component.literal("Right clicks Ingots then hit with a Hammer to turn into plates").withStyle(ChatFormatting.GRAY))
+                        .append(Component.literal("Right clicks with Ingots then hit with a Hammer to turn into them plates").withStyle(ChatFormatting.GRAY))
+                        .append(Component.literal("]").withStyle(ChatFormatting.WHITE));
+            } else if (stack.is(ModBlocks.PORCELAIN_MELTER.asItem())) {
+                description = Component.literal("[").withStyle(ChatFormatting.WHITE)
+                        .append(Component.literal("Melts materials into their molten form").withStyle(ChatFormatting.GRAY))
+                        .append(Component.literal("]").withStyle(ChatFormatting.WHITE));
+            } else if (stack.is(ModBlocks.PORCELAIN_HEATER.asItem())) {
+                description = Component.literal("[").withStyle(ChatFormatting.WHITE)
+                        .append(Component.literal("Put under a melter to heat the melter").withStyle(ChatFormatting.GRAY))
+                        .append(Component.literal("]").withStyle(ChatFormatting.WHITE));
+            } else if (stack.is(ModBlocks.PORCELAIN_FAUCET.asItem())) {
+                description = Component.literal("[").withStyle(ChatFormatting.WHITE)
+                        .append(Component.literal("Pours fluids from the block its on onto the block below it").withStyle(ChatFormatting.GRAY))
                         .append(Component.literal("]").withStyle(ChatFormatting.WHITE));
             }
 

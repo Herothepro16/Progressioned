@@ -1,0 +1,11 @@
+{
+  "type": "progressioned:melting",
+  "ingredient": {
+    "item": "progressioned:bronze_block"
+  },
+  "result": {
+    "id": "progressioned:molten_bronze",
+    "amount": 1296
+  },
+  "cookingtime": 3600
+}

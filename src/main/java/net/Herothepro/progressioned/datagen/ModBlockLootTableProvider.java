@@ -1,6 +1,7 @@
 package net.Herothepro.progressioned.datagen;
 
 import net.Herothepro.progressioned.block.ModBlocks;
+import net.Herothepro.progressioned.item.ModItems;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -25,6 +26,12 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
 
         dropSelf(ModBlocks.PORCELAIN_KILN.get());
 
+        dropSelf(ModBlocks.PORCELAIN_MELTER.get());
+        dropSelf(ModBlocks.PORCELAIN_HEATER.get());
+        dropSelf(ModBlocks.PORCELAIN_FAUCET.get());
+        dropSelf(ModBlocks.PORCELAIN_CASTING_TABLE.get());
+        dropSelf(ModBlocks.PORCELAIN_CASTING_BASIN.get());
+
         dropSelf(ModBlocks.CHARCOAL_BLOCK.get());
 
         dropSelf(ModBlocks.THATCH.get());
@@ -36,6 +43,23 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
             block -> createSlabItemTable(ModBlocks.PORCELAIN_BRICK_SLAB.get()));
         dropSelf(ModBlocks.PORCELAIN_BRICK_STAIRS.get());
         dropSelf(ModBlocks.PORCELAIN_BRICK_WALL.get());
+
+        dropSelf(ModBlocks.TIN_BLOCK.get());
+        dropSelf(ModBlocks.SILVER_BLOCK.get());
+        dropSelf(ModBlocks.BRONZE_BLOCK.get());
+        dropSelf(ModBlocks.ROSE_GOLD_BLOCK.get());
+
+        add(ModBlocks.TIN_ORE.get(),
+                block -> createOreDrop(ModBlocks.TIN_ORE.get(), ModItems.RAW_TIN.get()));
+        add(ModBlocks.DEEPSLATE_TIN_ORE.get(),
+                block -> createOreDrop(ModBlocks.DEEPSLATE_TIN_ORE.get(), ModItems.RAW_TIN.get()));
+        dropSelf(ModBlocks.RAW_TIN_BLOCK.get());
+
+        add(ModBlocks.SILVER_ORE.get(),
+                block -> createOreDrop(ModBlocks.SILVER_ORE.get(), ModItems.RAW_SILVER.get()));
+        add(ModBlocks.DEEPSLATE_SILVER_ORE.get(),
+                block -> createOreDrop(ModBlocks.DEEPSLATE_SILVER_ORE.get(), ModItems.RAW_SILVER.get()));
+        dropSelf(ModBlocks.RAW_SILVER_BLOCK.get());
 
         dropSelf(ModBlocks.OAK_POST.get());
         dropSelf(ModBlocks.BIRCH_POST.get());

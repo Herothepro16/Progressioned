@@ -1,0 +1,6 @@
+{
+  "type": "progressioned:porcelain_kiln",
+  "ingredient": { "item": "progressioned:porcelain_clay_ball" },
+  "result": { "id": "progressioned:porcelain_clay_brick", "count": 1 },
+  "cooktime": 300
+}

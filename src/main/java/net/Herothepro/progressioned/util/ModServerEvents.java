@@ -1,14 +1,20 @@
 package net.Herothepro.progressioned.util;
 
 import net.Herothepro.progressioned.Progressioned;
+import net.Herothepro.progressioned.block.custom.entity.ModBlockEntities;
 import net.Herothepro.progressioned.recipe.DamagingShapelessRecipe;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 import java.util.*;
@@ -66,5 +72,24 @@ public class ModServerEvents {
 
         allRecipes.addAll(toAdd);
         recipeManager.replaceRecipes(allRecipes);
+    }
+
+    @SubscribeEvent
+    public static void modifyVanillaDurability(ModifyDefaultComponentsEvent event) {
+
+        int ironToolDurability = 336;
+
+        int ironArmorFactor = 20;
+
+        event.modify(Items.IRON_PICKAXE, b -> b.set(DataComponents.MAX_DAMAGE, ironToolDurability));
+        event.modify(Items.IRON_AXE, b -> b.set(DataComponents.MAX_DAMAGE, ironToolDurability));
+        event.modify(Items.IRON_SHOVEL, b -> b.set(DataComponents.MAX_DAMAGE, ironToolDurability));
+        event.modify(Items.IRON_HOE, b -> b.set(DataComponents.MAX_DAMAGE, ironToolDurability));
+        event.modify(Items.IRON_SWORD, b -> b.set(DataComponents.MAX_DAMAGE, ironToolDurability));
+
+        event.modify(Items.IRON_HELMET, b -> b.set(DataComponents.MAX_DAMAGE, ironArmorFactor * 11));
+        event.modify(Items.IRON_CHESTPLATE, b -> b.set(DataComponents.MAX_DAMAGE, ironArmorFactor * 16));
+        event.modify(Items.IRON_LEGGINGS, b -> b.set(DataComponents.MAX_DAMAGE, ironArmorFactor * 15));
+        event.modify(Items.IRON_BOOTS, b -> b.set(DataComponents.MAX_DAMAGE, ironArmorFactor * 13));
     }
 }

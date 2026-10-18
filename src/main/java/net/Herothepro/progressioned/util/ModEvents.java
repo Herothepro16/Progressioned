@@ -3,14 +3,17 @@ package net.Herothepro.progressioned.util;
 import net.Herothepro.progressioned.ModConfig;
 import net.Herothepro.progressioned.Progressioned;
 import net.Herothepro.progressioned.block.ModBlocks;
+import net.Herothepro.progressioned.block.custom.entity.ModBlockEntities;
 import net.Herothepro.progressioned.item.ModItems;
 import net.Herothepro.progressioned.item.ModToolTiers;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TieredItem;
@@ -19,12 +22,13 @@ import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,14 +42,18 @@ public class ModEvents {
     @SubscribeEvent
     public static void onHarvestCheck(PlayerEvent.HarvestCheck event) {
         ItemStack stack = event.getEntity().getMainHandItem();
+        BlockState target = event.getTargetBlock();
 
         if (stack.getItem() instanceof TieredItem tieredItem && tieredItem.getTier() == ModToolTiers.FLINT) {
-            BlockState target = event.getTargetBlock();
-
-            boolean isCopperOre = target.is(Tags.Blocks.ORES_COPPER);
-
-            if (isCopperOre) {
+            if (target.is(Tags.Blocks.ORES_COPPER)) {
                 event.setCanHarvest(ModConfig.CAN_FLINT_MINE_COPPER.get());
+                return;
+            }
+        }
+        if (target.is(BlockTags.LOGS) || target.is(BlockTags.PLANKS)) {
+            boolean isHoldingTool = stack.getItem() instanceof DiggerItem || stack.is(ItemTags.AXES);
+            if (!isHoldingTool) {
+                event.setCanHarvest(false);
             }
         }
     }
@@ -54,35 +62,21 @@ public class ModEvents {
     public static void onBreakSpeed(PlayerEvent.BreakSpeed event) {
         BlockState state = event.getState();
         Player player = event.getEntity();
-        ItemStack held = player.getMainHandItem();
+        ItemStack stack = player.getMainHandItem();
 
-        if ((state.is(BlockTags.LOGS) || state.is(BlockTags.PLANKS)) && !held.isCorrectToolForDrops(state)) {
-            event.setNewSpeed(event.getOriginalSpeed() * 0.2f);
+        boolean isHoldingTool = stack.getItem() instanceof DiggerItem;
+
+        if ((state.is(BlockTags.LOGS) || state.is(BlockTags.PLANKS)) && !isHoldingTool) {
+            event.setNewSpeed(event.getOriginalSpeed() * 0.3f);
         }
 
-        if (held.getItem() instanceof TieredItem tieredItem && tieredItem.getTier() == ModToolTiers.FLINT) {
-            boolean isCopperOre = state.is(Tags.Blocks.ORES_COPPER);
-            boolean canMineCopper = ModConfig.CAN_FLINT_MINE_COPPER.get();
-
+        boolean isShovel = stack.is(ItemTags.SHOVELS);
+        if (state.is(Blocks.CLAY) && !isShovel) {
+            event.setNewSpeed(event.getOriginalSpeed() * 0.10f);
+        }
+        if (stack.getItem() instanceof TieredItem tieredItem && tieredItem.getTier() == ModToolTiers.FLINT) {
             if (state.is(ModTags.Blocks.INCORRECT_FOR_FLINT_TOOL)) {
-                if (!(isCopperOre && canMineCopper)) {
-                    event.setNewSpeed(1.0F);
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void onBlockBreak(BlockEvent.BreakEvent event) {
-        BlockState state = event.getState();
-
-        if (state.is(BlockTags.LOGS) || state.is(BlockTags.PLANKS)) {
-            Player player = event.getPlayer();
-            ItemStack held = player.getMainHandItem();
-
-            if (!held.isCorrectToolForDrops(state)) {
-                event.getLevel().destroyBlock(event.getPos(), false);
-                event.setCanceled(true);
+                event.setNewSpeed(1.0F);
             }
         }
     }
@@ -136,7 +130,7 @@ public class ModEvents {
         Player player = event.getEntity();
         ItemStack held = player.getMainHandItem();
 
-        if (!held.is(Items.BONE ) || !event.getLevel().getBlockState(event.getPos()).is(Tags.Blocks.STONES) || event.getLevel().isClientSide) return;
+        if (!held.is(Items.BONE) || !event.getLevel().getBlockState(event.getPos()).is(Tags.Blocks.STONES) || event.getLevel().isClientSide) return;
         long currentTime = System.currentTimeMillis();
         UUID playerId = player.getUUID();
         if (lastHitTime.containsKey(playerId) && currentTime - lastHitTime.get(playerId) < 500) return;
@@ -193,4 +187,6 @@ public class ModEvents {
             event.setBurnTime(16000);
         }
     }
+
+
 }

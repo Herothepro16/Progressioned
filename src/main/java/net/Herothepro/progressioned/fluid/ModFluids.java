@@ -34,6 +34,10 @@ public class ModFluids {
     public static final FluidHolder<FluidType> MOLTEN_IRON = registerFluid("molten_iron", 0xff9a1616);
     public static final FluidHolder<FluidType> MOLTEN_COPPER = registerFluid("molten_copper", 0xffe77c56);
     public static final FluidHolder<FluidType> MOLTEN_GOLD = registerFluid("molten_gold", 0xfff3de37);
+    public static final FluidHolder<FluidType> MOLTEN_TIN = registerFluid("molten_tin", 0xffd1cfcf);
+    public static final FluidHolder<FluidType> MOLTEN_SILVER = registerFluid("molten_silver", 0xffa8bcc1);
+    public static final FluidHolder<FluidType> MOLTEN_BRONZE = registerFluid("molten_bronze", 0xffed7014);
+    public static final FluidHolder<FluidType> MOLTEN_ROSE_GOLD = registerFluid("molten_rose_gold", 0xffe79380);
 
     public static FluidHolder<FluidType> registerFluid(String name, int color) {
         DeferredHolder<FluidType, FluidType> type = FLUID_TYPES.register(name, () -> new FluidType(

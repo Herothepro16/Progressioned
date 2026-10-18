@@ -32,6 +32,19 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         wallBlock(ModBlocks.PORCELAIN_BRICK_WALL.get(), blockTexture(ModBlocks.PORCELAIN_BRICKS.get()));
 
+        blockWithItem(ModBlocks.TIN_BLOCK);
+        blockWithItem(ModBlocks.SILVER_BLOCK);
+        blockWithItem(ModBlocks.BRONZE_BLOCK);
+        blockWithItem(ModBlocks.ROSE_GOLD_BLOCK);
+
+        blockWithItem(ModBlocks.TIN_ORE);
+        blockWithItem(ModBlocks.DEEPSLATE_TIN_ORE);
+        blockWithItem(ModBlocks.RAW_TIN_BLOCK);
+
+        blockWithItem(ModBlocks.SILVER_ORE);
+        blockWithItem(ModBlocks.DEEPSLATE_SILVER_ORE);
+        blockWithItem(ModBlocks.RAW_SILVER_BLOCK);
+
         postBlock(ModBlocks.OAK_POST);
         postBlock(ModBlocks.SPRUCE_POST);
         postBlock(ModBlocks.BIRCH_POST);

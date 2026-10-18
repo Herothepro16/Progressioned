@@ -1,0 +1,16 @@
+{
+  "type": "progressioned:casting",
+  "mold": {
+    "item": "progressioned:plate_mold"
+  },
+  "fluid": {
+    "fluid": "progressioned:molten_iron",
+    "amount": 144
+  },
+  "result": {
+    "id": "progressioned:iron_plate",
+    "count": 1
+  },
+  "cooling_time": 100,
+  "consume_cast": false
+}

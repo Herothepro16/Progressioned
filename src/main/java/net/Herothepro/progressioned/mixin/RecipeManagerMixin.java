@@ -3,6 +3,7 @@ package net.Herothepro.progressioned.mixin;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.Herothepro.progressioned.item.ModItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -26,8 +27,6 @@ public class RecipeManagerMixin {
     private void replaceVanillaRecipes(Map<ResourceLocation, JsonElement> map, ResourceManager resourceManager, ProfilerFiller profiler, CallbackInfo ci) {
         String woodMat = "#minecraft:planks";
         String stoneMat = "minecraft:stone";
-        String ironMat = "minecraft:iron_ingot";
-        String goldMat = "minecraft:gold_ingot";
         String stickTag = "#c:rods/wooden";
         String plantString = "progressioned:plant_string";
         String strawCord = "progressioned:straw_cord";
@@ -36,6 +35,21 @@ public class RecipeManagerMixin {
         String campfireBase = "progressioned:campfire_base";
         String ironPlate = "progressioned:iron_plate";
         String goldPlate = "progressioned:gold_plate";
+
+        for (String material : new String[]{"iron", "golden"}) {
+            for (String tool : new String[]{"sword", "pickaxe", "axe", "shovel", "hoe"}) {
+                map.remove(ResourceLocation.withDefaultNamespace(material + "_" + tool));
+            }
+        }
+
+        for (String metal : new String[]{"iron", "gold", "copper"}) {
+            for (String method : new String[]{"smelting", "blasting"}) {
+                ResourceLocation id = ResourceLocation.withDefaultNamespace(metal + "_ingot_from_" + method + "_raw_" + metal);
+                if (map.remove(id) == null) {
+                    LOGGER.warn("[Progressioned] Recipe not found to remove: {}", id);
+                }
+            }
+        }
 
         //campfire change
         setupShapedRecipe(map, "minecraft:campfire", "misc",
@@ -88,27 +102,6 @@ public class RecipeManagerMixin {
                 "minecraft:stone_hoe");
 
         //iron replacements
-        setupShapedRecipe(map, "minecraft:iron_sword", "misc",
-                new String[]{" T ", " T ", " S "},
-                Map.of('T', ironPlate, 'S', stickTag),
-                "minecraft:iron_sword");
-        setupShapedRecipe(map, "minecraft:iron_pickaxe", "misc",
-                new String[]{"PIP", " S ", " S "},
-                Map.of('I', ironMat, 'P', ironPlate, 'S', stickTag),
-                "minecraft:iron_pickaxe");
-        setupShapedRecipe(map, "minecraft:iron_axe", "misc",
-                new String[]{"IP ", "PS ", " S "},
-                Map.of('I', ironMat, 'P', ironPlate, 'S', stickTag),
-                "minecraft:iron_axe");
-        setupShapedRecipe(map, "minecraft:iron_shovel", "misc",
-                new String[]{" P ", " S ", " S "},
-                Map.of( 'P', ironPlate, 'S', stickTag),
-                "minecraft:iron_shovel");
-        setupShapedRecipe(map, "minecraft:iron_hoe", "misc",
-                new String[]{"PI ", " S ", " S "},
-                Map.of('I', ironMat,'P', ironPlate, 'S', stickTag),
-                "minecraft:iron_hoe");
-
         setupShapedRecipe(map, "minecraft:iron_helmet", "misc",
                 new String[]{"PPP", "P P", "   "},
                 Map.of('P', ironPlate),
@@ -127,27 +120,6 @@ public class RecipeManagerMixin {
                 "minecraft:iron_boots");
 
         //gold replacements
-        setupShapedRecipe(map, "minecraft:golden_sword", "misc",
-                new String[]{" T ", " T ", " S "},
-                Map.of('T', goldPlate, 'S', stickTag),
-                "minecraft:golden_sword");
-        setupShapedRecipe(map, "minecraft:golden_pickaxe", "misc",
-                new String[]{"PIP", " S ", " S "},
-                Map.of('I', goldMat, 'P', goldPlate, 'S', stickTag),
-                "minecraft:golden_pickaxe");
-        setupShapedRecipe(map, "minecraft:golden_axe", "misc",
-                new String[]{"IP ", "PS ", " S "},
-                Map.of('I', goldMat, 'P', goldPlate, 'S', stickTag),
-                "minecraft:golden_axe");
-        setupShapedRecipe(map, "minecraft:golden_shovel", "misc",
-                new String[]{" P ", " S ", " S "},
-                Map.of( 'P', goldPlate, 'S', stickTag),
-                "minecraft:golden_shovel");
-        setupShapedRecipe(map, "minecraft:golden_hoe", "misc",
-                new String[]{"PI ", " S ", " S "},
-                Map.of('I', goldMat,'P', goldPlate, 'S', stickTag),
-                "minecraft:golden_hoe");
-
         setupShapedRecipe(map, "minecraft:golden_helmet", "misc",
                 new String[]{"PPP", "P P", "   "},
                 Map.of('P', goldPlate),

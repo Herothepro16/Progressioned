@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "progressioned:block/porcelain_faucet" },
+    "facing=east":  { "model": "progressioned:block/porcelain_faucet", "y": 90 },
+    "facing=south": { "model": "progressioned:block/porcelain_faucet", "y": 180 },
+    "facing=west":  { "model": "progressioned:block/porcelain_faucet", "y": 270 }
+  }
+}

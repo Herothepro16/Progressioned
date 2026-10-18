@@ -1,0 +1,11 @@
+{
+  "type": "progressioned:melting",
+  "ingredient": {
+    "item": "progressioned:silver_ingot"
+  },
+  "result": {
+    "id": "progressioned:molten_silver",
+    "amount": 144
+  },
+  "cookingtime": 400
+}

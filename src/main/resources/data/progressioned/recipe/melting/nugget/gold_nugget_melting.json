@@ -1,0 +1,11 @@
+{
+  "type": "progressioned:melting",
+  "ingredient": {
+    "item": "minecraft:gold_nugget"
+  },
+  "result": {
+    "id": "progressioned:molten_gold",
+    "amount": 16
+  },
+  "cookingtime": 400
+}

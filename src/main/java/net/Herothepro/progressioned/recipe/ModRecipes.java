@@ -9,6 +9,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.function.Supplier;
+
 public class ModRecipes {
     public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS =
             DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, Progressioned.MOD_ID);
@@ -32,6 +34,28 @@ public class ModRecipes {
 
     public static final DeferredHolder<RecipeSerializer<?>, KilnRecipe.Serializer> KILN_SERIALIZER =
             SERIALIZERS.register("porcelain_kiln", KilnRecipe.Serializer::new);
+
+    public static final DeferredHolder<RecipeType<?>, RecipeType<MeltingRecipe>> MELTING_TYPE =
+            TYPES.register("melting", () -> RecipeType.simple(
+                    ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "melting")));
+
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<MeltingRecipe>> MELTING_SERIALIZER =
+            SERIALIZERS.register("melting", MeltingRecipe.Serializer::new);
+
+    public static final DeferredHolder<RecipeType<?>, RecipeType<CastingRecipe>> CASTING_TYPE = TYPES.register("casting", () -> new RecipeType<CastingRecipe>() {
+        @Override
+        public String toString() {
+            return "casting";
+        }
+    });
+
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<CastingRecipe>> CASTING_SERIALIZER =
+            SERIALIZERS.register("casting", () -> CastingRecipeSerializer.INSTANCE);
+
+    public static final Supplier<RecipeType<CastingBasinRecipe>> CASTING_BASIN_TYPE =
+            TYPES.register("casting_basin", () -> new RecipeType<>() {});
+    public static final Supplier<RecipeSerializer<CastingBasinRecipe>> CASTING_BASIN_SERIALIZER =
+            SERIALIZERS.register("casting_basin", CastingBasinRecipe.Serializer::new);
 
     public static final DeferredHolder<RecipeType<?>, RecipeType<WorkstoneRecipe>> WORKSTONE_TYPE =
             TYPES.register("workstone_hammering", () -> RecipeType.simple(

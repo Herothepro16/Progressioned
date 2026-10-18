@@ -7,6 +7,7 @@ import net.Herothepro.progressioned.fluid.ModFluids;
 import net.Herothepro.progressioned.item.ModCreativeModeTabs;
 import net.Herothepro.progressioned.item.ModItems;
 import net.Herothepro.progressioned.recipe.ModRecipes;
+import net.Herothepro.progressioned.util.gui.ModMenuTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
@@ -46,6 +47,8 @@ public class Progressioned {
         ModBlocks.register(modEventBus);
 
         ModBlockEntities.register(modEventBus);
+
+        ModMenuTypes.register(modEventBus);
 
         ModCreativeModeTabs.register(modEventBus);
 

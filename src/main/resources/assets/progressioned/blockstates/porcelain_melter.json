@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "facing=north,lit=false": { "model": "progressioned:block/porcelain_melter" },
+    "facing=east,lit=false":  { "model": "progressioned:block/porcelain_melter", "y": 90 },
+    "facing=south,lit=false": { "model": "progressioned:block/porcelain_melter", "y": 180 },
+    "facing=west,lit=false":  { "model": "progressioned:block/porcelain_melter", "y": 270 },
+
+    "facing=north,lit=true":  { "model": "progressioned:block/porcelain_melter_on" },
+    "facing=east,lit=true":   { "model": "progressioned:block/porcelain_melter_on", "y": 90 },
+    "facing=south,lit=true":  { "model": "progressioned:block/porcelain_melter_on", "y": 180 },
+    "facing=west,lit=true":   { "model": "progressioned:block/porcelain_melter_on", "y": 270 }
+  }
+}

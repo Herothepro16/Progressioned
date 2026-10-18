@@ -1,0 +1,16 @@
+{
+  "type": "progressioned:casting",
+  "mold": {
+    "item": "progressioned:nugget_mold"
+  },
+  "fluid": {
+    "fluid": "progressioned:molten_gold",
+    "amount": 16
+  },
+  "result": {
+    "id": "minecraft:gold_nugget",
+    "count": 1
+  },
+  "cooling_time": 20,
+  "consume_cast": false
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.3,
+  "ingredient": {
+    "item": "progressioned:mud_ball"
+  },
+  "result": {
+    "id": "progressioned:mud_brick"
+  }
+}

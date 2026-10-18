@@ -2,25 +2,29 @@ package net.Herothepro.progressioned.datagen;
 
 import net.Herothepro.progressioned.Progressioned;
 import net.Herothepro.progressioned.block.ModBlocks;
+import net.Herothepro.progressioned.fluid.FluidHolder;
+import net.Herothepro.progressioned.fluid.ModFluids;
 import net.Herothepro.progressioned.item.ModItems;
+import net.Herothepro.progressioned.recipe.CastingRecipe;
 import net.Herothepro.progressioned.recipe.ChoppingRecipe;
 import net.Herothepro.progressioned.recipe.DamagingShapelessRecipe;
 import net.Herothepro.progressioned.util.ModTags;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.StonecutterRecipe;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.conditions.FalseCondition;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -30,184 +34,322 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         super(output, registries);
     }
 
+    record ShapedToolSpec(
+            String name,
+            ItemLike result,
+            ItemLike head
+    ) {}
+
+    record CastingSpec(
+            String name,
+            ItemLike result,
+            ItemLike mold,
+            net.Herothepro.progressioned.fluid.FluidHolder<net.neoforged.neoforge.fluids.FluidType> fluid,
+            int fluidAmount,
+            int coolingTime,
+            boolean consumeCast
+    ) {}
+
+    record WoodVariant(
+            String name,
+            Item planks,
+            net.minecraft.world.level.block.Block post,
+            net.minecraft.world.level.block.Block strippedPost,
+            net.minecraft.world.level.ItemLike log,
+            net.minecraft.world.level.ItemLike wood,
+            net.minecraft.world.level.ItemLike strippedLog,
+            net.minecraft.world.level.ItemLike strippedWood
+    ) {}
+
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput) {
         // Flint tool recipes
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FLINT_PICK.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FLINT_PICKAXE)
                 .pattern("CFC").pattern(" SP").pattern(" S ")
-                .define('F', ModItems.FLINT_SHARD.get()).define('C', ModItems.FLINT_CHIP.get())
-                .define('S', Items.STICK).define('P', ModItems.PLANT_STRING.get())
-                .unlockedBy("has_flint_chip", has(ModItems.FLINT_CHIP.get())).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FLINT_AXE.get())
+                .define('F', ModItems.FLINT_SHARD).define('C', ModItems.FLINT_CHIP)
+                .define('S', Items.STICK).define('P', ModItems.PLANT_STRING)
+                .unlockedBy("has_flint_chip", has(ModItems.FLINT_CHIP)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FLINT_AXE)
                 .pattern("FC ").pattern("PS ").pattern("   ")
-                .define('F', ModItems.FLINT_SHARD.get()).define('C', ModItems.FLINT_CHIP.get())
-                .define('S', Items.STICK).define('P', ModItems.PLANT_STRING.get())
-                .unlockedBy("has_flint_chip", has(ModItems.FLINT_CHIP.get())).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FLINT_SHOVEL.get())
+                .define('F', ModItems.FLINT_SHARD).define('C', ModItems.FLINT_CHIP)
+                .define('S', Items.STICK).define('P', ModItems.PLANT_STRING)
+                .unlockedBy("has_flint_chip", has(ModItems.FLINT_CHIP)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FLINT_SHOVEL)
                 .pattern(" F ").pattern(" SP").pattern(" S ")
                 .define('F', ModItems.FLINT_SHARD.get()).define('S', Items.STICK)
                 .define('P', ModItems.PLANT_STRING.get())
                 .unlockedBy("has_flint_shard", has(ModItems.FLINT_SHARD.get())).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FLINT_HOE.get())
                 .pattern("CF ").pattern("PS ").pattern(" S ")
-                .define('F', ModItems.FLINT_SHARD.get()).define('C', ModItems.FLINT_CHIP.get())
-                .define('S', Items.STICK).define('P', ModItems.PLANT_STRING.get())
-                .unlockedBy("has_flint_chip", has(ModItems.FLINT_CHIP.get())).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FLINT_KNIFE.get())
+                .define('F', ModItems.FLINT_SHARD).define('C', ModItems.FLINT_CHIP)
+                .define('S', Items.STICK).define('P', ModItems.PLANT_STRING)
+                .unlockedBy("has_flint_chip", has(ModItems.FLINT_CHIP)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FLINT_KNIFE)
                 .pattern(" C ").pattern("S  ").pattern("   ")
-                .define('C', ModItems.FLINT_CHIP.get()).define('S', Items.STICK)
-                .unlockedBy("has_flint_chip", has(ModItems.FLINT_CHIP.get())).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FLINT_SPEAR.get())
+                .define('C', ModItems.FLINT_CHIP).define('S', Items.STICK)
+                .unlockedBy("has_flint_chip", has(ModItems.FLINT_CHIP)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FLINT_SPEAR)
                 .pattern("  C").pattern(" SP").pattern("S  ")
-                .define('C', ModItems.FLINT_CHIP.get()).define('S', Items.STICK)
-                .define('P', ModItems.PLANT_STRING.get())
-                .unlockedBy("has_flint_chip", has(ModItems.FLINT_CHIP.get())).save(recipeOutput);
+                .define('C', ModItems.FLINT_CHIP).define('S', Items.STICK)
+                .define('P', ModItems.PLANT_STRING)
+                .unlockedBy("has_flint_chip", has(ModItems.FLINT_CHIP)).save(recipeOutput);
 
         // Random stuff
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FIBER_MESH.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FIBER_MESH)
                 .pattern("SF ").pattern("FS ").pattern("   ")
-                .define('S', Items.STICK).define('F', ModItems.PLANT_STRING.get())
-                .unlockedBy("has_plant_string", has(ModItems.PLANT_STRING.get())).save(recipeOutput);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.PLANT_STRING.get())
-                .requires(ModItems.PLANT_FIBER.get(), 3)
-                .unlockedBy("has_plant_fiber", has(ModItems.PLANT_FIBER.get())).save(recipeOutput);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.FIRE_STICK.get())
+                .define('S', Items.STICK).define('F', ModItems.PLANT_STRING)
+                .unlockedBy("has_plant_string", has(ModItems.PLANT_STRING)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.PLANT_STRING)
+                .requires(ModItems.PLANT_FIBER, 3)
+                .unlockedBy("has_plant_fiber", has(ModItems.PLANT_FIBER)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.FIRE_STICK)
                 .requires(Items.STICK, 2)
                 .unlockedBy("has_sticks", has(Items.STICK)).save(recipeOutput);
-
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.CHARCOAL_BLOCK.get())
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.BRONZE_DUST.get(), 4)
+                .requires(ModItems.TIN_DUST)
+                .requires(ModItems.COPPER_DUST,3)
+                .unlockedBy("has_tin_dust", has(ModItems.TIN_DUST.get())).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ROSE_GOLD_DUST.get(), 4)
+                .requires(ModItems.GOLD_DUST,3)
+                .requires(ModItems.COPPER_DUST,1)
+                .requires(ModItems.SILVER_DUST,1)
+                .unlockedBy("has_silver_dust", has(ModItems.SILVER_DUST.get())).save(recipeOutput);
+        // Block Crafting
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.CHARCOAL_BLOCK)
                 .requires(Items.CHARCOAL, 9)
                 .unlockedBy("has_charcoal", has(Items.CHARCOAL)).save(recipeOutput);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.CHARCOAL , 9)
-                .requires(ModItems.CHARCOAL_BLOCK, 1)
-                .unlockedBy("has_charcoal_block", has(ModBlocks.CHARCOAL_BLOCK.get())).save(recipeOutput);
+                .requires(ModBlocks.CHARCOAL_BLOCK, 1)
+                .unlockedBy("has_charcoal_block", has(ModBlocks.CHARCOAL_BLOCK)).save(recipeOutput);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.TIN_BLOCK)
+                .requires(ModItems.TIN_INGOT, 9)
+                .unlockedBy("has_tin_ingot", has(ModItems.TIN_INGOT)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.TIN_INGOT , 9)
+                .requires(ModBlocks.TIN_BLOCK, 1)
+                .unlockedBy("has_tin_block", has(ModBlocks.TIN_BLOCK)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.RAW_TIN_BLOCK)
+                .requires(ModItems.RAW_TIN, 9)
+                .unlockedBy("has_raw_tin", has(ModItems.RAW_TIN)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.RAW_TIN , 9)
+                .requires(ModBlocks.RAW_TIN_BLOCK, 1)
+                .unlockedBy("has_raw_tin_block", has(ModBlocks.RAW_TIN_BLOCK)).save(recipeOutput);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.SILVER_BLOCK)
+                .requires(ModItems.SILVER_INGOT, 9)
+                .unlockedBy("has_silver_ingot", has(ModItems.SILVER_INGOT)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SILVER_INGOT , 9)
+                .requires(ModBlocks.SILVER_BLOCK, 1)
+                .unlockedBy("has_silver_block", has(ModBlocks.SILVER_BLOCK)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.RAW_SILVER_BLOCK)
+                .requires(ModItems.RAW_SILVER, 9)
+                .unlockedBy("has_raw_silver", has(ModItems.RAW_SILVER)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.RAW_SILVER , 9)
+                .requires(ModBlocks.RAW_SILVER_BLOCK, 1)
+                .unlockedBy("has_raw_silver_block", has(ModBlocks.RAW_SILVER_BLOCK)).save(recipeOutput);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.BRONZE_BLOCK)
+                .requires(ModItems.BRONZE_INGOT, 9)
+                .unlockedBy("has_bronze_ingot", has(ModItems.BRONZE_INGOT)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.BRONZE_INGOT , 9)
+                .requires(ModBlocks.BRONZE_BLOCK, 1)
+                .unlockedBy("has_bronze_block", has(ModBlocks.BRONZE_BLOCK)).save(recipeOutput);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.ROSE_GOLD_BLOCK)
+                .requires(ModItems.ROSE_GOLD_INGOT, 9)
+                .unlockedBy("has_rose_gold_ingot", has(ModItems.ROSE_GOLD_INGOT)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ROSE_GOLD_INGOT , 9)
+                .requires(ModBlocks.ROSE_GOLD_BLOCK, 1)
+                .unlockedBy("has_rose_gold_block", has(ModBlocks.ROSE_GOLD_BLOCK)).save(recipeOutput);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Blocks.MUD)
+                .requires(ModItems.MUD_BALL, 4)
+                .unlockedBy("has_mud_ball", has(ModItems.MUD_BALL)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.MUD_BALL , 4)
+                .requires(Blocks.MUD, 1)
+                .unlockedBy("has_mud", has(Blocks.MUD)).save(recipeOutput);
 
         damagingShapelessRecipe(recipeOutput, "straw_cord",
                 new ItemStack(ModItems.STRAW_CORD.get(), 1),
-                List.of(Ingredient.of(ModItems.STRAW.get()),
-                        Ingredient.of(ModItems.STRAW.get())),
+                List.of(Ingredient.of(ModItems.STRAW),
+                        Ingredient.of(ModItems.STRAW)),
                 Ingredient.of(ModTags.Items.KNIVES), 1);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.BUNDLE)
                 .pattern(" S ").pattern(" L ").pattern("   ")
-                .define('S', ModItems.STRAW_CORD.get()).define('L', Items.LEATHER)
-                .unlockedBy("has_straw_cord", has(ModItems.STRAW_CORD.get())).save(recipeOutput);
+                .define('S', ModItems.STRAW_CORD).define('L', Items.LEATHER)
+                .unlockedBy("has_straw_cord", has(ModItems.STRAW_CORD)).save(recipeOutput);
 
         // Clay Stuff
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.PORCELAIN_CLAY_BALL.get())
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.PORCELAIN_CLAY_BALL)
                 .requires(Items.CLAY_BALL, 1)
                 .requires(Items.BONE_MEAL, 2)
                 .unlockedBy("has_bone_meal", has(Items.BONE_MEAL)).save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.UNFIRED_CLAY_BUCKET.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.UNFIRED_CLAY_BUCKET)
                 .pattern("   ").pattern("C C").pattern(" C ")
                 .define('C', Items.CLAY_BALL)
                 .unlockedBy("has_clay_ball", has(Items.CLAY_BALL)).save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PORCELAIN_BRICKS.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.PORCELAIN_BRICKS)
                 .pattern("PP ").pattern("PP ").pattern("   ")
-                .define('P', ModItems.PORCELAIN_CLAY_BRICK.get())
-                .unlockedBy("has_porcelain_clay_brick", has(ModItems.PORCELAIN_CLAY_BRICK.get())).save(recipeOutput);
+                .define('P', ModItems.PORCELAIN_CLAY_BRICK)
+                .unlockedBy("has_porcelain_clay_brick", has(ModItems.PORCELAIN_CLAY_BRICK)).save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PORCELAIN_BRICK_SLAB.get(), 6)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.PORCELAIN_BRICK_SLAB, 6)
                 .pattern("   ").pattern("PPP").pattern("   ")
-                .define('P', ModItems.PORCELAIN_BRICKS.get())
-                .unlockedBy("has_porcelain_clay_bricks", has(ModItems.PORCELAIN_BRICKS.get())).save(recipeOutput);
-        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModItems.PORCELAIN_BRICKS.get()), RecipeCategory.MISC,
-                        ModItems.PORCELAIN_BRICK_SLAB.get(),2)
-                .unlockedBy("has_porcelain_bricks", has(ModBlocks.PORCELAIN_BRICKS.get()))
+                .define('P', ModBlocks.PORCELAIN_BRICKS)
+                .unlockedBy("has_porcelain_clay_bricks", has(ModBlocks.PORCELAIN_BRICKS)).save(recipeOutput);
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.PORCELAIN_BRICKS), RecipeCategory.MISC,
+                        ModBlocks.PORCELAIN_BRICK_SLAB,2)
+                .unlockedBy("has_porcelain_bricks", has(ModBlocks.PORCELAIN_BRICKS))
                 .save(recipeOutput, "porcelain_brick_slab_from_stonecutting");
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PORCELAIN_BRICK_STAIRS.get(), 4)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.PORCELAIN_BRICK_STAIRS, 4)
                 .pattern("P  ").pattern("PP ").pattern("PPP")
-                .define('P', ModItems.PORCELAIN_BRICKS.get())
-                .unlockedBy("has_porcelain_clay_bricks", has(ModItems.PORCELAIN_BRICKS.get())).save(recipeOutput);
-        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModItems.PORCELAIN_BRICKS.get()), RecipeCategory.MISC,
-                        ModItems.PORCELAIN_BRICK_STAIRS.get(),1)
-                .unlockedBy("has_porcelain_bricks", has(ModBlocks.PORCELAIN_BRICKS.get()))
+                .define('P', ModBlocks.PORCELAIN_BRICKS)
+                .unlockedBy("has_porcelain_clay_bricks", has(ModBlocks.PORCELAIN_BRICKS)).save(recipeOutput);
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.PORCELAIN_BRICKS), RecipeCategory.MISC,
+                        ModBlocks.PORCELAIN_BRICK_STAIRS,1)
+                .unlockedBy("has_porcelain_bricks", has(ModBlocks.PORCELAIN_BRICKS))
                 .save(recipeOutput, "porcelain_brick_stairs_from_stonecutting");
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PORCELAIN_BRICK_WALL.get(), 6)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.PORCELAIN_BRICK_WALL, 6)
                 .pattern("   ").pattern("PPP").pattern("PPP")
-                .define('P', ModItems.PORCELAIN_BRICKS.get())
-                .unlockedBy("has_porcelain_clay_bricks", has(ModItems.PORCELAIN_BRICKS.get())).save(recipeOutput);
-        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModItems.PORCELAIN_BRICKS.get()), RecipeCategory.MISC,
-                        ModItems.PORCELAIN_BRICK_WALL.get(),1)
-                .unlockedBy("has_porcelain_bricks", has(ModBlocks.PORCELAIN_BRICKS.get()))
+                .define('P', ModBlocks.PORCELAIN_BRICKS)
+                .unlockedBy("has_porcelain_clay_bricks", has(ModBlocks.PORCELAIN_BRICKS)).save(recipeOutput);
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.PORCELAIN_BRICKS), RecipeCategory.MISC,
+                        ModBlocks.PORCELAIN_BRICK_WALL,1)
+                .unlockedBy("has_porcelain_bricks", has(ModBlocks.PORCELAIN_BRICKS))
                 .save(recipeOutput, "porcelain_brick_wall_from_stonecutting");
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.PORCELAIN_MELTER, 1)
+                .pattern("B B").pattern("B B").pattern("BPB")
+                .define('P', ModBlocks.PORCELAIN_BRICKS).define('B', ModItems.PORCELAIN_CLAY_BRICK)
+                .unlockedBy("has_porcelain_clay_bricks", has(ModBlocks.PORCELAIN_BRICKS)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.PORCELAIN_HEATER, 1)
+                .pattern("PBP").pattern("BCB").pattern("PBP")
+                .define('P', ModBlocks.PORCELAIN_BRICKS).define('B', ModItems.PORCELAIN_CLAY_BRICK)
+                .define('C', ItemTags.COALS)
+                .unlockedBy("has_porcelain_clay_bricks", has(ModBlocks.PORCELAIN_BRICKS)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.PORCELAIN_FAUCET, 1)
+                .pattern("B B").pattern(" B ").pattern("   ")
+                .define('B', ModItems.PORCELAIN_CLAY_BRICK)
+                .unlockedBy("has_porcelain_clay_brick", has(ModItems.PORCELAIN_CLAY_BRICK)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.PORCELAIN_CASTING_TABLE, 1)
+                .pattern("BBB").pattern("B B").pattern("B B")
+                .define('B', ModItems.PORCELAIN_CLAY_BRICK)
+                .unlockedBy("has_porcelain_clay_brick", has(ModItems.PORCELAIN_CLAY_BRICK)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.PORCELAIN_CASTING_BASIN, 1)
+                .pattern("B B").pattern("B B").pattern("BBB")
+                .define('B', ModItems.PORCELAIN_CLAY_BRICK)
+                .unlockedBy("has_porcelain_clay_brick", has(ModItems.PORCELAIN_CLAY_BRICK)).save(recipeOutput);
 
         // Thatch Stuff
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.STRAW , 4)
-                .requires(ModItems.THATCH, 1)
-                .unlockedBy("has_thatch", has(ModBlocks.THATCH.get())).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.THATCH.get())
+                .requires(ModBlocks.THATCH, 1)
+                .unlockedBy("has_thatch", has(ModBlocks.THATCH)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.THATCH)
                 .pattern("SS ").pattern("SS ").pattern("   ")
                 .define('S', ModItems.STRAW)
                 .unlockedBy("has_straw", has(ModItems.STRAW)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.THATCH_SLAB.get(), 6)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.THATCH_SLAB, 6)
                 .pattern("   ").pattern("TTT").pattern("   ")
-                .define('T', ModItems.THATCH.get())
-                .unlockedBy("has_thatch", has(ModItems.THATCH.get())).save(recipeOutput);
+                .define('T', ModBlocks.THATCH)
+                .unlockedBy("has_thatch", has(ModBlocks.THATCH)).save(recipeOutput);
 
         // Copper Tool Recipes
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_SWORD.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_SWORD)
                 .pattern(" P ").pattern(" P ").pattern(" S ")
-                .define('S', Items.STICK).define('P', ModItems.COPPER_PLATE.get())
-                .unlockedBy("has_copper_plate", has(ModItems.COPPER_PLATE.get())).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_PICKAXE.get())
+                .define('S', Items.STICK).define('P', ModItems.COPPER_PLATE)
+                .unlockedBy("has_copper_plate", has(ModItems.COPPER_PLATE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_PICKAXE)
                 .pattern("PCP").pattern(" S ").pattern(" S ")
-                .define('S', Items.STICK).define('C', Items.COPPER_INGOT).define('P', ModItems.COPPER_PLATE.get())
-                .unlockedBy("has_copper_plate", has(ModItems.COPPER_PLATE.get())).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_AXE.get())
+                .define('S', Items.STICK).define('C', Items.COPPER_INGOT).define('P', ModItems.COPPER_PLATE)
+                .unlockedBy("has_copper_plate", has(ModItems.COPPER_PLATE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_AXE)
                 .pattern("CP ").pattern("PS ").pattern(" S ")
-                .define('S', Items.STICK).define('C', Items.COPPER_INGOT).define('P', ModItems.COPPER_PLATE.get())
+                .define('S', Items.STICK).define('C', Items.COPPER_INGOT).define('P', ModItems.COPPER_PLATE)
                 .unlockedBy("has_copper_ingot", has(Items.COPPER_INGOT)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_SHOVEL.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_SHOVEL)
                 .pattern(" P ").pattern(" S ").pattern(" S ")
                 .define('S', Items.STICK).define('P', ModItems.COPPER_PLATE)
                 .unlockedBy("has_copper_ingot", has(Items.COPPER_INGOT)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_HOE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_HOE)
                 .pattern("PC ").pattern(" S ").pattern(" S ")
-                .define('S', Items.STICK).define('C', Items.COPPER_INGOT).define('P', ModItems.COPPER_PLATE.get())
+                .define('S', Items.STICK).define('C', Items.COPPER_INGOT).define('P', ModItems.COPPER_PLATE)
                 .unlockedBy("has_copper_ingot", has(Items.COPPER_INGOT)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_SPEAR.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_SPEAR)
                 .pattern("  C").pattern(" S ").pattern("S  ")
                 .define('S', Items.STICK).define('C', Items.COPPER_INGOT)
                 .unlockedBy("has_copper_ingot", has(Items.COPPER_INGOT)).save(recipeOutput);
 
         // Bone tool Recipes
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BONE_SPEAR.get())
-                .pattern("  C").pattern(" S ").pattern("S  ")
-                .define('S', Items.STICK).define('C', ModItems.SHARP_BONE)
-                .unlockedBy("has_sharp_bone", has(ModItems.SHARP_BONE)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BONE_SWORD.get())
-                .pattern(" C ").pattern(" B ").pattern(" S ")
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BONE_SWORD)
+                .pattern(" C ").pattern(" BP").pattern(" S ")
                 .define('B', Items.BONE).define('S', Items.STICK)
-                .define('C', ModItems.SHARP_BONE)
+                .define('C', ModItems.SHARP_BONE).define('P', ModItems.PLANT_STRING)
                 .unlockedBy("has_sharp_bone", has(ModItems.SHARP_BONE)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BONE_CLUB.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BONE_PICKAXE)
+                .pattern("CBC").pattern(" SP").pattern(" S ")
+                .define('B', Items.BONE).define('S', Items.STICK)
+                .define('C', ModItems.SHARP_BONE).define('P', ModItems.PLANT_STRING)
+                .unlockedBy("has_sharp_bone", has(ModItems.SHARP_BONE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BONE_AXE)
+                .pattern("CB ").pattern("CSP").pattern(" S ")
+                .define('B', Items.BONE).define('S', Items.STICK)
+                .define('C', ModItems.SHARP_BONE).define('P', ModItems.PLANT_STRING)
+                .unlockedBy("has_sharp_bone", has(ModItems.SHARP_BONE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BONE_CLUB)
                 .pattern(" B ").pattern(" C ").pattern("   ")
                 .define('B', Items.BONE).define('C', ModItems.SHARP_BONE)
                 .unlockedBy("has_sharp_bone", has(ModItems.SHARP_BONE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BONE_SPEAR)
+                .pattern("  C").pattern(" SP").pattern("S  ")
+                .define('S', Items.STICK).define('C', ModItems.SHARP_BONE)
+                .define('P', ModItems.PLANT_STRING)
+                .unlockedBy("has_sharp_bone", has(ModItems.SHARP_BONE)).save(recipeOutput);
         // Amethyst Bone
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.AMETHYST_BONE_SWORD.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.AMETHYST_BONE_SWORD)
                 .pattern(" A ").pattern("ABA").pattern(" S ")
                 .define('B', ModItems.BONE_SWORD).define('A', Items.AMETHYST_SHARD)
-                .define('S', Items.STICK)
+                .define('S', Items.IRON_INGOT)
                 .unlockedBy("has_bone_sword", has(ModItems.BONE_SWORD)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.AMETHYST_BONE_SPEAR.get())
-                .pattern(" AA").pattern(" BA").pattern("A  ")
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.AMETHYST_BONE_PICKAXE)
+                .pattern("AAA").pattern(" B ").pattern(" S ")
+                .define('B', ModItems.BONE_PICKAXE).define('A', Items.AMETHYST_SHARD)
+                .define('S', Items.IRON_INGOT)
+                .unlockedBy("has_bone_pickaxe", has(ModItems.BONE_PICKAXE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.AMETHYST_BONE_AXE)
+                .pattern("AA ").pattern("AB ").pattern(" S ")
+                .define('B', ModItems.BONE_AXE).define('A', Items.AMETHYST_SHARD)
+                .define('S', Items.IRON_INGOT)
+                .unlockedBy("has_bone_axe", has(ModItems.BONE_AXE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.AMETHYST_BONE_SPEAR)
+                .pattern(" AA").pattern(" BA").pattern("S  ")
                 .define('B', ModItems.BONE_SPEAR).define('A', Items.AMETHYST_SHARD)
+                .define('S', Items.IRON_INGOT)
                 .unlockedBy("has_bone_spear", has(ModItems.BONE_SPEAR)).save(recipeOutput);
         // Golden Bone
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.GOLDEN_BONE_SWORD.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.GOLDEN_BONE_SWORD)
                 .pattern(" A ").pattern("ABA").pattern(" S ")
                 .define('B', ModItems.BONE_SWORD).define('A', ModItems.GOLD_PLATE)
-                .define('S', Items.STICK)
+                .define('S', Items.IRON_INGOT)
                 .unlockedBy("has_bone_sword", has(ModItems.BONE_SWORD)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.GOLDEN_BONE_SPEAR.get())
-                .pattern(" AA").pattern(" BA").pattern("A  ")
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.GOLDEN_BONE_PICKAXE)
+                .pattern("AAA").pattern(" B ").pattern(" S ")
+                .define('B', ModItems.BONE_PICKAXE).define('A', ModItems.GOLD_PLATE)
+                .define('S', Items.IRON_INGOT)
+                .unlockedBy("has_bone_pickaxe", has(ModItems.BONE_PICKAXE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.GOLDEN_BONE_AXE)
+                .pattern("AA ").pattern("AB ").pattern(" S ")
+                .define('B', ModItems.BONE_AXE).define('A', ModItems.GOLD_PLATE)
+                .define('S', Items.IRON_INGOT)
+                .unlockedBy("has_bone_axe", has(ModItems.BONE_AXE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.GOLDEN_BONE_SPEAR)
+                .pattern(" AA").pattern(" BA").pattern("S  ")
                 .define('B', ModItems.BONE_SPEAR).define('A', ModItems.GOLD_PLATE)
+                .define('S', Items.IRON_INGOT)
                 .unlockedBy("has_bone_spear", has(ModItems.BONE_SPEAR)).save(recipeOutput);
 
         // Workstation Stuff
@@ -216,214 +358,319 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('S', Items.STONE).define('M', Items.SMOOTH_STONE).define('C', Items.COAL_BLOCK)
                 .unlockedBy("has_stone", has(Items.STONE))
                 .save(recipeOutput,ResourceLocation.fromNamespaceAndPath("minecraft", "furnace"));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CHOPPING_BLOCK.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CHOPPING_BLOCK)
                 .pattern(" L ").pattern(" F ").pattern("   ")
                 .define('L', ItemTags.LOGS).define('F', ModItems.FLINT_SHARD)
                 .unlockedBy("has_flint_shard", has(ModItems.FLINT_SHARD)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.PORCELAIN_KILN.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.PORCELAIN_KILN)
                 .pattern("PPP").pattern("P P").pattern("BBB")
                 .define('P', ModItems.PORCELAIN_CLAY_BRICK).define('B', Items.CLAY_BALL)
                 .unlockedBy("has_porcelain_clay_brick", has(ModItems.PORCELAIN_CLAY_BRICK)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.WORKSTONE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.WORKSTONE)
                 .pattern(" S ").pattern(" L ").pattern("   ")
                 .define('S', Blocks.SMOOTH_STONE).define('L', ItemTags.LOGS)
                 .unlockedBy("has_smooth_stone", has(Blocks.SMOOTH_STONE)).save(recipeOutput);
 
-        SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(ModItems.PORCELAIN_CLAY_BALL.get()), RecipeCategory.MISC,
-                 ModItems.PORCELAIN_CLAY_BRICK.get(), 0.35f, 600                                        )
-                .unlockedBy("has_porcelain_clay_ball", has(ModItems.PORCELAIN_CLAY_BALL.get()))
-                .save(recipeOutput);
+        SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(ModItems.PORCELAIN_CLAY_BALL), RecipeCategory.MISC,
+                        ModItems.PORCELAIN_CLAY_BRICK, 0.35f, 600)
+                .unlockedBy("has_porcelain_clay_ball", has(ModItems.PORCELAIN_CLAY_BALL)).save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CAMPFIRE_BASE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CAMPFIRE_BASE)
                 .pattern("PP ").pattern("PP ").pattern("   ")
                 .define('P', ModTags.Items.POSTS)
-                .unlockedBy("has_any_post", has(ModTags.Items.POSTS))
-                .save(recipeOutput);
+                .unlockedBy("has_any_post", has(ModTags.Items.POSTS)).save(recipeOutput);
 
-        //Custom tools
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_KNIFE.get())
+        // Custom tools
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_KNIFE)
                 .pattern(" C ").pattern("S  ").pattern("   ")
                 .define('C', ModItems.COPPER_PLATE).define('S', Items.STICK)
                 .unlockedBy("has_copper_plate", has(ModItems.COPPER_PLATE)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.IRON_KNIFE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.IRON_KNIFE)
                 .pattern(" I ").pattern("S  ").pattern("   ")
                 .define('S', Items.STICK).define('I', ModItems.IRON_PLATE)
                 .unlockedBy("has_iron_plate", has(ModItems.IRON_PLATE)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.DIAMOND_KNIFE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.DIAMOND_KNIFE)
                 .pattern(" D ").pattern("S  ").pattern("   ")
                 .define('S', Items.STICK).define('D', Items.DIAMOND)
                 .unlockedBy("has_diamond", has(Items.DIAMOND)).save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_SAW.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_SAW)
                 .pattern("SSS").pattern("LFC").pattern("   ")
                 .define('C', ModItems.COPPER_PLATE ).define('S', Items.STICK)
                 .define('F', Items.COPPER_INGOT).define('L', ItemTags.LOGS)
                 .unlockedBy("has_copper_ingot", has(Items.COPPER_INGOT)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.IRON_SAW.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.IRON_SAW)
                 .pattern("SSS").pattern("LII").pattern("   ")
                 .define('S', Items.STICK).define('I', Items.IRON_INGOT)
                 .define('L', ItemTags.LOGS)
                 .unlockedBy("has_iron_ingot", has(Items.IRON_INGOT)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.DIAMOND_SAW.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.DIAMOND_SAW)
                 .pattern("SSS").pattern("LDD").pattern("   ")
                 .define('S', Items.STICK).define('D', Items.DIAMOND)
                 .define('L', ItemTags.LOGS)
                 .unlockedBy("has_diamond", has(Items.DIAMOND)).save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_HAMMER.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_HAMMER)
                 .pattern("BCC").pattern("CS ").pattern(" S ")
                 .define('C', Items.COPPER_INGOT).define('S', Items.STICK)
                 .define('B', Blocks.COPPER_BLOCK)
                 .unlockedBy("has_copper_ingot", has(Items.COPPER_INGOT)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.IRON_HAMMER.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.IRON_HAMMER)
                 .pattern("BII").pattern("IS ").pattern(" S ")
                 .define('S', Items.STICK).define('I', ModItems.IRON_PLATE)
                 .define('B', Blocks.IRON_BLOCK)
                 .unlockedBy("has_iron_plate", has(ModItems.IRON_PLATE)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.DIAMOND_HAMMER.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.DIAMOND_HAMMER)
                 .pattern("BDD").pattern("DS ").pattern(" S ")
                 .define('S', Items.STICK).define('D', Items.DIAMOND)
                 .define('B', Blocks.DIAMOND_BLOCK)
                 .unlockedBy("has_diamond", has(Items.DIAMOND)).save(recipeOutput);
 
+        // Bronze Armor
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BRONZE_HELMET)
+                .pattern("PPP").pattern("P P").pattern("   ")
+                .define('P', ModItems.BRONZE_PLATE) 
+                .unlockedBy("has_bronze_plate", has(ModItems.BRONZE_PLATE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BRONZE_CHESTPLATE)
+                .pattern("P P").pattern("PPP").pattern("PPP")
+                .define('P', ModItems.BRONZE_PLATE)
+                .unlockedBy("has_bronze_plate", has(ModItems.BRONZE_PLATE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BRONZE_LEGGINGS)
+                .pattern("PPP").pattern("P P").pattern("P P")
+                .define('P', ModItems.BRONZE_PLATE)
+                .unlockedBy("has_bronze_plate", has(ModItems.BRONZE_PLATE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BRONZE_BOOTS)
+                .pattern("P P").pattern("P P").pattern("   ")
+                .define('P', ModItems.BRONZE_PLATE)
+                .unlockedBy("has_bronze_plate", has(ModItems.BRONZE_PLATE)).save(recipeOutput);
+
+        // Rose Gold Armor
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.ROSE_GOLD_HELMET)
+                .pattern("PPP").pattern("P P").pattern("   ")
+                .define('P', ModItems.ROSE_GOLD_PLATE)
+                .unlockedBy("has_rose_gold_plate", has(ModItems.ROSE_GOLD_PLATE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.ROSE_GOLD_CHESTPLATE)
+                .pattern("P P").pattern("PPP").pattern("PPP")
+                .define('P', ModItems.ROSE_GOLD_PLATE)
+                .unlockedBy("has_rose_gold_plate", has(ModItems.ROSE_GOLD_PLATE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.ROSE_GOLD_LEGGINGS)
+                .pattern("PPP").pattern("P P").pattern("P P")
+                .define('P', ModItems.ROSE_GOLD_PLATE)
+                .unlockedBy("has_rose_gold_plate", has(ModItems.ROSE_GOLD_PLATE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.ROSE_GOLD_BOOTS)
+                .pattern("P P").pattern("P P").pattern("   ")
+                .define('P', ModItems.ROSE_GOLD_PLATE)
+                .unlockedBy("has_rose_gold_plate", has(ModItems.ROSE_GOLD_PLATE)).save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BLANK_MOLD)
+                .pattern("BB ").pattern("BB ").pattern("   ")
+                .define('B', ModItems.MUD_BRICK)
+                .unlockedBy("has_mud_brick", has(ModItems.MUD_BRICK)).save(recipeOutput);
+
+        TagKey<Item> cBricks = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "bricks"));
+        TagKey<Item> cPlates = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "plates"));
+        TagKey<Item> cNuggets = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "nuggets"));
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.INGOT_MOLD.get(), 1)
+                .requires(ModItems.BLANK_MOLD.get())
+                .requires(cBricks)
+                .unlockedBy("has_blank_mold", has(ModItems.BLANK_MOLD.get())).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.PLATE_MOLD.get(), 1)
+                .requires(ModItems.BLANK_MOLD.get())
+                .requires(cPlates)
+                .unlockedBy("has_blank_mold", has(ModItems.BLANK_MOLD.get())).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.NUGGET_MOLD.get(), 1)
+                .requires(ModItems.BLANK_MOLD.get())
+                .requires(cNuggets)
+                .unlockedBy("has_blank_mold", has(ModItems.BLANK_MOLD.get())).save(recipeOutput);
+
+        damagingShapelessRecipe(recipeOutput, "sword_blade_mold",
+                new ItemStack(ModItems.SWORD_BLADE_MOLD.get(), 1),
+                List.of(Ingredient.of(ModItems.BLANK_MOLD)),
+                Ingredient.of(ItemTags.SWORDS), 1);
+        damagingShapelessRecipe(recipeOutput, "pickaxe_head_mold",
+                new ItemStack(ModItems.PICKAXE_HEAD_MOLD.get(), 1),
+                List.of(Ingredient.of(ModItems.BLANK_MOLD)),
+                Ingredient.of(ItemTags.PICKAXES), 1);
+        damagingShapelessRecipe(recipeOutput, "axe_head_mold",
+                new ItemStack(ModItems.AXE_HEAD_MOLD.get(), 1),
+                List.of(Ingredient.of(ModItems.BLANK_MOLD)),
+                Ingredient.of(ItemTags.AXES), 1);
+        damagingShapelessRecipe(recipeOutput, "shovel_head_mold",
+                new ItemStack(ModItems.SHOVEL_HEAD_MOLD.get(), 1),
+                List.of(Ingredient.of(ModItems.BLANK_MOLD)),
+                Ingredient.of(ItemTags.SHOVELS), 1);
+        damagingShapelessRecipe(recipeOutput, "hoe_head_mold",
+                new ItemStack(ModItems.HOE_HEAD_MOLD.get(), 1),
+                List.of(Ingredient.of(ModItems.BLANK_MOLD)),
+                Ingredient.of(ItemTags.HOES), 1);
+
+        damagingShapelessRecipe(recipeOutput, "copper_ingot_hammering_to_dust",
+                new ItemStack(ModItems.COPPER_DUST.get(), 1),
+                List.of(Ingredient.of(Items.COPPER_INGOT)),
+                Ingredient.of(ModTags.Items.HAMMERS), 1);
+        damagingShapelessRecipe(recipeOutput, "gold_ingot_hammering_to_dust",
+                new ItemStack(ModItems.GOLD_DUST.get(), 1),
+                List.of(Ingredient.of(Items.GOLD_INGOT)),
+                Ingredient.of(ModTags.Items.HAMMERS), 1);
+        damagingShapelessRecipe(recipeOutput, "tin_ingot_hammering_to_dust",
+                new ItemStack(ModItems.TIN_DUST.get(), 1),
+                List.of(Ingredient.of(ModItems.TIN_INGOT)),
+                Ingredient.of(ModTags.Items.HAMMERS), 1);
+        damagingShapelessRecipe(recipeOutput, "silver_ingot_hammering_to_dust",
+                new ItemStack(ModItems.SILVER_DUST.get(), 1),
+                List.of(Ingredient.of(ModItems.SILVER_INGOT)),
+                Ingredient.of(ModTags.Items.HAMMERS), 1);
+        damagingShapelessRecipe(recipeOutput, "bronze_ingot_hammering_to_dust",
+                new ItemStack(ModItems.BRONZE_DUST.get(), 1),
+                List.of(Ingredient.of(ModItems.BRONZE_INGOT)),
+                Ingredient.of(ModTags.Items.HAMMERS), 1);
+        damagingShapelessRecipe(recipeOutput, "rose_gold_ingot_hammering_to_dust",
+                new ItemStack(ModItems.ROSE_GOLD_DUST.get(), 1),
+                List.of(Ingredient.of(ModItems.ROSE_GOLD_INGOT)),
+                Ingredient.of(ModTags.Items.HAMMERS), 1);
+
         damagingShapelessRecipe(recipeOutput, "gravel_to_flint_with_fiber_mesh",
                 new ItemStack(Items.FLINT, 1),
-                List.of(Ingredient.of(Items.GRAVEL),
-                        Ingredient.of(Items.GRAVEL),
-                        Ingredient.of(Items.GRAVEL)),
+                List.of(Ingredient.of(Items.GRAVEL), Ingredient.of(Items.GRAVEL), Ingredient.of(Items.GRAVEL)),
                 Ingredient.of(ModItems.FIBER_MESH), 1);
 
-        damagingShapelessRecipe(recipeOutput, "oak_post_to_plank",
-                new ItemStack(Items.OAK_PLANKS, 1),
-                List.of(Ingredient.of(ModBlocks.OAK_POST.get())),
-                Ingredient.of(ItemTags.AXES), 1);
-        damagingShapelessRecipe(recipeOutput, "spruce_post_to_plank",
-                new ItemStack(Items.SPRUCE_PLANKS, 1),
-                List.of(Ingredient.of(ModBlocks.SPRUCE_POST.get())),
-                Ingredient.of(ItemTags.AXES), 1);
-        damagingShapelessRecipe(recipeOutput, "birch_post_to_plank",
-                new ItemStack(Items.BIRCH_PLANKS, 1),
-                List.of(Ingredient.of(ModBlocks.BIRCH_POST.get())),
-                Ingredient.of(ItemTags.AXES), 1);
-        damagingShapelessRecipe(recipeOutput, "jungle_post_to_plank",
-                new ItemStack(Items.JUNGLE_PLANKS, 1),
-                List.of(Ingredient.of(ModBlocks.JUNGLE_POST.get())),
-                Ingredient.of(ItemTags.AXES), 1);
-        damagingShapelessRecipe(recipeOutput, "acacia_post_to_plank",
-                new ItemStack(Items.ACACIA_PLANKS, 1),
-                List.of(Ingredient.of(ModBlocks.ACACIA_POST.get())),
-                Ingredient.of(ItemTags.AXES), 1);
-        damagingShapelessRecipe(recipeOutput, "dark_oak_post_to_plank",
-                new ItemStack(Items.DARK_OAK_PLANKS, 1),
-                List.of(Ingredient.of(ModBlocks.DARK_OAK_POST.get())),
-                Ingredient.of(ItemTags.AXES), 1);
-        damagingShapelessRecipe(recipeOutput, "mangrove_post_to_plank",
-                new ItemStack(Items.MANGROVE_PLANKS, 1),
-                List.of(Ingredient.of(ModBlocks.MANGROVE_POST.get())),
-                Ingredient.of(ItemTags.AXES), 1);
-        damagingShapelessRecipe(recipeOutput, "cherry_post_to_plank",
-                new ItemStack(Items.CHERRY_PLANKS, 1),
-                List.of(Ingredient.of(ModBlocks.CHERRY_POST.get())),
-                Ingredient.of(ItemTags.AXES), 1);
+        ShapedToolSpec[] shapedTools = {
+                // Copper
+                new ShapedToolSpec("copper_sword", ModItems.COPPER_SWORD, ModItems.COPPER_SWORD_BLADE),
+                new ShapedToolSpec("copper_pickaxe", ModItems.COPPER_PICKAXE, ModItems.COPPER_PICKAXE_HEAD),
+                new ShapedToolSpec("copper_axe", ModItems.COPPER_AXE, ModItems.COPPER_AXE_HEAD),
+                new ShapedToolSpec("copper_shovel", ModItems.COPPER_SHOVEL, ModItems.COPPER_SHOVEL_HEAD),
+                new ShapedToolSpec("copper_hoe", ModItems.COPPER_HOE, ModItems.COPPER_HOE_HEAD),
+                // Bronze
+                new ShapedToolSpec("bronze_sword", ModItems.BRONZE_SWORD, ModItems.BRONZE_SWORD_BLADE),
+                new ShapedToolSpec("bronze_pickaxe", ModItems.BRONZE_PICKAXE, ModItems.BRONZE_PICKAXE_HEAD),
+                new ShapedToolSpec("bronze_axe", ModItems.BRONZE_AXE, ModItems.BRONZE_AXE_HEAD),
+                new ShapedToolSpec("bronze_shovel", ModItems.BRONZE_SHOVEL, ModItems.BRONZE_SHOVEL_HEAD),
+                new ShapedToolSpec("bronze_hoe", ModItems.BRONZE_HOE, ModItems.BRONZE_HOE_HEAD),
+                // Iron
+                new ShapedToolSpec("iron_sword", Items.IRON_SWORD, ModItems.IRON_SWORD_BLADE),
+                new ShapedToolSpec("iron_pickaxe", Items.IRON_PICKAXE, ModItems.IRON_PICKAXE_HEAD),
+                new ShapedToolSpec("iron_axe", Items.IRON_AXE, ModItems.IRON_AXE_HEAD),
+                new ShapedToolSpec("iron_shovel", Items.IRON_SHOVEL, ModItems.IRON_SHOVEL_HEAD),
+                new ShapedToolSpec("iron_hoe", Items.IRON_HOE, ModItems.IRON_HOE_HEAD),
+                // Gold
+                new ShapedToolSpec("golden_sword", Items.GOLDEN_SWORD, ModItems.GOLD_SWORD_BLADE),
+                new ShapedToolSpec("golden_pickaxe", Items.GOLDEN_PICKAXE, ModItems.GOLD_PICKAXE_HEAD),
+                new ShapedToolSpec("golden_axe", Items.GOLDEN_AXE, ModItems.GOLD_AXE_HEAD),
+                new ShapedToolSpec("golden_shovel", Items.GOLDEN_SHOVEL, ModItems.GOLD_SHOVEL_HEAD),
+                new ShapedToolSpec("golden_hoe",Items.GOLDEN_HOE, ModItems.GOLD_HOE_HEAD),
+                // Rose Gold
+                new ShapedToolSpec("rose_gold_sword", ModItems.ROSE_GOLD_SWORD, ModItems.ROSE_GOLD_SWORD_BLADE),
+                new ShapedToolSpec("rose_gold_pickaxe", ModItems.ROSE_GOLD_PICKAXE, ModItems.ROSE_GOLD_PICKAXE_HEAD),
+                new ShapedToolSpec("rose_gold_axe", ModItems.ROSE_GOLD_AXE, ModItems.ROSE_GOLD_AXE_HEAD),
+                new ShapedToolSpec("rose_gold_shovel", ModItems.ROSE_GOLD_SHOVEL, ModItems.ROSE_GOLD_SHOVEL_HEAD),
+                new ShapedToolSpec("rose_gold_hoe", ModItems.ROSE_GOLD_HOE, ModItems.ROSE_GOLD_HOE_HEAD)
+        };
 
-        damagingShapelessRecipe(recipeOutput, "stripped_oak_post_to_plank",
-                new ItemStack(Items.OAK_PLANKS, 1),
-                List.of(Ingredient.of(ModBlocks.STRIPPED_OAK_POST.get())),
-                Ingredient.of(ItemTags.AXES), 1);
-        damagingShapelessRecipe(recipeOutput, "stripped_spruce_post_to_plank",
-                new ItemStack(Items.SPRUCE_PLANKS, 1),
-                List.of(Ingredient.of(ModBlocks.STRIPPED_SPRUCE_POST.get())),
-                Ingredient.of(ItemTags.AXES), 1);
-        damagingShapelessRecipe(recipeOutput, "stripped_birch_post_to_plank",
-                new ItemStack(Items.BIRCH_PLANKS, 1),
-                List.of(Ingredient.of(ModBlocks.STRIPPED_BIRCH_POST.get())),
-                Ingredient.of(ItemTags.AXES), 1);
-        damagingShapelessRecipe(recipeOutput, "stripped_jungle_post_to_plank",
-                new ItemStack(Items.JUNGLE_PLANKS, 1),
-                List.of(Ingredient.of(ModBlocks.STRIPPED_JUNGLE_POST.get())),
-                Ingredient.of(ItemTags.AXES), 1);
-        damagingShapelessRecipe(recipeOutput, "stripped_acacia_post_to_plank",
-                new ItemStack(Items.ACACIA_PLANKS, 1),
-                List.of(Ingredient.of(ModBlocks.STRIPPED_ACACIA_POST.get())),
-                Ingredient.of(ItemTags.AXES), 1);
-        damagingShapelessRecipe(recipeOutput, "stripped_dark_oak_post_to_plank",
-                new ItemStack(Items.DARK_OAK_PLANKS, 1),
-                List.of(Ingredient.of(ModBlocks.STRIPPED_DARK_OAK_POST.get())),
-                Ingredient.of(ItemTags.AXES), 1);
-        damagingShapelessRecipe(recipeOutput, "stripped_mangrove_post_to_plank",
-                new ItemStack(Items.MANGROVE_PLANKS, 1),
-                List.of(Ingredient.of(ModBlocks.STRIPPED_MANGROVE_POST.get())),
-                Ingredient.of(ItemTags.AXES), 1);
-        damagingShapelessRecipe(recipeOutput, "stripped_cherry_post_to_plank",
-                new ItemStack(Items.CHERRY_PLANKS, 1),
-                List.of(Ingredient.of(ModBlocks.STRIPPED_CHERRY_POST.get())),
-                Ingredient.of(ItemTags.AXES), 1);
+        for (ShapedToolSpec tool : shapedTools) {
+            ShapedRecipeBuilder.shaped(RecipeCategory.MISC, tool.result())
+                    .pattern(" HP")
+                    .pattern(" S ")
+                    .pattern("   ")
+                    .define('H', tool.head())
+                    .define('S', Items.STICK)
+                    .define('P', Items.STRING)
+                    .unlockedBy("has_" + tool.name(), has(tool.head()))
+                    .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, tool.name()+"from_head"));
+        }
 
-        // Chopping recipes
-        choppingRecipe(recipeOutput, "oak_log_to_post", Ingredient.of(Items.OAK_LOG),
-                new ItemStack(ModBlocks.OAK_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "oak_wood_to_post", Ingredient.of(Items.OAK_WOOD),
-                new ItemStack(ModBlocks.OAK_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "spruce_log_to_post", Ingredient.of(Items.SPRUCE_LOG),
-                new ItemStack(ModBlocks.SPRUCE_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "spruce_wood_to_post", Ingredient.of(Items.SPRUCE_WOOD),
-                new ItemStack(ModBlocks.SPRUCE_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "birch_log_to_post", Ingredient.of(Items.BIRCH_LOG),
-                new ItemStack(ModBlocks.BIRCH_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "birch_wood_to_post", Ingredient.of(Items.BIRCH_WOOD),
-                new ItemStack(ModBlocks.BIRCH_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "jungle_log_to_post", Ingredient.of(Items.JUNGLE_LOG),
-                new ItemStack(ModBlocks.JUNGLE_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "jungle_wood_to_post", Ingredient.of(Items.JUNGLE_WOOD),
-                new ItemStack(ModBlocks.JUNGLE_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "acacia_log_to_post", Ingredient.of(Items.ACACIA_LOG),
-                new ItemStack(ModBlocks.ACACIA_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "acacia_wood_to_post", Ingredient.of(Items.ACACIA_WOOD),
-                new ItemStack(ModBlocks.ACACIA_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "dark_oak_log_to_post", Ingredient.of(Items.DARK_OAK_LOG),
-                new ItemStack(ModBlocks.DARK_OAK_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "dark_oak_wood_to_post", Ingredient.of(Items.DARK_OAK_WOOD),
-                new ItemStack(ModBlocks.DARK_OAK_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "mangrove_log_to_post", Ingredient.of(Items.MANGROVE_LOG),
-                new ItemStack(ModBlocks.MANGROVE_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "mangrove_wood_to_post", Ingredient.of(Items.MANGROVE_WOOD),
-                new ItemStack(ModBlocks.MANGROVE_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "cherry_log_to_post", Ingredient.of(Items.CHERRY_LOG),
-                new ItemStack(ModBlocks.CHERRY_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "cherry_wood_to_post", Ingredient.of(Items.CHERRY_WOOD),
-                new ItemStack(ModBlocks.CHERRY_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "stripped_oak_log_to_post", Ingredient.of(Items.STRIPPED_OAK_LOG),
-                new ItemStack(ModBlocks.STRIPPED_OAK_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "stripped_oak_wood_to_post", Ingredient.of(Items.STRIPPED_OAK_WOOD),
-                new ItemStack(ModBlocks.STRIPPED_OAK_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "stripped_spruce_log_to_post", Ingredient.of(Items.STRIPPED_SPRUCE_LOG),
-                new ItemStack(ModBlocks.STRIPPED_SPRUCE_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "stripped_spruce_wood_to_post", Ingredient.of(Items.STRIPPED_SPRUCE_WOOD),
-                new ItemStack(ModBlocks.STRIPPED_SPRUCE_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "stripped_birch_log_to_post", Ingredient.of(Items.STRIPPED_BIRCH_LOG),
-                new ItemStack(ModBlocks.STRIPPED_BIRCH_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "stripped_birch_wood_to_post", Ingredient.of(Items.STRIPPED_BIRCH_WOOD),
-                new ItemStack(ModBlocks.STRIPPED_BIRCH_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "stripped_jungle_log_to_post", Ingredient.of(Items.STRIPPED_JUNGLE_LOG),
-                new ItemStack(ModBlocks.STRIPPED_JUNGLE_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "stripped_jungle_wood_to_post", Ingredient.of(Items.STRIPPED_JUNGLE_WOOD),
-                new ItemStack(ModBlocks.STRIPPED_JUNGLE_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "stripped_acacia_log_to_post", Ingredient.of(Items.STRIPPED_ACACIA_LOG),
-                new ItemStack(ModBlocks.STRIPPED_ACACIA_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "stripped_acacia_wood_to_post", Ingredient.of(Items.STRIPPED_ACACIA_WOOD),
-                new ItemStack(ModBlocks.STRIPPED_ACACIA_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "stripped_dark_oak_log_to_post", Ingredient.of(Items.STRIPPED_DARK_OAK_LOG),
-                new ItemStack(ModBlocks.STRIPPED_DARK_OAK_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "stripped_dark_oak_wood_to_post", Ingredient.of(Items.STRIPPED_DARK_OAK_WOOD),
-                new ItemStack(ModBlocks.STRIPPED_DARK_OAK_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "stripped_mangrove_log_to_post", Ingredient.of(Items.STRIPPED_MANGROVE_LOG),
-                new ItemStack(ModBlocks.STRIPPED_MANGROVE_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "stripped_mangrove_wood_to_post", Ingredient.of(Items.STRIPPED_MANGROVE_WOOD),
-                new ItemStack(ModBlocks.STRIPPED_MANGROVE_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "stripped_cherry_log_to_post", Ingredient.of(Items.STRIPPED_CHERRY_LOG),
-                new ItemStack(ModBlocks.STRIPPED_CHERRY_POST.asItem(), 2), 5);
-        choppingRecipe(recipeOutput, "stripped_cherry_wood_to_post", Ingredient.of(Items.STRIPPED_CHERRY_WOOD),
-                new ItemStack(ModBlocks.STRIPPED_CHERRY_POST.asItem(), 2), 5);
+        CastingSpec[] castingRecipes = {
+                // Copper
+                new CastingSpec("copper_sword_blade", ModItems.COPPER_SWORD_BLADE.get(), ModItems.SWORD_BLADE_MOLD.get(),
+                        ModFluids.MOLTEN_COPPER, 288, 100, false),
+                new CastingSpec("copper_pickaxe_head", ModItems.COPPER_PICKAXE_HEAD.get(), ModItems.PICKAXE_HEAD_MOLD.get(),
+                        ModFluids.MOLTEN_COPPER, 432, 100, false),
+                new CastingSpec("copper_axe_head", ModItems.COPPER_AXE_HEAD.get(), ModItems.AXE_HEAD_MOLD.get(),
+                        ModFluids.MOLTEN_COPPER, 432, 100, false),
+                new CastingSpec("copper_shovel_head", ModItems.COPPER_SHOVEL_HEAD.get(), ModItems.SHOVEL_HEAD_MOLD.get(),
+                        ModFluids.MOLTEN_COPPER, 144, 100, false),
+                new CastingSpec("copper_hoe_head", ModItems.COPPER_HOE_HEAD, ModItems.HOE_HEAD_MOLD,
+                        ModFluids.MOLTEN_COPPER, 288, 100, false),
+                // Bronze
+                new CastingSpec("bronze_sword_blade", ModItems.BRONZE_SWORD_BLADE.get(), ModItems.SWORD_BLADE_MOLD.get(),
+                        ModFluids.MOLTEN_BRONZE, 288, 100, false),
+                new CastingSpec("bronze_pickaxe_head", ModItems.BRONZE_PICKAXE_HEAD.get(), ModItems.PICKAXE_HEAD_MOLD.get(),
+                        ModFluids.MOLTEN_BRONZE, 432, 100, false),
+                new CastingSpec("bronze_axe_head", ModItems.BRONZE_AXE_HEAD.get(), ModItems.AXE_HEAD_MOLD.get(),
+                        ModFluids.MOLTEN_BRONZE, 432, 100, false),
+                new CastingSpec("bronze_shovel_head", ModItems.BRONZE_SHOVEL_HEAD.get(), ModItems.SHOVEL_HEAD_MOLD.get(),
+                        ModFluids.MOLTEN_BRONZE, 144, 100, false),
+                new CastingSpec("bronze_hoe_head", ModItems.BRONZE_HOE_HEAD, ModItems.HOE_HEAD_MOLD,
+                        ModFluids.MOLTEN_BRONZE, 288, 100, false),
+                // Iron
+                new CastingSpec("iron_sword_blade", ModItems.IRON_SWORD_BLADE.get(), ModItems.SWORD_BLADE_MOLD.get(),
+                        ModFluids.MOLTEN_IRON, 288, 100, false),
+                new CastingSpec("iron_pickaxe_head", ModItems.IRON_PICKAXE_HEAD.get(), ModItems.PICKAXE_HEAD_MOLD.get(),
+                        ModFluids.MOLTEN_IRON, 432, 100, false),
+                new CastingSpec("iron_axe_head", ModItems.IRON_AXE_HEAD.get(), ModItems.AXE_HEAD_MOLD.get(),
+                        ModFluids.MOLTEN_IRON, 432, 100, false),
+                new CastingSpec("iron_shovel_head", ModItems.IRON_SHOVEL_HEAD.get(), ModItems.SHOVEL_HEAD_MOLD.get(),
+                        ModFluids.MOLTEN_IRON, 144, 100, false),
+                new CastingSpec("iron_hoe_head", ModItems.IRON_HOE_HEAD, ModItems.HOE_HEAD_MOLD,
+                        ModFluids.MOLTEN_IRON, 288, 100, false),
+                // Gold
+                new CastingSpec("gold_sword_blade", ModItems.GOLD_SWORD_BLADE.get(), ModItems.SWORD_BLADE_MOLD.get(),
+                        ModFluids.MOLTEN_GOLD, 288, 100, false),
+                new CastingSpec("gold_pickaxe_head", ModItems.GOLD_PICKAXE_HEAD.get(), ModItems.PICKAXE_HEAD_MOLD.get(),
+                        ModFluids.MOLTEN_GOLD, 432, 100, false),
+                new CastingSpec("gold_axe_head", ModItems.GOLD_AXE_HEAD.get(), ModItems.AXE_HEAD_MOLD.get(),
+                        ModFluids.MOLTEN_GOLD, 432, 100, false),
+                new CastingSpec("gold_shovel_head", ModItems.GOLD_SHOVEL_HEAD.get(), ModItems.SHOVEL_HEAD_MOLD.get(),
+                        ModFluids.MOLTEN_GOLD, 144, 100, false),
+                new CastingSpec("gold_hoe_head", ModItems.GOLD_HOE_HEAD, ModItems.HOE_HEAD_MOLD,
+                        ModFluids.MOLTEN_GOLD, 288, 100, false),
+                // Rose Gold
+                new CastingSpec("rose_gold_sword_blade", ModItems.ROSE_GOLD_SWORD_BLADE.get(), ModItems.SWORD_BLADE_MOLD.get(), 
+                        ModFluids.MOLTEN_ROSE_GOLD, 288, 100, false),
+                new CastingSpec("rose_gold_pickaxe_head", ModItems.ROSE_GOLD_PICKAXE_HEAD.get(), ModItems.PICKAXE_HEAD_MOLD.get(), 
+                        ModFluids.MOLTEN_ROSE_GOLD, 432, 100, false),
+                new CastingSpec("rose_gold_axe_head", ModItems.ROSE_GOLD_AXE_HEAD.get(), ModItems.AXE_HEAD_MOLD.get(), 
+                        ModFluids.MOLTEN_ROSE_GOLD, 432, 100, false),
+                new CastingSpec("rose_gold_shovel_head", ModItems.ROSE_GOLD_SHOVEL_HEAD.get(), ModItems.SHOVEL_HEAD_MOLD.get(), 
+                        ModFluids.MOLTEN_ROSE_GOLD, 144, 100, false),
+                new CastingSpec("rose_gold_hoe_head", ModItems.ROSE_GOLD_HOE_HEAD, ModItems.HOE_HEAD_MOLD, 
+                        ModFluids.MOLTEN_ROSE_GOLD, 288, 100, false),
+        };
+
+        for (CastingSpec spec : castingRecipes) {
+            castingRecipe(recipeOutput, spec.name(), spec.result(), spec.mold(),
+                    spec.fluid(), spec.fluidAmount(), spec.coolingTime(), spec.consumeCast());
+        }
+
+        WoodVariant[] variants = {
+                new WoodVariant("oak", Items.OAK_PLANKS, ModBlocks.OAK_POST.get(), ModBlocks.STRIPPED_OAK_POST.get(), Items.OAK_LOG, Items.OAK_WOOD, Items.STRIPPED_OAK_LOG, Items.STRIPPED_OAK_WOOD),
+                new WoodVariant("spruce", Items.SPRUCE_PLANKS, ModBlocks.SPRUCE_POST.get(), ModBlocks.STRIPPED_SPRUCE_POST.get(), Items.SPRUCE_LOG, Items.SPRUCE_WOOD, Items.STRIPPED_SPRUCE_LOG, Items.STRIPPED_SPRUCE_WOOD),
+                new WoodVariant("birch", Items.BIRCH_PLANKS, ModBlocks.BIRCH_POST.get(), ModBlocks.STRIPPED_BIRCH_POST.get(), Items.BIRCH_LOG, Items.BIRCH_WOOD, Items.STRIPPED_BIRCH_LOG, Items.STRIPPED_BIRCH_WOOD),
+                new WoodVariant("jungle", Items.JUNGLE_PLANKS, ModBlocks.JUNGLE_POST.get(), ModBlocks.STRIPPED_JUNGLE_POST.get(), Items.JUNGLE_LOG, Items.JUNGLE_WOOD, Items.STRIPPED_JUNGLE_LOG, Items.STRIPPED_JUNGLE_WOOD),
+                new WoodVariant("acacia", Items.ACACIA_PLANKS, ModBlocks.ACACIA_POST.get(), ModBlocks.STRIPPED_ACACIA_POST.get(), Items.ACACIA_LOG, Items.ACACIA_WOOD, Items.STRIPPED_ACACIA_LOG, Items.STRIPPED_ACACIA_WOOD),
+                new WoodVariant("dark_oak", Items.DARK_OAK_PLANKS, ModBlocks.DARK_OAK_POST.get(), ModBlocks.STRIPPED_DARK_OAK_POST.get(), Items.DARK_OAK_LOG, Items.DARK_OAK_WOOD, Items.STRIPPED_DARK_OAK_LOG, Items.STRIPPED_DARK_OAK_WOOD),
+                new WoodVariant("mangrove", Items.MANGROVE_PLANKS, ModBlocks.MANGROVE_POST.get(), ModBlocks.STRIPPED_MANGROVE_POST.get(), Items.MANGROVE_LOG, Items.MANGROVE_WOOD, Items.STRIPPED_MANGROVE_LOG, Items.STRIPPED_MANGROVE_WOOD),
+                new WoodVariant("cherry", Items.CHERRY_PLANKS, ModBlocks.CHERRY_POST.get(), ModBlocks.STRIPPED_CHERRY_POST.get(), Items.CHERRY_LOG, Items.CHERRY_WOOD, Items.STRIPPED_CHERRY_LOG, Items.STRIPPED_CHERRY_WOOD),
+        };
+
+        for (WoodVariant v : variants) {
+            TagKey<Item> postTag = ItemTags.create(ResourceLocation.fromNamespaceAndPath("progressioned", v.name() + "_posts"));
+
+            damagingShapelessRecipe(recipeOutput, v.name() + "_posts_to_plank",
+                    new ItemStack(v.planks(), 1),
+                    List.of(Ingredient.of(postTag)),
+                    Ingredient.of(ItemTags.AXES), 1);
+
+            choppingRecipe(recipeOutput, v.name() + "_log_to_post", Ingredient.of(v.log()),
+                    new ItemStack(v.post().asItem(), 2), 5);
+            choppingRecipe(recipeOutput, v.name() + "_wood_to_post", Ingredient.of(v.wood()),
+                    new ItemStack(v.post().asItem(), 2), 5);
+            choppingRecipe(recipeOutput, "stripped_" + v.name() + "_log_to_post", Ingredient.of(v.strippedLog()),
+                    new ItemStack(v.strippedPost().asItem(), 2), 5);
+            choppingRecipe(recipeOutput, "stripped_" + v.name() + "_wood_to_post", Ingredient.of(v.strippedWood()),
+                    new ItemStack(v.strippedPost().asItem(), 2), 5);
+        }
     }
 
     private void choppingRecipe(RecipeOutput output, String name, Ingredient input,
@@ -433,6 +680,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 new ChoppingRecipe(input, result, hits),
                 null);
     }
+
     private void damagingShapelessRecipe(RecipeOutput output, String name,
                                          ItemStack result, List<Ingredient> ingredients,
                                          Ingredient tool, int damage) {
@@ -440,6 +688,21 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, name),
                 new DamagingShapelessRecipe("", CraftingBookCategory.MISC,
                         result, ingredients, tool, damage),
+                null);
+    }
+
+    private void castingRecipe(RecipeOutput output, String name, ItemLike result,
+                               ItemLike mold, FluidHolder<?> fluid, int fluidAmount,
+                               int coolingTime, boolean consumeCast) {
+        output.accept(
+                ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "casting/" + name),
+                new CastingRecipe(
+                        Ingredient.of(mold),
+                        SizedFluidIngredient.of(fluid.source().get(), fluidAmount),
+                        new ItemStack(result.asItem(), 1),
+                        coolingTime,
+                        consumeCast
+                ),
                 null);
     }
 }

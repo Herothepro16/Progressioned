@@ -1,0 +1,11 @@
+{
+  "type": "progressioned:melting",
+  "ingredient": {
+    "item": "progressioned:copper_plate"
+  },
+  "result": {
+    "id": "progressioned:molten_copper",
+    "amount": 144
+  },
+  "cookingtime": 400
+}

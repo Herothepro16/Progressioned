@@ -40,5 +40,9 @@ public class FluidClientEvents {
         event.register(new DynamicFluidContainerModel.Colors(), ModFluids.MOLTEN_IRON.bucket().get());
         event.register(new DynamicFluidContainerModel.Colors(), ModFluids.MOLTEN_COPPER.bucket().get());
         event.register(new DynamicFluidContainerModel.Colors(), ModFluids.MOLTEN_GOLD.bucket().get());
+        event.register(new DynamicFluidContainerModel.Colors(), ModFluids.MOLTEN_TIN.bucket().get());
+        event.register(new DynamicFluidContainerModel.Colors(), ModFluids.MOLTEN_SILVER.bucket().get());
+        event.register(new DynamicFluidContainerModel.Colors(), ModFluids.MOLTEN_BRONZE.bucket().get());
+        event.register(new DynamicFluidContainerModel.Colors(), ModFluids.MOLTEN_ROSE_GOLD.bucket().get());
     }
 }

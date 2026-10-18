@@ -1,0 +1,6 @@
+{
+  "type": "progressioned:porcelain_kiln",
+  "ingredient": { "item": "progressioned:mud_ball" },
+  "result": { "id": "progressioned:mud_brick", "count": 1 },
+  "cooktime": 300
+}

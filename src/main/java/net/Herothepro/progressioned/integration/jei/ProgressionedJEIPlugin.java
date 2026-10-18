@@ -7,13 +7,8 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.Herothepro.progressioned.Progressioned;
 import net.Herothepro.progressioned.block.ModBlocks;
-import net.Herothepro.progressioned.integration.jei.category.ChoppingCategory;
-import net.Herothepro.progressioned.integration.jei.category.KilnCategory;
-import net.Herothepro.progressioned.integration.jei.category.WorkstoneCategory;
-import net.Herothepro.progressioned.recipe.ChoppingRecipe;
-import net.Herothepro.progressioned.recipe.KilnRecipe;
-import net.Herothepro.progressioned.recipe.ModRecipes;
-import net.Herothepro.progressioned.recipe.WorkstoneRecipe;
+import net.Herothepro.progressioned.integration.jei.category.*;
+import net.Herothepro.progressioned.recipe.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -38,6 +33,12 @@ public class ProgressionedJEIPlugin implements IModPlugin {
                 registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new WorkstoneCategory(
                 registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new MeltingCategory(
+                registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new CastingCategory(
+                registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new CastingBasinCategory(
+                registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -58,6 +59,21 @@ public class ProgressionedJEIPlugin implements IModPlugin {
                 .getAllRecipesFor(ModRecipes.WORKSTONE_TYPE.get())
                 .stream().map(RecipeHolder::value).toList();
         registration.addRecipes(WorkstoneCategory.RECIPE_TYPE, workstoneRecipes);
+
+        List<MeltingRecipe> meltingRecipes = recipeManager
+                .getAllRecipesFor(ModRecipes.MELTING_TYPE.get())
+                .stream().map(RecipeHolder::value).toList();
+        registration.addRecipes(MeltingCategory.RECIPE_TYPE, meltingRecipes);
+
+        List<CastingRecipe> castingRecipes = recipeManager
+                .getAllRecipesFor(ModRecipes.CASTING_TYPE.get())
+                .stream().map(RecipeHolder::value).toList();
+        registration.addRecipes(CastingCategory.RECIPE_TYPE, castingRecipes);
+
+        List<CastingBasinRecipe> castingBasinRecipes = recipeManager
+                .getAllRecipesFor(ModRecipes.CASTING_BASIN_TYPE.get())
+                .stream().map(RecipeHolder::value).toList();
+        registration.addRecipes(CastingBasinCategory.RECIPE_TYPE, castingBasinRecipes);
     }
 
     @Override
@@ -73,5 +89,17 @@ public class ProgressionedJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(
                 new ItemStack(ModBlocks.WORKSTONE.get().asItem()),
                 WorkstoneCategory.RECIPE_TYPE);
+
+        registration.addRecipeCatalyst(
+                new ItemStack(ModBlocks.PORCELAIN_MELTER.get().asItem()),
+                MeltingCategory.RECIPE_TYPE);
+
+        registration.addRecipeCatalyst(
+                new ItemStack(ModBlocks.PORCELAIN_CASTING_TABLE.get().asItem()),
+                CastingCategory.RECIPE_TYPE);
+
+        registration.addRecipeCatalyst(
+                new ItemStack(ModBlocks.PORCELAIN_CASTING_BASIN.get().asItem()),
+                CastingBasinCategory.RECIPE_TYPE);
     }
 }

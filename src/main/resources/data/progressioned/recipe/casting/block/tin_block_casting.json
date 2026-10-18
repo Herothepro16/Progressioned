@@ -1,0 +1,12 @@
+{
+  "type": "progressioned:casting_basin",
+  "input": {
+    "id": "progressioned:molten_tin",
+    "amount": 1296
+  },
+  "result": {
+    "id": "progressioned:tin_block",
+    "count": 1
+  },
+  "time": 100
+}

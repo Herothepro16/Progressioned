@@ -1,0 +1,11 @@
+{
+  "type": "progressioned:melting",
+  "ingredient": {
+    "item": "progressioned:bronze_ingot"
+  },
+  "result": {
+    "id": "progressioned:molten_bronze",
+    "amount": 144
+  },
+  "cookingtime": 400
+}

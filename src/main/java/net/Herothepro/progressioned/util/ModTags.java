@@ -21,6 +21,24 @@ public class ModTags {
         public static final TagKey<Block> NEEDS_COPPER_TOOL = createTag("needs_copper_tool");
         public static final TagKey<Block> INCORRECT_FOR_COPPER_TOOL = createTag("incorrect_for_copper_tool");
 
+        public static final TagKey<Block> NEEDS_BRONZE_TOOL = createTag("needs_bronze_tool");
+        public static final TagKey<Block> INCORRECT_FOR_BRONZE_TOOL = createTag("incorrect_for_bronze_tool");
+
+        public static final TagKey<Block> NEEDS_ROSE_GOLD_TOOL = createTag("needs_rose_gold_tool");
+        public static final TagKey<Block> INCORRECT_FOR_ROSE_GOLD_TOOL = createTag("incorrect_for_rose_gold_tool");
+
+        public static final TagKey<Block> TIN_ORES = createTag("tin_ores");
+        public static final TagKey<Block> SILVER_ORES = createTag("silver_ores");
+
+        public static final TagKey<Block> OAK_POSTS = createTag("oak_posts");
+        public static final TagKey<Block> SPRUCE_POSTS = createTag("spruce_posts");
+        public static final TagKey<Block> BIRCH_POSTS = createTag("birch_posts");
+        public static final TagKey<Block> JUNGLE_POSTS = createTag("jungle_posts");
+        public static final TagKey<Block> ACACIA_POSTS = createTag("acacia_posts");
+        public static final TagKey<Block> DARK_OAK_POSTS = createTag("dark_oak_posts");
+        public static final TagKey<Block> MANGROVE_POSTS = createTag("mangrove_posts");
+        public static final TagKey<Block> CHERRY_POSTS = createTag("cherry_posts");
+
         public static final TagKey<Block> POSTS = createTag("posts");
 
         private static TagKey<Block> createTag(String name) {
@@ -29,6 +47,7 @@ public class ModTags {
     }
 
     public static class Items {
+
         public static final TagKey<Item> KNIVES = createTag("knives");
 
         public static final TagKey<Item> SAWS = createTag("saws");

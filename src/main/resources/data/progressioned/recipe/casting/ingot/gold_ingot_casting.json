@@ -1,0 +1,16 @@
+{
+  "type": "progressioned:casting",
+  "mold": {
+    "item": "progressioned:ingot_mold"
+  },
+  "fluid": {
+    "fluid": "progressioned:molten_gold",
+    "amount": 144
+  },
+  "result": {
+    "id": "minecraft:gold_ingot",
+    "count": 1
+  },
+  "cooling_time": 100,
+  "consume_cast": false
+}

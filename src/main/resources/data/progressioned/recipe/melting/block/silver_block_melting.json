@@ -1,0 +1,11 @@
+{
+  "type": "progressioned:melting",
+  "ingredient": {
+    "item": "progressioned:silver_block"
+  },
+  "result": {
+    "id": "progressioned:molten_silver",
+    "amount": 1296
+  },
+  "cookingtime": 3600
+}

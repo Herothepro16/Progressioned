@@ -1,0 +1,11 @@
+{
+  "type": "progressioned:melting",
+  "ingredient": {
+    "item": "minecraft:iron_nugget"
+  },
+  "result": {
+    "id": "progressioned:molten_iron",
+    "amount": 16
+  },
+  "cookingtime": 400
+}

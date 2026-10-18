@@ -8,6 +8,8 @@
  "item.progressioned.fiber_mesh": "Fiber Mesh",
  "item.progressioned.sharp_bone": "Sharp Bone",
  "item.progressioned.fire_stick": "Fire Stick",
+ "item.progressioned.mud_ball": "Mud Ball",
+ "item.progressioned.mud_brick": "Mud Brick",
  "item.progressioned.porcelain_clay_ball": "Porcelain Clay Ball",
  "item.progressioned.porcelain_clay_brick": "Porcelain Clay Brick",
 
@@ -18,10 +20,61 @@
 
  "item.progressioned.molten_iron_bucket": "Molten Iron Bucket",
  "fluid_type.progressioned.molten_iron": "Molten Iron",
+ "block.progressioned.molten_iron": "Molten Iron",
+
  "item.progressioned.molten_copper_bucket": "Molten Copper Bucket",
  "fluid_type.progressioned.molten_copper": "Molten Copper",
+ "block.progressioned.molten_copper": "Molten Copper",
+
  "item.progressioned.molten_gold_bucket": "Molten Gold Bucket",
  "fluid_type.progressioned.molten_gold": "Molten Gold",
+ "block.progressioned.molten_gold": "Molten Gold",
+
+ "item.progressioned.molten_tin_bucket": "Molten Tin Bucket",
+ "fluid_type.progressioned.molten_tin": "Molten Tin",
+ "block.progressioned.molten_tin": "Molten Tin",
+
+ "item.progressioned.molten_silver_bucket": "Molten Silver Bucket",
+ "fluid_type.progressioned.molten_silver": "Molten Silver",
+ "block.progressioned.molten_silver": "Molten Silver",
+
+ "item.progressioned.molten_bronze_bucket": "Molten Bronze Bucket",
+ "fluid_type.progressioned.molten_bronze": "Molten Bronze",
+ "block.progressioned.molten_bronze": "Molten Bronze",
+
+ "item.progressioned.molten_rose_gold_bucket": "Molten Rose Gold Bucket",
+ "fluid_type.progressioned.molten_rose_gold": "Molten Rose Gold",
+ "block.progressioned.molten_rose_gold": "Molten Rose Gold",
+
+ "item.progressioned.blank_mold": "Blank Mold",
+ "item.progressioned.ingot_mold": "Ingot Mold",
+ "item.progressioned.nugget_mold": "Nugget Mold",
+ "item.progressioned.plate_mold": "Plate Mold",
+ "item.progressioned.sword_blade_mold": "Sword Blade Mold",
+ "item.progressioned.pickaxe_head_mold": "Pickaxe Head Mold",
+ "item.progressioned.axe_head_mold": "Axe Head Mold",
+ "item.progressioned.shovel_head_mold": "Shovel Head Mold",
+ "item.progressioned.hoe_head_mold": "Hoe Head Mold",
+
+ "item.progressioned.raw_tin": "Raw Tin",
+ "item.progressioned.tin_ingot": "Tin Ingot",
+ "item.progressioned.tin_dust": "Tin Dust",
+
+ "item.progressioned.raw_silver": "Raw Silver",
+ "item.progressioned.silver_ingot": "Silver Ingot",
+ "item.progressioned.silver_plate": "Silver Plate",
+ "item.progressioned.silver_dust": "Silver Dust",
+
+ "item.progressioned.bronze_ingot": "Bronze Ingot",
+ "item.progressioned.bronze_plate": "Bronze Plate",
+ "item.progressioned.bronze_dust": "Bronze Dust",
+
+ "item.progressioned.rose_gold_ingot": "Rose Gold Ingot",
+ "item.progressioned.rose_gold_plate": "Rose Gold Plate",
+ "item.progressioned.rose_gold_dust": "Rose Gold Dust",
+
+ "item.progressioned.copper_dust": "Copper Dust",
+ "item.progressioned.gold_dust": "Gold Dust",
 
  "item.progressioned.copper_plate": "Copper Plate",
  "item.progressioned.iron_plate": "Iron Plate",
@@ -47,13 +100,19 @@
  "item.progressioned.flint_spear": "Flint Spear",
 
  "item.progressioned.bone_sword": "Bone Cleaver",
+ "item.progressioned.bone_pickaxe": "Bone Pickaxe",
+ "item.progressioned.bone_axe": "Bone Axe",
  "item.progressioned.bone_spear": "Bone Spear",
  "item.progressioned.bone_club": "Bone Club",
 
  "item.progressioned.amethyst_bone_sword": "Amethyst Bone Cleaver",
+ "item.progressioned.amethyst_bone_pickaxe": "Amethyst Bone Pickaxe",
+ "item.progressioned.amethyst_bone_axe": "Amethyst Bone Axe",
  "item.progressioned.amethyst_bone_spear": "Amethyst Bone Spear",
 
  "item.progressioned.golden_bone_sword": "Golden Bone Cleaver",
+ "item.progressioned.golden_bone_pickaxe": "Golden Bone Pickaxe",
+ "item.progressioned.golden_bone_axe": "Golden Bone Axe",
  "item.progressioned.golden_bone_spear": "Golden Bone Spear",
 
  "item.progressioned.copper_sword": "Copper Sword",
@@ -62,6 +121,58 @@
  "item.progressioned.copper_shovel": "Copper Shovel",
  "item.progressioned.copper_hoe": "Copper Hoe",
  "item.progressioned.copper_spear": "Copper Spear",
+
+ "item.progressioned.bronze_sword": "Bronze Sword",
+ "item.progressioned.bronze_pickaxe": "Bronze Pickaxe",
+ "item.progressioned.bronze_axe": "Bronze Axe",
+ "item.progressioned.bronze_shovel": "Bronze Shovel",
+ "item.progressioned.bronze_hoe": "Bronze Hoe",
+
+ "item.progressioned.bronze_helmet": "Bronze Helmet",
+ "item.progressioned.bronze_chestplate": "Bronze Chestplate",
+ "item.progressioned.bronze_leggings": "Bronze Leggings",
+ "item.progressioned.bronze_boots": "Bronze Boots",
+
+ "item.progressioned.rose_gold_sword": "Rose Gold Sword",
+ "item.progressioned.rose_gold_pickaxe": "Rose Gold Pickaxe",
+ "item.progressioned.rose_gold_axe": "Rose Gold Axe",
+ "item.progressioned.rose_gold_shovel": "Rose Gold Shovel",
+ "item.progressioned.rose_gold_hoe": "Rose Gold Hoe",
+
+ "item.progressioned.rose_gold_helmet": "Rose Gold Helmet",
+ "item.progressioned.rose_gold_chestplate": "Rose Gold Chestplate",
+ "item.progressioned.rose_gold_leggings": "Rose Gold Leggings",
+ "item.progressioned.rose_gold_boots": "Rose Gold Boots",
+
+ "item.progressioned.copper_sword_blade": "Copper Sword Blade",
+ "item.progressioned.copper_pickaxe_head": "Copper Pickaxe Head",
+ "item.progressioned.copper_axe_head": "Copper Axe Head",
+ "item.progressioned.copper_shovel_head": "Copper Shovel Head",
+ "item.progressioned.copper_hoe_head": "Copper Hoe Head",
+
+ "item.progressioned.bronze_sword_blade": "Bronze Sword Blade",
+ "item.progressioned.bronze_pickaxe_head": "Bronze Pickaxe Head",
+ "item.progressioned.bronze_axe_head": "Bronze Axe Head",
+ "item.progressioned.bronze_shovel_head": "Bronze Shovel Head",
+ "item.progressioned.bronze_hoe_head": "Bronze Hoe Head",
+
+ "item.progressioned.iron_sword_blade": "Iron Sword Blade",
+ "item.progressioned.iron_pickaxe_head": "Iron Pickaxe Head",
+ "item.progressioned.iron_axe_head": "Iron Axe Head",
+ "item.progressioned.iron_shovel_head": "Iron Shovel Head",
+ "item.progressioned.iron_hoe_head": "Iron Hoe Head",
+
+ "item.progressioned.gold_sword_blade": "Gold Sword Blade",
+ "item.progressioned.gold_pickaxe_head": "Gold Pickaxe Head",
+ "item.progressioned.gold_axe_head": "Gold Axe Head",
+ "item.progressioned.gold_shovel_head": "Gold Shovel Head",
+ "item.progressioned.gold_hoe_head": "Gold Hoe Head",
+
+ "item.progressioned.rose_gold_sword_blade": "Rose_Gold Sword Blade",
+ "item.progressioned.rose_gold_pickaxe_head": "Rose_Gold Pickaxe Head",
+ "item.progressioned.rose_gold_axe_head": "Rose_Gold Axe Head",
+ "item.progressioned.rose_gold_shovel_head": "Rose_Gold Shovel Head",
+ "item.progressioned.rose_gold_hoe_head": "Rose_Gold Hoe Head",
 
  "block.progressioned.charcoal_block": "Block of Charcoal",
  "block.progressioned.thatch": "Thatch",
@@ -73,7 +184,22 @@
  "block.progressioned.chopping_block": "Chopping Block",
  "block.progressioned.campfire_base": "Campfire Base",
  "block.progressioned.porcelain_kiln": "Porcelain Kiln",
+ "block.progressioned.porcelain_melter": "Porcelain Melter",
+ "block.progressioned.porcelain_heater": "Porcelain Heater",
+ "block.progressioned.porcelain_faucet": "Porcelain Faucet",
+ "block.progressioned.porcelain_casting_table": "Porcelain Casting Table",
+ "block.progressioned.porcelain_casting_basin": "Porcelain Casting Basin",
  "block.progressioned.workstone": "Workstone",
+ "block.progressioned.tin_block": "Block of Tin",
+ "block.progressioned.silver_block": "Block of Silver",
+ "block.progressioned.bronze_block": "Block of Bronze",
+ "block.progressioned.rose_gold_block": "Block of Rose Gold",
+ "block.progressioned.tin_ore": "Tin Ore",
+ "block.progressioned.deepslate_tin_ore": "Deepslate Tin Ore",
+ "block.progressioned.raw_tin_block": "Block of Raw Tin",
+ "block.progressioned.silver_ore": "Silver Ore",
+ "block.progressioned.deepslate_silver_ore": "Deepslate Silver Ore",
+ "block.progressioned.raw_silver_block": "Block of Raw Silver",
 
  "block.progressioned.oak_post": "Oak Post",
  "block.progressioned.spruce_post": "Spruce Post",
@@ -97,6 +223,9 @@
 
  "emi.category.progressioned.chopping": "Chopping Block",
  "emi.category.progressioned.porcelain_kiln": "Porcelain Kiln",
+ "emi.category.progressioned.porcelain_melter": "Porcelain Melter",
+ "emi.category.progressioned.porcelain_casting_table": "Porcelain Casting Table",
+ "emi.category.progressioned.porcelain_casting_basin": "Porcelain Casting Basin",
  "emi.category.progressioned.workstone": "Workstone",
 
  "tag.item.progressioned.posts": "Posts",

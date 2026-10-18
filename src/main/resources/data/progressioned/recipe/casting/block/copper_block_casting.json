@@ -1,0 +1,12 @@
+{
+  "type": "progressioned:casting_basin",
+  "input": {
+    "id": "progressioned:molten_copper",
+    "amount": 1296
+  },
+  "result": {
+    "id": "minecraft:copper_block",
+    "count": 1
+  },
+  "time": 100
+}
