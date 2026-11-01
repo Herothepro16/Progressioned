@@ -238,7 +238,8 @@ public class TableBlockEntity extends BlockEntity {
         CastingRecipeInput input = new CastingRecipeInput(mold);
         for (var recipeHolder : level.getRecipeManager().getAllRecipesFor(ModRecipes.CASTING_TYPE.get())) {
             CastingRecipe recipe = recipeHolder.value();
-            if (recipe.matches(input, level) && recipe.matchesFluidType(fluid)) {
+            if (recipe.matches(input, level) && recipe.matchesFluidType(fluid)
+                    && !recipe.getResultItem(level.registryAccess()).isEmpty()) {
                 return recipe;
             }
         }

@@ -1,0 +1,25 @@
+{
+  "type": "progressioned:casting",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/brass"
+      }
+    }
+  ],
+  "mold": {
+    "item": "progressioned:ingot_mold"
+  },
+  "fluid": {
+    "fluid": "progressioned:molten_brass",
+    "amount": 144
+  },
+  "result": {
+    "tag": "c:ingots/brass",
+    "count": 1
+  },
+  "cooling_time": 100,
+  "consume_cast": false
+}

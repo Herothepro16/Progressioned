@@ -5,6 +5,7 @@ import net.Herothepro.progressioned.block.ModBlocks;
 import net.Herothepro.progressioned.block.custom.entity.ModBlockEntities;
 import net.Herothepro.progressioned.block.custom.entity.renderer.*;
 import net.Herothepro.progressioned.item.ModItems;
+import net.Herothepro.progressioned.item.custom.FireStickClientExtensions;
 import net.Herothepro.progressioned.util.gui.HeaterScreen;
 import net.Herothepro.progressioned.util.gui.MelterScreen;
 import net.Herothepro.progressioned.util.gui.ModMenuTypes;
@@ -19,6 +20,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
@@ -50,6 +52,11 @@ public class ModClientEvents {
         public static void registerScreens(RegisterMenuScreensEvent event) {
             event.register(ModMenuTypes.HEATER_MENU.get(), HeaterScreen::new);
             event.register(ModMenuTypes.MELTER_MENU.get(), MelterScreen::new);
+        }
+
+        @SubscribeEvent
+        public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+            event.registerItem(new FireStickClientExtensions(), ModItems.FIRE_STICK.get());
         }
     }
 

@@ -1,0 +1,20 @@
+{
+  "type": "progressioned:melting",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:storage_blocks/zinc"
+      }
+    }
+  ],
+  "ingredient": {
+    "tag": "c:storage_blocks/zinc"
+  },
+  "result": {
+    "id": "progressioned:molten_zinc",
+    "amount": 1296
+  },
+  "cookingtime": 3600
+}

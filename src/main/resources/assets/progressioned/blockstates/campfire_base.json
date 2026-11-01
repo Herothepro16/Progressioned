@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "progressioned:block/campfire_base" },
+    "facing=east":  { "model": "progressioned:block/campfire_base", "y": 90 },
+    "facing=south": { "model": "progressioned:block/campfire_base", "y": 180 },
+    "facing=west":  { "model": "progressioned:block/campfire_base", "y": 270 }
+  }
+}

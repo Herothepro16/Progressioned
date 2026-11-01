@@ -41,6 +41,8 @@ public class ModTags {
 
         public static final TagKey<Block> POSTS = createTag("posts");
 
+        public static final TagKey<Block> KILN_HEATING_BLOCK = createTag("kiln_heating_block");
+
         private static TagKey<Block> createTag(String name) {
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, name));
         }

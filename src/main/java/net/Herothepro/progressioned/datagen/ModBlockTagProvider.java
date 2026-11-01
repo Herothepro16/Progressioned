@@ -2,6 +2,7 @@ package net.Herothepro.progressioned.datagen;
 
 import net.Herothepro.progressioned.Progressioned;
 import net.Herothepro.progressioned.block.ModBlocks;
+import net.Herothepro.progressioned.block.custom.PostBlock;
 import net.Herothepro.progressioned.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -11,9 +12,11 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -25,8 +28,6 @@ public class ModBlockTagProvider extends BlockTagsProvider {
     }
 
     private record MaterialBlock(String name, Supplier<? extends Block> block) {}
-
-    private record PostVariant(TagKey<Block> tag, Supplier<? extends Block> post, Supplier<? extends Block> strippedPost) {}
 
     private static TagKey<Block> commonTag(String path) {
         return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", path));
@@ -49,6 +50,46 @@ public class ModBlockTagProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
+        var postsTag = tag(ModTags.Blocks.POSTS);
+
+        for (DeferredHolder<Block, ? extends Block> entry : ModBlocks.BLOCKS.getEntries()) {
+            if (entry.get() instanceof PostBlock postBlock) {
+                String path = entry.getId().getPath();
+                String woodBaseName = "oak";
+                String modNamespace = Progressioned.MOD_ID;
+                boolean matched = false;
+
+                for (ModBlocks.WoodDefinition wood : ModBlocks.WOODS) {
+                    boolean isSelf = wood.modId().equals(Progressioned.MOD_ID);
+                    if (!isSelf && (ModList.get() != null && !ModList.get().isLoaded(wood.modId()))) {
+                        continue;
+                    }
+
+                    String expectedPrefix = isSelf ? "" : wood.modId() + "_";
+                    if (path.startsWith(expectedPrefix)) {
+                        String namePart = path.substring(expectedPrefix.length());
+                        if (namePart.equals(wood.woodName() + "_post") ||
+                                (wood.hasStripped() && namePart.equals(wood.strippedWoodName() + "_post"))) {
+                            modNamespace = wood.modId();
+                            woodBaseName = wood.woodName();
+                            matched = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (matched || modNamespace.equals(Progressioned.MOD_ID)) {
+                    postsTag.addOptional(entry.getId());
+
+                    String tagName = modNamespace.equals(Progressioned.MOD_ID)
+                            ? woodBaseName + "_posts"
+                            : modNamespace + "_" + woodBaseName + "_posts";
+
+                    TagKey<Block> woodPostTag = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, tagName));
+                    tag(woodPostTag).addOptional(entry.getId());
+                }
+            }
+        }
 
         tag(BlockTags.MINEABLE_WITH_AXE)
                 .addTag(ModTags.Blocks.POSTS)
@@ -58,7 +99,6 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.WORKSTONE.get());
 
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                // machines
                 .add(ModBlocks.PORCELAIN_KILN.get())
                 .add(ModBlocks.PORCELAIN_MELTER.get())
                 .add(ModBlocks.PORCELAIN_HEATER.get())
@@ -66,12 +106,10 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.PORCELAIN_CASTING_TABLE.get())
                 .add(ModBlocks.PORCELAIN_CASTING_BASIN.get())
                 .add(ModBlocks.WORKSTONE.get())
-                // porcelain bricks
                 .add(ModBlocks.PORCELAIN_BRICKS.get())
                 .add(ModBlocks.PORCELAIN_BRICK_SLAB.get())
                 .add(ModBlocks.PORCELAIN_BRICK_STAIRS.get())
                 .add(ModBlocks.PORCELAIN_BRICK_WALL.get())
-                // metal + storage blocks
                 .add(ModBlocks.CHARCOAL_BLOCK.get())
                 .add(ModBlocks.TIN_BLOCK.get())
                 .add(ModBlocks.SILVER_BLOCK.get())
@@ -79,7 +117,6 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.ROSE_GOLD_BLOCK.get())
                 .add(ModBlocks.RAW_TIN_BLOCK.get())
                 .add(ModBlocks.RAW_SILVER_BLOCK.get())
-                // ores
                 .addTag(ModTags.Blocks.TIN_ORES)
                 .addTag(ModTags.Blocks.SILVER_ORES);
 
@@ -125,7 +162,6 @@ public class ModBlockTagProvider extends BlockTagsProvider {
         tag(ModTags.Blocks.NEEDS_BRONZE_TOOL)
                 .addTag(BlockTags.IRON_ORES);
 
-        // Wooden & Golden : buns
         tag(BlockTags.INCORRECT_FOR_WOODEN_TOOL)
                 .addTag(ModTags.Blocks.TIN_ORES)
                 .addTag(ModTags.Blocks.SILVER_ORES);
@@ -133,7 +169,6 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .addTag(ModTags.Blocks.TIN_ORES)
                 .addTag(ModTags.Blocks.SILVER_ORES);
 
-        // Flint : cant mine wood+
         tag(ModTags.Blocks.INCORRECT_FOR_FLINT_TOOL)
                 .addTag(BlockTags.NEEDS_STONE_TOOL)
                 .addTag(BlockTags.NEEDS_IRON_TOOL)
@@ -141,27 +176,23 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .addTag(ModTags.Blocks.TIN_ORES)
                 .addTag(ModTags.Blocks.SILVER_ORES);
 
-        // Bone : cant mine stone+
         tag(ModTags.Blocks.INCORRECT_FOR_BONE_TOOL)
                 .addTag(BlockTags.NEEDS_IRON_TOOL)
                 .addTag(BlockTags.NEEDS_DIAMOND_TOOL)
                 .addTag(ModTags.Blocks.TIN_ORES)
                 .addTag(ModTags.Blocks.SILVER_ORES);
 
-        // Stone : cant mine copper+
         tag(BlockTags.INCORRECT_FOR_STONE_TOOL)
                 .addTag(ModTags.Blocks.TIN_ORES)
                 .addTag(ModTags.Blocks.SILVER_ORES)
                 .addTag(BlockTags.IRON_ORES);
 
-        // Copper : can mine tin cant mine silver, iron ores or iron+
         tag(ModTags.Blocks.INCORRECT_FOR_COPPER_TOOL)
                 .addTag(ModTags.Blocks.SILVER_ORES)
                 .addTag(BlockTags.IRON_ORES)
                 .addTag(BlockTags.NEEDS_IRON_TOOL)
                 .addTag(BlockTags.NEEDS_DIAMOND_TOOL);
 
-        // Bronze : everything iron can mine except diamond and gold ores
         tag(ModTags.Blocks.INCORRECT_FOR_BRONZE_TOOL)
                 .addTag(BlockTags.DIAMOND_ORES)
                 .addTag(BlockTags.GOLD_ORES)
@@ -169,27 +200,10 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .addTag(Tags.Blocks.ORES_GOLD)
                 .addTag(BlockTags.INCORRECT_FOR_IRON_TOOL);
 
-        // Rose gold : same as iron
         tag(ModTags.Blocks.INCORRECT_FOR_ROSE_GOLD_TOOL)
                 .addTag(BlockTags.INCORRECT_FOR_IRON_TOOL);
 
-        PostVariant[] posts = {
-                new PostVariant(ModTags.Blocks.OAK_POSTS, ModBlocks.OAK_POST, ModBlocks.STRIPPED_OAK_POST),
-                new PostVariant(ModTags.Blocks.SPRUCE_POSTS, ModBlocks.SPRUCE_POST, ModBlocks.STRIPPED_SPRUCE_POST),
-                new PostVariant(ModTags.Blocks.BIRCH_POSTS, ModBlocks.BIRCH_POST, ModBlocks.STRIPPED_BIRCH_POST),
-                new PostVariant(ModTags.Blocks.JUNGLE_POSTS, ModBlocks.JUNGLE_POST, ModBlocks.STRIPPED_JUNGLE_POST),
-                new PostVariant(ModTags.Blocks.DARK_OAK_POSTS, ModBlocks.DARK_OAK_POST, ModBlocks.STRIPPED_DARK_OAK_POST),
-                new PostVariant(ModTags.Blocks.ACACIA_POSTS, ModBlocks.ACACIA_POST, ModBlocks.STRIPPED_ACACIA_POST),
-                new PostVariant(ModTags.Blocks.MANGROVE_POSTS, ModBlocks.MANGROVE_POST, ModBlocks.STRIPPED_MANGROVE_POST),
-                new PostVariant(ModTags.Blocks.CHERRY_POSTS, ModBlocks.CHERRY_POST, ModBlocks.STRIPPED_CHERRY_POST),
-        };
-
-        var allPosts = tag(ModTags.Blocks.POSTS);
-        for (PostVariant variant : posts) {
-            tag(variant.tag())
-                    .add(variant.post().get())
-                    .add(variant.strippedPost().get());
-            allPosts.addTag(variant.tag());
-        }
+        tag(ModTags.Blocks.KILN_HEATING_BLOCK)
+                .add(Blocks.FIRE);
     }
 }

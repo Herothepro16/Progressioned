@@ -80,8 +80,7 @@ public class MeltingEMIRecipe implements EmiRecipe {
 
         widgets.addAnimatedTexture(EmiTexture.FULL_FLAME, 5, 7, 16000, false, true, true);
 
-        widgets.addSlot(input, 31, 6)
-                        .drawBack(false);
+        widgets.addSlot(input, 31, 6).drawBack(false);
 
         widgets.addSlot(fuel, 4, 24);
 

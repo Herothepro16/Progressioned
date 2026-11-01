@@ -9,11 +9,15 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class KilnBlockEntityRenderer implements BlockEntityRenderer<KilnBlockEntity> {
+
+    private static final float BLOCK_SCALE = 0.34f;
+    private static final float ITEM_SCALE = 0.24f;
 
     public KilnBlockEntityRenderer(BlockEntityRendererProvider.Context context) {}
 
@@ -32,29 +36,28 @@ public class KilnBlockEntityRenderer implements BlockEntityRenderer<KilnBlockEnt
 
         ItemStack input = be.getInput();
         if (!input.isEmpty()) {
-            poseStack.pushPose();
-            translateForFacing(poseStack, facing, 0.15f);
-            rotateToFace(poseStack, facing);
-            poseStack.scale(0.25f, 0.25f, 0.25f);
-            Minecraft.getInstance().getItemRenderer().renderStatic(
-                    input, ItemDisplayContext.FIXED,
-                    light, packedOverlay,
-                    poseStack, bufferSource, level, 0);
-            poseStack.popPose();
+            renderStack(input, poseStack, bufferSource, facing, 0.15f, light, packedOverlay, level);
         }
 
         ItemStack output = be.getOutput();
         if (!output.isEmpty()) {
-            poseStack.pushPose();
-            translateForFacing(poseStack, facing, -0.15f);
-            rotateToFace(poseStack, facing);
-            poseStack.scale(0.25f, 0.25f, 0.25f);
-            Minecraft.getInstance().getItemRenderer().renderStatic(
-                    output, ItemDisplayContext.FIXED,
-                    light, packedOverlay,
-                    poseStack, bufferSource, level, 0);
-            poseStack.popPose();
+            renderStack(output, poseStack, bufferSource, facing, -0.15f, light, packedOverlay, level);
         }
+    }
+
+    private void renderStack(ItemStack stack, PoseStack poseStack, MultiBufferSource bufferSource,
+                             Direction facing, float sideOffset, int light, int overlay, Level level) {
+        float scale = stack.getItem() instanceof BlockItem ? BLOCK_SCALE : ITEM_SCALE;
+
+        poseStack.pushPose();
+        translateForFacing(poseStack, facing, sideOffset);
+        rotateToFace(poseStack, facing);
+        poseStack.scale(scale, scale, scale);
+        Minecraft.getInstance().getItemRenderer().renderStatic(
+                stack, ItemDisplayContext.FIXED,
+                light, overlay,
+                poseStack, bufferSource, level, 0);
+        poseStack.popPose();
     }
 
     private void translateForFacing(PoseStack poseStack, Direction facing, float sideOffset) {

@@ -15,7 +15,12 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
 
-public record CastingBasinRecipe(FluidStack input, ItemStack output, int coolingTime) implements Recipe<RecipeInput> {
+public record CastingBasinRecipe(FluidStack input, RecipeResult result, int coolingTime) implements Recipe<RecipeInput> {
+
+    public ItemStack output() {
+        return result.resolve();
+    }
+
     @Override
     public boolean matches(RecipeInput input, Level level) {
         return false;
@@ -23,7 +28,7 @@ public record CastingBasinRecipe(FluidStack input, ItemStack output, int cooling
 
     @Override
     public ItemStack assemble(RecipeInput input, HolderLookup.Provider registries) {
-        return output.copy();
+        return output().copy();
     }
 
     @Override
@@ -33,7 +38,7 @@ public record CastingBasinRecipe(FluidStack input, ItemStack output, int cooling
 
     @Override
     public ItemStack getResultItem(HolderLookup.Provider registries) {
-        return output;
+        return output();
     }
 
     @Override
@@ -49,13 +54,13 @@ public record CastingBasinRecipe(FluidStack input, ItemStack output, int cooling
     public static class Serializer implements RecipeSerializer<CastingBasinRecipe> {
         private static final MapCodec<CastingBasinRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 FluidStack.CODEC.fieldOf("input").forGetter(CastingBasinRecipe::input),
-                ItemStack.CODEC.fieldOf("result").forGetter(CastingBasinRecipe::output),
+                RecipeResult.CODEC.fieldOf("result").forGetter(CastingBasinRecipe::result),
                 Codec.INT.fieldOf("time").forGetter(CastingBasinRecipe::coolingTime)
         ).apply(instance, CastingBasinRecipe::new));
 
         private static final StreamCodec<RegistryFriendlyByteBuf, CastingBasinRecipe> STREAM_CODEC = StreamCodec.composite(
                 FluidStack.STREAM_CODEC, CastingBasinRecipe::input,
-                ItemStack.STREAM_CODEC, CastingBasinRecipe::output,
+                RecipeResult.STREAM_CODEC, CastingBasinRecipe::result,
                 ByteBufCodecs.INT, CastingBasinRecipe::coolingTime,
                 CastingBasinRecipe::new
         );

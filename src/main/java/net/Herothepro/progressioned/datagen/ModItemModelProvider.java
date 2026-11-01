@@ -61,6 +61,8 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         handheldItem(ModItems.FIRE_STICK.get());
 
+        handheldItem(ModItems.LEATHER_CORD.get());
+
         handheldItem(ModItems.COPPER_KNIFE.get());
         handheldItem(ModItems.IRON_KNIFE.get());
         handheldItem(ModItems.DIAMOND_KNIFE.get());
@@ -78,21 +80,26 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         basicItem(ModItems.RAW_TIN.get());
         basicItem(ModItems.TIN_INGOT.get());
+        basicItem(ModItems.TIN_NUGGET.get());
         basicItem(ModItems.TIN_DUST.get());
 
         basicItem(ModItems.RAW_SILVER.get());
         basicItem(ModItems.SILVER_INGOT.get());
+        basicItem(ModItems.SILVER_NUGGET.get());
         basicItem(ModItems.SILVER_PLATE.get());
         basicItem(ModItems.SILVER_DUST.get());
 
         basicItem(ModItems.BRONZE_INGOT.get());
+        basicItem(ModItems.BRONZE_NUGGET.get());
         basicItem(ModItems.BRONZE_PLATE.get());
         basicItem(ModItems.BRONZE_DUST.get());
 
         basicItem(ModItems.ROSE_GOLD_INGOT.get());
+        basicItem(ModItems.ROSE_GOLD_NUGGET.get());
         basicItem(ModItems.ROSE_GOLD_PLATE.get());
         basicItem(ModItems.ROSE_GOLD_DUST.get());
 
+        handheldItem(ModItems.STONE_HAMMER.get());
         handheldItem(ModItems.COPPER_HAMMER.get());
         handheldItem(ModItems.IRON_HAMMER.get());
         handheldItem(ModItems.DIAMOND_HAMMER.get());

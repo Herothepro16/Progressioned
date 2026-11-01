@@ -1,7 +1,7 @@
 package net.Herothepro.progressioned.util;
 
+import net.Herothepro.progressioned.ModConfig;
 import net.Herothepro.progressioned.Progressioned;
-import net.Herothepro.progressioned.block.custom.entity.ModBlockEntities;
 import net.Herothepro.progressioned.recipe.DamagingShapelessRecipe;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -12,20 +12,23 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
 @EventBusSubscriber(modid = Progressioned.MOD_ID)
 public class ModServerEvents {
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @SubscribeEvent
     public static void onServerStarting(ServerStartingEvent event) {
         RecipeManager recipeManager = event.getServer().getRecipeManager();
-        replaceLogToPlankRecipes(recipeManager);
+        if (!ModConfig.OPTIONAL_CHOPPING_BLOCK.get()) {
+            replaceLogToPlankRecipes(recipeManager);
+        }
     }
 
     private static void replaceLogToPlankRecipes(RecipeManager recipeManager) {
@@ -76,9 +79,7 @@ public class ModServerEvents {
 
     @SubscribeEvent
     public static void modifyVanillaDurability(ModifyDefaultComponentsEvent event) {
-
         int ironToolDurability = 336;
-
         int ironArmorFactor = 20;
 
         event.modify(Items.IRON_PICKAXE, b -> b.set(DataComponents.MAX_DAMAGE, ironToolDurability));

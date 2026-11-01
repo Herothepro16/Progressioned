@@ -22,5 +22,5 @@ public class ModToolTiers {
     public static final Tier BRONZE = new SimpleTier(ModTags.Blocks.INCORRECT_FOR_BRONZE_TOOL,
             400, 5.75f,0f,14, ()-> Ingredient.of(ModItems.BRONZE_INGOT));
     public static final Tier ROSE_GOLD = new SimpleTier(ModTags.Blocks.INCORRECT_FOR_ROSE_GOLD_TOOL,
-            654, 9.5f,0f,20, ()-> Ingredient.of(ModItems.ROSE_GOLD_INGOT));
+            824, 9f,0f,20, ()-> Ingredient.of(ModItems.ROSE_GOLD_INGOT));
 }

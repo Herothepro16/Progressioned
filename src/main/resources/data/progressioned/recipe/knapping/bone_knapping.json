@@ -1,0 +1,12 @@
+{
+  "type": "progressioned:knapping",
+  "ingredient": { "item": "minecraft:bone" },
+  "result": {
+    "id": "progressioned:sharp_bone",
+    "count": 1
+  },
+  "chance": 0.2,
+  "target": "c:stones",
+  "success_sound": "minecraft:block.bone.break",
+  "fail_sound": "minecraft:block.bone.break"
+}

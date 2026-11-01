@@ -4,6 +4,7 @@ import net.Herothepro.progressioned.ModConfig;
 import net.Herothepro.progressioned.block.custom.KilnBlock;
 import net.Herothepro.progressioned.recipe.KilnRecipe;
 import net.Herothepro.progressioned.recipe.ModRecipes;
+import net.Herothepro.progressioned.util.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -51,7 +52,7 @@ public class KilnBlockEntity extends BlockEntity {
 
     public static boolean isAboveFire(Level level, BlockPos pos) {
         BlockState below = level.getBlockState(pos.below());
-        boolean isFire = below.is(Blocks.FIRE);
+        boolean isFire = below.is(ModTags.Blocks.KILN_HEATING_BLOCK);
 
         if (ModConfig.ALLOW_CAMPFIRE_HEATING.get()) {
             boolean isLitCampfire = below.is(BlockTags.CAMPFIRES)

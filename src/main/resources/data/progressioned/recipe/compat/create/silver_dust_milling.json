@@ -1,0 +1,21 @@
+{
+  "type": "create:milling",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "progressioned:silver_ingot"
+    }
+  ],
+  "processing_time": 100,
+  "results": [
+    {
+      "count": 1,
+      "id": "progressioned:silver_dust"
+    }
+  ]
+}

@@ -2,16 +2,17 @@ package net.Herothepro.progressioned.block;
 
 import net.Herothepro.progressioned.Progressioned;
 import net.Herothepro.progressioned.block.custom.*;
-import net.Herothepro.progressioned.block.custom.entity.TableBlockEntity;
 import net.Herothepro.progressioned.item.ModItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public class ModBlocks {
@@ -32,8 +33,8 @@ public class ModBlocks {
     public static final DeferredBlock<SlabBlock> PORCELAIN_BRICK_SLAB = registerBlock("porcelain_brick_slab",
             () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICK_SLAB)));
     public static final DeferredBlock<StairBlock> PORCELAIN_BRICK_STAIRS = registerBlock("porcelain_brick_stairs",
-            () -> new StairBlock(ModBlocks.PORCELAIN_BRICKS.get().defaultBlockState()
-                    ,BlockBehaviour.Properties.ofFullCopy(Blocks.BRICK_STAIRS)));
+            () -> new StairBlock(ModBlocks.PORCELAIN_BRICKS.get().defaultBlockState(),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.BRICK_STAIRS)));
     public static final DeferredBlock<WallBlock> PORCELAIN_BRICK_WALL = registerBlock("porcelain_brick_wall",
             () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICK_WALL)));
 
@@ -54,7 +55,7 @@ public class ModBlocks {
                     .noOcclusion().strength(2.0f).lightLevel(state -> state.getValue(KilnBlock.LIT) ? 13 : 0)));
 
     public static final DeferredBlock<Block> PORCELAIN_MELTER = registerBlock("porcelain_melter",
-            () -> new MelterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).noOcclusion()));
+            () -> new MelterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS).noOcclusion()));
 
     public static final DeferredBlock<HeaterBlock> PORCELAIN_HEATER = registerBlock("porcelain_heater",
             () -> new HeaterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS).noOcclusion()));
@@ -94,40 +95,89 @@ public class ModBlocks {
     public static final DeferredBlock<Block> RAW_SILVER_BLOCK = registerBlock("raw_silver_block",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_GOLD_BLOCK)));
 
-    public static final DeferredBlock<PostBlock> OAK_POST = registerBlock("oak_post",
-            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG).noOcclusion()));
-    public static final DeferredBlock<PostBlock> SPRUCE_POST = registerBlock("spruce_post",
-            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_LOG).noOcclusion()));
-    public static final DeferredBlock<PostBlock> BIRCH_POST = registerBlock("birch_post",
-            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BIRCH_LOG).noOcclusion()));
-    public static final DeferredBlock<PostBlock> JUNGLE_POST = registerBlock("jungle_post",
-            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_LOG).noOcclusion()));
-    public static final DeferredBlock<PostBlock> ACACIA_POST = registerBlock("acacia_post",
-            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_LOG).noOcclusion()));
-    public static final DeferredBlock<PostBlock> DARK_OAK_POST = registerBlock("dark_oak_post",
-            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_OAK_LOG).noOcclusion()));
-    public static final DeferredBlock<PostBlock> MANGROVE_POST = registerBlock("mangrove_post",
-            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MANGROVE_LOG).noOcclusion()));
-    public static final DeferredBlock<PostBlock> CHERRY_POST = registerBlock("cherry_post",
-            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_LOG).noOcclusion()));
+    public record WoodDefinition(String modId, String woodName, boolean hasStripped, String strippedWoodName, String planksName) {
+        public WoodDefinition(String woodName) {
+            this(Progressioned.MOD_ID, woodName, true, "stripped_" + woodName, woodName + "_planks");
+        }
+        public WoodDefinition(String modId, String woodName) {
+            this(modId, woodName, true, "stripped_" + woodName, woodName + "_planks");
+        }
+        public WoodDefinition(String modId, String woodName, boolean hasStripped) {
+            this(modId, woodName, hasStripped, "stripped_" + woodName, woodName + "_planks");
+        }
+        public WoodDefinition(String modId, String woodName, boolean hasStripped, String strippedWoodName) {
+            this(modId, woodName, hasStripped, strippedWoodName, woodName + "_planks");
+        }
+    }
 
-    public static final DeferredBlock<PostBlock> STRIPPED_OAK_POST = registerBlock("stripped_oak_post",
-            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG).noOcclusion()));
-    public static final DeferredBlock<PostBlock> STRIPPED_SPRUCE_POST = registerBlock("stripped_spruce_post",
-            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_LOG).noOcclusion()));
-    public static final DeferredBlock<PostBlock> STRIPPED_BIRCH_POST = registerBlock("stripped_birch_post",
-            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BIRCH_LOG).noOcclusion()));
-    public static final DeferredBlock<PostBlock> STRIPPED_JUNGLE_POST = registerBlock("stripped_jungle_post",
-            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_LOG).noOcclusion()));
-    public static final DeferredBlock<PostBlock> STRIPPED_ACACIA_POST = registerBlock("stripped_acacia_post",
-            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_LOG).noOcclusion()));
-    public static final DeferredBlock<PostBlock> STRIPPED_DARK_OAK_POST = registerBlock("stripped_dark_oak_post",
-            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_OAK_LOG).noOcclusion()));
-    public static final DeferredBlock<PostBlock> STRIPPED_MANGROVE_POST = registerBlock("stripped_mangrove_post",
-            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MANGROVE_LOG).noOcclusion()));
-    public static final DeferredBlock<PostBlock> STRIPPED_CHERRY_POST = registerBlock("stripped_cherry_post",
-            () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_LOG).noOcclusion()));
+    public static final List<WoodDefinition> WOODS = List.of(
+            new WoodDefinition("oak"),
+            new WoodDefinition("spruce"),
+            new WoodDefinition("birch"),
+            new WoodDefinition("jungle"),
+            new WoodDefinition("acacia"),
+            new WoodDefinition("dark_oak"),
+            new WoodDefinition("mangrove"),
+            new WoodDefinition("cherry"),
 
+            // Regions Unexplored
+            new WoodDefinition("regions_unexplored", "alpha", false),
+            new WoodDefinition("regions_unexplored", "ashen", false, "stripped_dead", "dead_planks"),
+            new WoodDefinition("regions_unexplored", "baobab"),
+            new WoodDefinition("regions_unexplored", "blackwood"),
+            new WoodDefinition("regions_unexplored", "brimwood"),
+            new WoodDefinition("regions_unexplored", "cobalt"),
+            new WoodDefinition("regions_unexplored", "cypress"),
+            new WoodDefinition("regions_unexplored", "dead"),
+            new WoodDefinition("regions_unexplored", "joshua"),
+            new WoodDefinition("regions_unexplored", "kapok"),
+            new WoodDefinition("regions_unexplored", "larch"),
+            new WoodDefinition("regions_unexplored", "magnolia"),
+            new WoodDefinition("regions_unexplored", "maple"),
+            new WoodDefinition("regions_unexplored", "palm"),
+            new WoodDefinition("regions_unexplored", "pine"),
+            new WoodDefinition("regions_unexplored", "socotra"),
+            new WoodDefinition("regions_unexplored", "willow"),
+            new WoodDefinition("regions_unexplored", "wisteria"),
+
+            // Biomes o plenty
+            new WoodDefinition("biomesoplenty", "dead"),
+            new WoodDefinition("biomesoplenty", "empyreal"),
+            new WoodDefinition("biomesoplenty", "fir"),
+            new WoodDefinition("biomesoplenty", "hellbark"),
+            new WoodDefinition("biomesoplenty", "jacaranda"),
+            new WoodDefinition("biomesoplenty", "magic"),
+            new WoodDefinition("biomesoplenty", "mahogany"),
+            new WoodDefinition("biomesoplenty", "maple"),
+            new WoodDefinition("biomesoplenty", "palm"),
+            new WoodDefinition("biomesoplenty", "pine"),
+            new WoodDefinition("biomesoplenty", "redwood"),
+            new WoodDefinition("biomesoplenty", "umbran"),
+            new WoodDefinition("biomesoplenty", "willow")
+    );
+
+    static {
+        for (WoodDefinition wood : WOODS) {
+            boolean isSelf = wood.modId().equals(Progressioned.MOD_ID);
+            boolean isLoaded = isSelf || (ModList.get() != null && ModList.get().isLoaded(wood.modId()));
+
+            if (isLoaded) {
+                String registryName = isSelf
+                        ? wood.woodName() + "_post"
+                        : wood.modId() + "_" + wood.woodName() + "_post";
+
+                registerBlock(registryName, () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG).noOcclusion()));
+
+                if (wood.hasStripped()) {
+                    String strippedRegistryName = isSelf
+                            ? wood.strippedWoodName() + "_post"
+                            : wood.modId() + "_" + wood.strippedWoodName() + "_post";
+
+                    registerBlock(strippedRegistryName, () -> new PostBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG).noOcclusion()));
+                }
+            }
+        }
+    }
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
         DeferredBlock<T> toReturn = BLOCKS.register(name, block);

@@ -1,0 +1,20 @@
+{
+  "type": "progressioned:melting",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:nuggets/brass"
+      }
+    }
+  ],
+  "ingredient": {
+    "tag": "c:nuggets/brass"
+  },
+  "result": {
+    "id": "progressioned:molten_brass",
+    "amount": 16
+  },
+  "cookingtime": 45
+}

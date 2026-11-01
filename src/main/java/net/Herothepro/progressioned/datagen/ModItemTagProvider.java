@@ -2,6 +2,7 @@ package net.Herothepro.progressioned.datagen;
 
 import net.Herothepro.progressioned.Progressioned;
 import net.Herothepro.progressioned.block.ModBlocks;
+import net.Herothepro.progressioned.block.custom.PostBlock;
 import net.Herothepro.progressioned.item.ModItems;
 import net.Herothepro.progressioned.util.ModTags;
 import net.minecraft.core.HolderLookup;
@@ -14,6 +15,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -23,8 +25,6 @@ public class ModItemTagProvider extends ItemTagsProvider {
     public ModItemTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, blockTags, Progressioned.MOD_ID, existingFileHelper);
     }
-
-    record WoodVariant(String name, Block post, Block strippedPost) {}
 
     private record MaterialItem(String name, Supplier<? extends Item> item) {}
 
@@ -43,6 +43,45 @@ public class ModItemTagProvider extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
+        var itemPostsTag = tag(ModTags.Items.POSTS);
+
+        for (DeferredHolder<Block, ? extends Block> entry : ModBlocks.BLOCKS.getEntries()) {
+            if (entry.get() instanceof PostBlock postBlock) {
+                String path = entry.getId().getPath();
+                String woodBaseName = "oak";
+                String modNamespace = Progressioned.MOD_ID;
+                boolean matched = false;
+
+                for (ModBlocks.WoodDefinition wood : ModBlocks.WOODS) {
+                    if (!wood.modId().equals(Progressioned.MOD_ID) && !net.neoforged.fml.ModList.get().isLoaded(wood.modId())) {
+                        continue;
+                    }
+
+                    String expectedPrefix = wood.modId().equals(Progressioned.MOD_ID) ? "" : wood.modId() + "_";
+                    if (path.startsWith(expectedPrefix)) {
+                        String namePart = path.substring(expectedPrefix.length());
+                        if (namePart.equals(wood.woodName() + "_post") ||
+                                (wood.hasStripped() && namePart.equals(wood.strippedWoodName() + "_post"))) {
+                            modNamespace = wood.modId();
+                            woodBaseName = wood.woodName();
+                            matched = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (matched || modNamespace.equals(Progressioned.MOD_ID)) {
+                    itemPostsTag.addOptional(entry.getId());
+
+                    String tagName = modNamespace.equals(Progressioned.MOD_ID)
+                            ? woodBaseName + "_posts"
+                            : modNamespace + "_" + woodBaseName + "_posts";
+
+                    TagKey<Item> itemWoodPostTag = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, tagName));
+                    tag(itemWoodPostTag).addOptional(entry.getId());
+                }
+            }
+        }
 
         tag(ItemTags.PICKAXES)
                 .add(ModItems.FLINT_PICKAXE.get())
@@ -107,6 +146,7 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModItems.DIAMOND_SAW.get());
 
         tag(ModTags.Items.HAMMERS)
+                .add(ModItems.STONE_HAMMER.get())
                 .add(ModItems.COPPER_HAMMER.get())
                 .add(ModItems.IRON_HAMMER.get())
                 .add(ModItems.DIAMOND_HAMMER.get());
@@ -175,27 +215,5 @@ public class ModItemTagProvider extends ItemTagsProvider {
         tag(commonTag("bricks"))
                 .add(ModItems.PORCELAIN_CLAY_BRICK.get())
                 .add(ModItems.MUD_BRICK.get());
-
-        WoodVariant[] variants = {
-                new WoodVariant("oak", ModBlocks.OAK_POST.get(), ModBlocks.STRIPPED_OAK_POST.get()),
-                new WoodVariant("spruce", ModBlocks.SPRUCE_POST.get(), ModBlocks.STRIPPED_SPRUCE_POST.get()),
-                new WoodVariant("birch", ModBlocks.BIRCH_POST.get(), ModBlocks.STRIPPED_BIRCH_POST.get()),
-                new WoodVariant("jungle", ModBlocks.JUNGLE_POST.get(), ModBlocks.STRIPPED_JUNGLE_POST.get()),
-                new WoodVariant("acacia", ModBlocks.ACACIA_POST.get(), ModBlocks.STRIPPED_ACACIA_POST.get()),
-                new WoodVariant("dark_oak", ModBlocks.DARK_OAK_POST.get(), ModBlocks.STRIPPED_DARK_OAK_POST.get()),
-                new WoodVariant("mangrove", ModBlocks.MANGROVE_POST.get(), ModBlocks.STRIPPED_MANGROVE_POST.get()),
-                new WoodVariant("cherry", ModBlocks.CHERRY_POST.get(), ModBlocks.STRIPPED_CHERRY_POST.get()),
-        };
-
-        var postsTagBuilder = tag(ModTags.Items.POSTS);
-
-        for (WoodVariant v : variants) {
-            TagKey<Item> postTag = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, v.name() + "_posts"));
-            tag(postTag)
-                    .add(v.post().asItem())
-                    .add(v.strippedPost().asItem());
-
-            postsTagBuilder.addTag(postTag);
-        }
     }
 }

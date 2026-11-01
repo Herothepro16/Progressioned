@@ -1,0 +1,21 @@
+{
+  "type": "progressioned:casting_basin",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:storage_blocks/brass"
+      }
+    }
+  ],
+  "input": {
+    "id": "progressioned:molten_brass",
+    "amount": 1296
+  },
+  "result": {
+    "tag": "c:storage_blocks/brass",
+    "count": 1
+  },
+  "time": 100
+}

@@ -37,12 +37,8 @@ public class FluidClientEvents {
     }
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
-        event.register(new DynamicFluidContainerModel.Colors(), ModFluids.MOLTEN_IRON.bucket().get());
-        event.register(new DynamicFluidContainerModel.Colors(), ModFluids.MOLTEN_COPPER.bucket().get());
-        event.register(new DynamicFluidContainerModel.Colors(), ModFluids.MOLTEN_GOLD.bucket().get());
-        event.register(new DynamicFluidContainerModel.Colors(), ModFluids.MOLTEN_TIN.bucket().get());
-        event.register(new DynamicFluidContainerModel.Colors(), ModFluids.MOLTEN_SILVER.bucket().get());
-        event.register(new DynamicFluidContainerModel.Colors(), ModFluids.MOLTEN_BRONZE.bucket().get());
-        event.register(new DynamicFluidContainerModel.Colors(), ModFluids.MOLTEN_ROSE_GOLD.bucket().get());
+        for (FluidHolder<?> fluid : ModFluids.REGISTERED_FLUIDS) {
+            event.register(new DynamicFluidContainerModel.Colors(), fluid.bucket().get());
+        }
     }
 }

@@ -95,6 +95,6 @@ public class WorkstoneEMIRecipe implements EmiRecipe {
 
         widgets.addSlot(input, 5, 9).drawBack(false);
         widgets.addSlot(catalyst, 30, 31).drawBack(false);
-        widgets.addSlot(output, 59, 10).drawBack(false).recipeContext(this);
+        widgets.addSlot(output, 60, 11).drawBack(false).recipeContext(this);
     }
 }

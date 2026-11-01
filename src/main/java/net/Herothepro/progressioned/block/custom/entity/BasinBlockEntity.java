@@ -84,7 +84,7 @@ public class BasinBlockEntity extends BlockEntity {
             if (recipeManager == null) return null;
             for (var recipeHolder : recipeManager.getAllRecipesFor(ModRecipes.CASTING_BASIN_TYPE.get())) {
                 CastingBasinRecipe recipe = recipeHolder.value();
-                if (recipe != null && recipe.input().getFluid() == fluidStack.getFluid()) {
+                if (recipe != null && !recipe.output().isEmpty() && recipe.input().getFluid() == fluidStack.getFluid()) {
                     return recipe;
                 }
             }

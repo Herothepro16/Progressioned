@@ -11,6 +11,8 @@ import net.Herothepro.progressioned.recipe.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.block.Blocks;
+import net.neoforged.fml.ModList;
 
 @EmiEntrypoint
 public class ProgressionedEMIPlugin implements EmiPlugin {
@@ -38,6 +40,10 @@ public class ProgressionedEMIPlugin implements EmiPlugin {
     public static final EmiRecipeCategory CASTING_BASIN_CATEGORY = new EmiRecipeCategory(
             ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "porcelain_casting_basin"),
             EmiStack.of(ModBlocks.PORCELAIN_CASTING_BASIN.get()));
+
+    public static final EmiRecipeCategory KNAPPING_CATEGORY = new EmiRecipeCategory(
+            ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "knapping"),
+            EmiStack.of(Blocks.STONE));
 
     @Override
     public void register(EmiRegistry registry) {
@@ -77,6 +83,15 @@ public class ProgressionedEMIPlugin implements EmiPlugin {
         registry.addWorkstation(CASTING_BASIN_CATEGORY, EmiStack.of(ModBlocks.PORCELAIN_CASTING_BASIN.get()));
         for (RecipeHolder<CastingBasinRecipe> holder : manager.getAllRecipesFor(ModRecipes.CASTING_BASIN_TYPE.get())) {
             registry.addRecipe(new CastingBasinEMIRecipe(holder.id(), holder.value()));
+        }
+
+        registry.addCategory(KNAPPING_CATEGORY);
+        registry.addWorkstation(KNAPPING_CATEGORY, EmiStack.of(Blocks.STONE));
+        for (RecipeHolder<KnappingRecipe> holder : manager.getAllRecipesFor(ModRecipes.KNAPPING_TYPE.get())) {
+            registry.addRecipe(new KnappingEMIRecipe(holder.id(), holder.value()));
+        }
+        if (ModList.get().isLoaded("create")) {
+            CreateEMICompat.register(registry);
         }
     }
 }

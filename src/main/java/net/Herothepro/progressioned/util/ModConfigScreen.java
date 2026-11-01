@@ -8,26 +8,40 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 public class ModConfigScreen extends Screen {
     private final Screen parent;
 
+    private static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath("progressioned", "textures/gui/config_background.png");
+
     private boolean originalCanFlintMineCopper;
     private boolean originalAllowCampfireHeating;
     private boolean originalKnifeCompat;
+    private boolean originalOptionalMelting;
+    private boolean originalAllowHandWoodMining;
+    private boolean originalOptionalChoppingBlock;
+    private boolean originalOptionalKiln;
     private int originalPlantFiberChance;
     private int originalStrawChance;
 
     private boolean canFlintMineCopper;
     private boolean allowCampfireHeating;
     private boolean knifeCompat;
+    private boolean optionalMelting;
+    private boolean allowHandWoodMining;
+    private boolean optionalChoppingBlock;
+    private boolean optionalKiln;
     private int plantFiberChance;
     private int strawChance;
 
     private Button flintCopperButton;
     private Button campfireHeatingButton;
     private Button knifeCompatButton;
-    private Button undoButton;
+    private Button optionalMeltingButton;
+    private Button allowHandWoodMiningButton;
+    private Button optionalChoppingBlockButton;
+    private Button optionalKilnButton;
     private Button resetButton;
 
     public ModConfigScreen(Screen parent) {
@@ -43,6 +57,18 @@ public class ModConfigScreen extends Screen {
         this.originalKnifeCompat = ModConfig.KNIFE_COMPAT.get();
         this.knifeCompat = this.originalKnifeCompat;
 
+        this.originalOptionalMelting = ModConfig.OPTIONAL_MELTING.get();
+        this.optionalMelting = this.originalOptionalMelting;
+
+        this.originalAllowHandWoodMining = ModConfig.ALLOW_HAND_WOOD_MINING.get();
+        this.allowHandWoodMining = this.originalAllowHandWoodMining;
+
+        this.originalOptionalChoppingBlock = ModConfig.OPTIONAL_CHOPPING_BLOCK.get();
+        this.optionalChoppingBlock = this.originalOptionalChoppingBlock;
+
+        this.originalOptionalKiln = ModConfig.OPTIONAL_KILN.get();
+        this.optionalKiln = this.originalOptionalKiln;
+
         this.originalPlantFiberChance = ModConfig.PLANT_FIBER_DROP_CHANCE.get();
         this.plantFiberChance = this.originalPlantFiberChance;
 
@@ -55,6 +81,8 @@ public class ModConfigScreen extends Screen {
         super.init();
 
         int buttonX = this.width / 2 + 50;
+        int startY = 32;
+        int spacing = 24;
 
         Component flintCopperTooltip = Component.literal("Allows flint tools to mine copper ore")
                 .append("\n")
@@ -64,7 +92,7 @@ public class ModConfigScreen extends Screen {
                     canFlintMineCopper = !canFlintMineCopper;
                     updateButtonStates();
                 })
-                .bounds(buttonX, 50, 90, 20)
+                .bounds(buttonX, startY, 90, 20)
                 .tooltip(Tooltip.create(flintCopperTooltip))
                 .build());
 
@@ -76,7 +104,7 @@ public class ModConfigScreen extends Screen {
                     allowCampfireHeating = !allowCampfireHeating;
                     updateButtonStates();
                 })
-                .bounds(buttonX, 75, 90, 20)
+                .bounds(buttonX, startY + spacing, 90, 20)
                 .tooltip(Tooltip.create(campfireTooltip))
                 .build());
 
@@ -88,15 +116,63 @@ public class ModConfigScreen extends Screen {
                     knifeCompat = !knifeCompat;
                     updateButtonStates();
                 })
-                .bounds(buttonX, 100, 90, 20)
+                .bounds(buttonX, startY + (spacing * 2), 90, 20)
                 .tooltip(Tooltip.create(knifeTooltip))
+                .build());
+
+        Component meltingTooltip = Component.literal("Allows raw ores to be smelted or blasted into ingots")
+                .append("\n")
+                .append(Component.literal("Default : " + ModConfig.OPTIONAL_MELTING.getDefault()).withStyle(ChatFormatting.DARK_GRAY));
+
+        this.optionalMeltingButton = this.addRenderableWidget(Button.builder(Component.literal(optionalMelting ? "True" : "False"), button -> {
+                    optionalMelting = !optionalMelting;
+                    updateButtonStates();
+                })
+                .bounds(buttonX, startY + (spacing * 3), 90, 20)
+                .tooltip(Tooltip.create(meltingTooltip))
+                .build());
+
+        Component woodMiningTooltip = Component.literal("Allows logs and planks to be mined by hand without a flint tool")
+                .append("\n")
+                .append(Component.literal("Default : " + ModConfig.ALLOW_HAND_WOOD_MINING.getDefault()).withStyle(ChatFormatting.DARK_GRAY));
+
+        this.allowHandWoodMiningButton = this.addRenderableWidget(Button.builder(Component.literal(allowHandWoodMining ? "True" : "False"), button -> {
+                    allowHandWoodMining = !allowHandWoodMining;
+                    updateButtonStates();
+                })
+                .bounds(buttonX, startY + (spacing * 4), 90, 20)
+                .tooltip(Tooltip.create(woodMiningTooltip))
+                .build());
+
+        Component choppingTooltip = Component.literal("Disables the recipe that forces logs to be sawed into planks")
+                .append("\n")
+                .append(Component.literal("Default : " + ModConfig.OPTIONAL_CHOPPING_BLOCK.getDefault()).withStyle(ChatFormatting.DARK_GRAY));
+
+        this.optionalChoppingBlockButton = this.addRenderableWidget(Button.builder(Component.literal(optionalChoppingBlock ? "True" : "False"), button -> {
+                    optionalChoppingBlock = !optionalChoppingBlock;
+                    updateButtonStates();
+                })
+                .bounds(buttonX, startY + (spacing * 5), 90, 20)
+                .tooltip(Tooltip.create(choppingTooltip))
+                .build());
+
+        Component kilnTooltip = Component.literal("Disables custom stone tool recipes and the custom furnace recipe")
+                .append("\n")
+                .append(Component.literal("Default : " + ModConfig.OPTIONAL_KILN.getDefault()).withStyle(ChatFormatting.DARK_GRAY));
+
+        this.optionalKilnButton = this.addRenderableWidget(Button.builder(Component.literal(optionalKiln ? "True" : "False"), button -> {
+                    optionalKiln = !optionalKiln;
+                    updateButtonStates();
+                })
+                .bounds(buttonX, startY + (spacing * 6), 90, 20)
+                .tooltip(Tooltip.create(kilnTooltip))
                 .build());
 
         Component fiberTooltip = Component.literal("Chance to drop Plant Fiber when breaking grass with a knife")
                 .append("\n")
                 .append(Component.literal("Default : " + ModConfig.PLANT_FIBER_DROP_CHANCE.getDefault() + "%").withStyle(ChatFormatting.DARK_GRAY));
 
-        AbstractSliderButton fiberSlider = new AbstractSliderButton(buttonX, 125, 90, 20, Component.literal(plantFiberChance + "%"), plantFiberChance / 100.0) {
+        AbstractSliderButton fiberSlider = new AbstractSliderButton(buttonX, startY + (spacing * 7), 90, 20, Component.literal(plantFiberChance + "%"), plantFiberChance / 100.0) {
             @Override
             protected void updateMessage() {
                 this.setMessage(Component.literal(plantFiberChance + "%"));
@@ -114,7 +190,7 @@ public class ModConfigScreen extends Screen {
                 .append("\n")
                 .append(Component.literal("Default : " + ModConfig.STRAW_DROP_CHANCE.getDefault() + "%").withStyle(ChatFormatting.DARK_GRAY));
 
-        AbstractSliderButton strawSlider = new AbstractSliderButton(buttonX, 150, 90, 20, Component.literal(strawChance + "%"), strawChance / 100.0) {
+        AbstractSliderButton strawSlider = new AbstractSliderButton(buttonX, startY + (spacing * 8), 90, 20, Component.literal(strawChance + "%"), strawChance / 100.0) {
             @Override
             protected void updateMessage() {
                 this.setMessage(Component.literal(strawChance + "%"));
@@ -130,37 +206,35 @@ public class ModConfigScreen extends Screen {
 
         int footerY = this.height - 27;
 
-        this.undoButton = this.addRenderableWidget(Button.builder(Component.literal("Undo"), button -> {
-            canFlintMineCopper = originalCanFlintMineCopper;
-            allowCampfireHeating = originalAllowCampfireHeating;
-            knifeCompat = originalKnifeCompat;
-            plantFiberChance = originalPlantFiberChance;
-            strawChance = originalStrawChance;
-            this.clearWidgets();
-            this.init();
-        }).bounds(this.width / 2 - 100, footerY, 64, 20).build());
-
-        this.resetButton = this.addRenderableWidget(Button.builder(Component.literal("Reset"), button -> {
+        this.resetButton = this.addRenderableWidget(Button.builder(Component.literal("Reset").withStyle(ChatFormatting.RED), button -> {
             canFlintMineCopper = (boolean) ModConfig.CAN_FLINT_MINE_COPPER.getDefault();
             allowCampfireHeating = (boolean) ModConfig.ALLOW_CAMPFIRE_HEATING.getDefault();
             knifeCompat = (boolean) ModConfig.KNIFE_COMPAT.getDefault();
+            optionalMelting = (boolean) ModConfig.OPTIONAL_MELTING.getDefault();
+            allowHandWoodMining = (boolean) ModConfig.ALLOW_HAND_WOOD_MINING.getDefault();
+            optionalChoppingBlock = (boolean) ModConfig.OPTIONAL_CHOPPING_BLOCK.getDefault();
+            optionalKiln = (boolean) ModConfig.OPTIONAL_KILN.getDefault();
             plantFiberChance = (int) ModConfig.PLANT_FIBER_DROP_CHANCE.getDefault();
             strawChance = (int) ModConfig.STRAW_DROP_CHANCE.getDefault();
             this.clearWidgets();
             this.init();
-        }).bounds(this.width / 2 - 32, footerY, 64, 20).build());
+        }).bounds(this.width / 2 - 100, footerY, 98, 20).build());
 
-        this.addRenderableWidget(Button.builder(Component.literal("Done"), button -> {
+        this.addRenderableWidget(Button.builder(Component.literal("Save & Quit").withStyle(ChatFormatting.GREEN), button -> {
             ModConfig.CAN_FLINT_MINE_COPPER.set(this.canFlintMineCopper);
             ModConfig.ALLOW_CAMPFIRE_HEATING.set(this.allowCampfireHeating);
             ModConfig.KNIFE_COMPAT.set(this.knifeCompat);
+            ModConfig.OPTIONAL_MELTING.set(this.optionalMelting);
+            ModConfig.ALLOW_HAND_WOOD_MINING.set(this.allowHandWoodMining);
+            ModConfig.OPTIONAL_CHOPPING_BLOCK.set(this.optionalChoppingBlock);
+            ModConfig.OPTIONAL_KILN.set(this.optionalKiln);
             ModConfig.PLANT_FIBER_DROP_CHANCE.set(this.plantFiberChance);
             ModConfig.STRAW_DROP_CHANCE.set(this.strawChance);
 
             ModConfig.SPEC.save();
 
             this.minecraft.setScreen(this.parent);
-        }).bounds(this.width / 2 + 36, footerY, 64, 20).build());
+        }).bounds(this.width / 2 + 2, footerY, 98, 20).build());
 
         updateButtonStates();
     }
@@ -175,17 +249,26 @@ public class ModConfigScreen extends Screen {
         if (this.knifeCompatButton != null) {
             this.knifeCompatButton.setMessage(Component.literal(knifeCompat ? "True" : "False"));
         }
-
-        boolean hasChanged = (canFlintMineCopper != originalCanFlintMineCopper) ||
-                (allowCampfireHeating != originalAllowCampfireHeating) ||
-                (knifeCompat != originalKnifeCompat) ||
-                (plantFiberChance != originalPlantFiberChance) ||
-                (strawChance != originalStrawChance);
-        if (this.undoButton != null) this.undoButton.active = hasChanged;
+        if (this.optionalMeltingButton != null) {
+            this.optionalMeltingButton.setMessage(Component.literal(optionalMelting ? "True" : "False"));
+        }
+        if (this.allowHandWoodMiningButton != null) {
+            this.allowHandWoodMiningButton.setMessage(Component.literal(allowHandWoodMining ? "True" : "False"));
+        }
+        if (this.optionalChoppingBlockButton != null) {
+            this.optionalChoppingBlockButton.setMessage(Component.literal(optionalChoppingBlock ? "True" : "False"));
+        }
+        if (this.optionalKilnButton != null) {
+            this.optionalKilnButton.setMessage(Component.literal(optionalKiln ? "True" : "False"));
+        }
 
         boolean isAtDefault = (canFlintMineCopper == (boolean) ModConfig.CAN_FLINT_MINE_COPPER.getDefault()) &&
                 (allowCampfireHeating == (boolean) ModConfig.ALLOW_CAMPFIRE_HEATING.getDefault()) &&
                 (knifeCompat == (boolean) ModConfig.KNIFE_COMPAT.getDefault()) &&
+                (optionalMelting == (boolean) ModConfig.OPTIONAL_MELTING.getDefault()) &&
+                (allowHandWoodMining == (boolean) ModConfig.ALLOW_HAND_WOOD_MINING.getDefault()) &&
+                (optionalChoppingBlock == (boolean) ModConfig.OPTIONAL_CHOPPING_BLOCK.getDefault()) &&
+                (optionalKiln == (boolean) ModConfig.OPTIONAL_KILN.getDefault()) &&
                 (plantFiberChance == (int) ModConfig.PLANT_FIBER_DROP_CHANCE.getDefault()) &&
                 (strawChance == (int) ModConfig.STRAW_DROP_CHANCE.getDefault());
         if (this.resetButton != null) this.resetButton.active = !isAtDefault;
@@ -193,20 +276,35 @@ public class ModConfigScreen extends Screen {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
+        guiGraphics.blit(BACKGROUND, 0, 0, 0, 0, this.width, this.height, this.width, this.height);
 
-        guiGraphics.fill(0, 36, this.width, this.height - 36, 0x66000000);
-        guiGraphics.fill(0, 36, this.width, 37, 0xFF000000);
+        guiGraphics.fill(0, 28, this.width, this.height - 36, 0x66000000);
+        guiGraphics.fill(0, 28, this.width, 29, 0xFF000000);
         guiGraphics.fill(0, this.height - 37, this.width, this.height - 36, 0xFF000000);
 
-        guiGraphics.drawCenteredString(this.font, this.title, this.width / 2, 15, 0xFFFFFF);
+        for (net.minecraft.client.gui.components.Renderable renderable : this.renderables) {
+            renderable.render(guiGraphics, mouseX, mouseY, partialTick);
+        }
+
+        guiGraphics.pose().pushPose();
+        float scale = 1.25f;
+        guiGraphics.pose().scale(scale, scale, 1.0f);
+        guiGraphics.drawCenteredString(this.font, this.title, (int)((this.width / 2) / scale), (int)(7 / scale), 0xFFFFFF);
+        guiGraphics.pose().popPose();
 
         int textX = this.width / 2 - 140;
 
-        guiGraphics.drawString(this.font, Component.literal("Can Flint Mine Copper"), textX, 50 + 6, 0xFFFFFF);
-        guiGraphics.drawString(this.font, Component.literal("Allow Campfire Heating"), textX, 75 + 6, 0xFFFFFF);
-        guiGraphics.drawString(this.font, Component.literal("Knife Compatibility"), textX, 100 + 6, 0xFFFFFF);
-        guiGraphics.drawString(this.font, Component.literal("Plant Fiber Drop Chance"), textX, 125 + 6, 0xFFFFFF);
-        guiGraphics.drawString(this.font, Component.literal("Straw Cord Drop Chance"), textX, 150 + 6, 0xFFFFFF);
+        if (this.flintCopperButton != null) {
+            int textY = this.flintCopperButton.getY() + (this.flintCopperButton.getHeight() - this.font.lineHeight) / 2;
+            guiGraphics.drawString(this.font, Component.literal("Can Flint Mine Copper"), textX, textY, 0xFFFFFF);
+            guiGraphics.drawString(this.font, Component.literal("Allow Campfire Heating"), textX, textY + 24, 0xFFFFFF);
+            guiGraphics.drawString(this.font, Component.literal("Knife Compatibility"), textX, textY + (24 * 2), 0xFFFFFF);
+            guiGraphics.drawString(this.font, Component.literal("Optional Melting"), textX, textY + (24 * 3), 0xFFFFFF);
+            guiGraphics.drawString(this.font, Component.literal("Allow Wood to be mined by hand"), textX, textY + (24 * 4), 0xFFFFFF);
+            guiGraphics.drawString(this.font, Component.literal("Optional Chopping Block"), textX, textY + (24 * 5), 0xFFFFFF);
+            guiGraphics.drawString(this.font, Component.literal("Optional Kiln"), textX, textY + (24 * 6), 0xFFFFFF);
+            guiGraphics.drawString(this.font, Component.literal("Plant Fiber Drop Chance"), textX, textY + (24 * 7), 0xFFFFFF);
+            guiGraphics.drawString(this.font, Component.literal("Straw Cord Drop Chance"), textX, textY + (24 * 8), 0xFFFFFF);
+        }
     }
 }

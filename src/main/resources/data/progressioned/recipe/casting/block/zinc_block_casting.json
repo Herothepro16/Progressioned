@@ -1,0 +1,21 @@
+{
+  "type": "progressioned:casting_basin",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:storage_blocks/zinc"
+      }
+    }
+  ],
+  "input": {
+    "id": "progressioned:molten_zinc",
+    "amount": 1296
+  },
+  "result": {
+    "tag": "c:storage_blocks/zinc",
+    "count": 1
+  },
+  "time": 100
+}

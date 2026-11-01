@@ -50,7 +50,8 @@ public class ModEvents {
                 return;
             }
         }
-        if (target.is(BlockTags.LOGS) || target.is(BlockTags.PLANKS)) {
+
+        if (!ModConfig.ALLOW_HAND_WOOD_MINING.get() && (target.is(BlockTags.LOGS) || target.is(BlockTags.PLANKS))) {
             boolean isHoldingTool = stack.getItem() instanceof DiggerItem || stack.is(ItemTags.AXES);
             if (!isHoldingTool) {
                 event.setCanHarvest(false);
@@ -66,7 +67,7 @@ public class ModEvents {
 
         boolean isHoldingTool = stack.getItem() instanceof DiggerItem;
 
-        if ((state.is(BlockTags.LOGS) || state.is(BlockTags.PLANKS)) && !isHoldingTool) {
+        if (!ModConfig.ALLOW_HAND_WOOD_MINING.get() && (state.is(BlockTags.LOGS) || state.is(BlockTags.PLANKS)) && !isHoldingTool) {
             event.setNewSpeed(event.getOriginalSpeed() * 0.3f);
         }
 
@@ -78,70 +79,6 @@ public class ModEvents {
             if (state.is(ModTags.Blocks.INCORRECT_FOR_FLINT_TOOL)) {
                 event.setNewSpeed(1.0F);
             }
-        }
-    }
-
-    private static final Map<UUID, Long> lastHitTime = new HashMap<>();
-
-    @SubscribeEvent
-    public static void onFlintHitStone(PlayerInteractEvent.LeftClickBlock event) {
-        Player player = event.getEntity();
-        ItemStack held = player.getMainHandItem();
-
-        if (!held.is(Items.FLINT) || !event.getLevel().getBlockState(event.getPos()).is(Tags.Blocks.STONES) || event.getLevel().isClientSide) return;
-
-        long currentTime = System.currentTimeMillis();
-        UUID playerId = player.getUUID();
-        if (lastHitTime.containsKey(playerId) && currentTime - lastHitTime.get(playerId) < 500) return;
-        lastHitTime.put(playerId, currentTime);
-
-        if (event.getLevel().random.nextFloat() < 0.20f) {
-            held.shrink(1);
-            player.getInventory().add(new ItemStack(ModItems.FLINT_SHARD.get()));
-            event.getLevel().playSound(null, event.getPos(), SoundEvents.GRAVEL_BREAK, SoundSource.PLAYERS, 0.5f, 1.0f);
-        } else {
-            event.getLevel().playSound(null, event.getPos(), SoundEvents.GRAVEL_BREAK, SoundSource.PLAYERS, 0.5f, 0.8f);
-        }
-    }
-
-    @SubscribeEvent
-    public static void onFlintShardHitStone(PlayerInteractEvent.LeftClickBlock event) {
-        Player player = event.getEntity();
-        ItemStack held = player.getMainHandItem();
-
-        if (!held.is(ModItems.FLINT_SHARD) || !event.getLevel().getBlockState(event.getPos()).is(Tags.Blocks.STONES) || event.getLevel().isClientSide) return;
-
-        long currentTime = System.currentTimeMillis();
-        UUID playerId = player.getUUID();
-        if (lastHitTime.containsKey(playerId) && currentTime - lastHitTime.get(playerId) < 500) return;
-        lastHitTime.put(playerId, currentTime);
-
-        if (event.getLevel().random.nextFloat() < 0.20f) {
-            held.shrink(1);
-            player.getInventory().add(new ItemStack(ModItems.FLINT_CHIP.get()));
-            event.getLevel().playSound(null, event.getPos(), SoundEvents.GRAVEL_BREAK, SoundSource.PLAYERS, 0.5f, 1.0f);
-        } else {
-            event.getLevel().playSound(null, event.getPos(), SoundEvents.GRAVEL_BREAK, SoundSource.PLAYERS, 0.5f, 0.8f);
-        }
-    }
-
-    @SubscribeEvent
-    public static void onBoneHitStone(PlayerInteractEvent.LeftClickBlock event) {
-        Player player = event.getEntity();
-        ItemStack held = player.getMainHandItem();
-
-        if (!held.is(Items.BONE) || !event.getLevel().getBlockState(event.getPos()).is(Tags.Blocks.STONES) || event.getLevel().isClientSide) return;
-        long currentTime = System.currentTimeMillis();
-        UUID playerId = player.getUUID();
-        if (lastHitTime.containsKey(playerId) && currentTime - lastHitTime.get(playerId) < 500) return;
-        lastHitTime.put(playerId, currentTime);
-
-        if (event.getLevel().random.nextFloat() < 0.20f) {
-            held.shrink(1);
-            player.getInventory().add(new ItemStack(ModItems.SHARP_BONE.get()));
-            event.getLevel().playSound(null, event.getPos(), SoundEvents.BONE_BLOCK_HIT, SoundSource.PLAYERS, 0.5f, 1.0f);
-        } else {
-            event.getLevel().playSound(null, event.getPos(), SoundEvents.BONE_BLOCK_BREAK, SoundSource.PLAYERS, 0.5f, 0.8f);
         }
     }
 
@@ -187,6 +124,4 @@ public class ModEvents {
             event.setBurnTime(16000);
         }
     }
-
-
 }

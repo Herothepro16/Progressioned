@@ -8,12 +8,15 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import net.Herothepro.progressioned.Progressioned;
 import net.Herothepro.progressioned.block.ModBlocks;
 import net.Herothepro.progressioned.integration.jei.category.*;
+import net.Herothepro.progressioned.integration.jei.CreateJEICompat;
 import net.Herothepro.progressioned.recipe.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.block.Blocks;
+import net.neoforged.fml.ModList;
 
 import java.util.List;
 
@@ -27,18 +30,18 @@ public class ProgressionedJEIPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
-        registration.addRecipeCategories(new ChoppingCategory(
-                registration.getJeiHelpers().getGuiHelper()));
-        registration.addRecipeCategories(new KilnCategory(
-                registration.getJeiHelpers().getGuiHelper()));
-        registration.addRecipeCategories(new WorkstoneCategory(
-                registration.getJeiHelpers().getGuiHelper()));
-        registration.addRecipeCategories(new MeltingCategory(
-                registration.getJeiHelpers().getGuiHelper()));
-        registration.addRecipeCategories(new CastingCategory(
-                registration.getJeiHelpers().getGuiHelper()));
-        registration.addRecipeCategories(new CastingBasinCategory(
-                registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new ChoppingCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new KilnCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new WorkstoneCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new MeltingCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new CastingCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new CastingBasinCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new KnappingCategory(registration.getJeiHelpers().getGuiHelper()));
+
+        // Knapping with a Create deployer (separate tab, only when Create is installed)
+        if (ModList.get().isLoaded("create")) {
+            CreateJEICompat.registerCategories(registration);
+        }
     }
 
     @Override
@@ -74,32 +77,29 @@ public class ProgressionedJEIPlugin implements IModPlugin {
                 .getAllRecipesFor(ModRecipes.CASTING_BASIN_TYPE.get())
                 .stream().map(RecipeHolder::value).toList();
         registration.addRecipes(CastingBasinCategory.RECIPE_TYPE, castingBasinRecipes);
+
+        List<KnappingRecipe> knappingRecipes = recipeManager
+                .getAllRecipesFor(ModRecipes.KNAPPING_TYPE.get())
+                .stream().map(RecipeHolder::value).toList();
+        registration.addRecipes(KnappingCategory.RECIPE_TYPE, knappingRecipes);
+
+        if (ModList.get().isLoaded("create")) {
+            CreateJEICompat.registerRecipes(registration, knappingRecipes);
+        }
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(
-                new ItemStack(ModBlocks.CHOPPING_BLOCK.get().asItem()),
-                ChoppingCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.CHOPPING_BLOCK.get().asItem()), ChoppingCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.PORCELAIN_KILN.get().asItem()), KilnCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.WORKSTONE.get().asItem()), WorkstoneCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.PORCELAIN_MELTER.get().asItem()), MeltingCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.PORCELAIN_CASTING_TABLE.get().asItem()), CastingCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.PORCELAIN_CASTING_BASIN.get().asItem()), CastingBasinCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(Blocks.STONE), KnappingCategory.RECIPE_TYPE);
 
-        registration.addRecipeCatalyst(
-                new ItemStack(ModBlocks.PORCELAIN_KILN.get().asItem()),
-                KilnCategory.RECIPE_TYPE);
-
-        registration.addRecipeCatalyst(
-                new ItemStack(ModBlocks.WORKSTONE.get().asItem()),
-                WorkstoneCategory.RECIPE_TYPE);
-
-        registration.addRecipeCatalyst(
-                new ItemStack(ModBlocks.PORCELAIN_MELTER.get().asItem()),
-                MeltingCategory.RECIPE_TYPE);
-
-        registration.addRecipeCatalyst(
-                new ItemStack(ModBlocks.PORCELAIN_CASTING_TABLE.get().asItem()),
-                CastingCategory.RECIPE_TYPE);
-
-        registration.addRecipeCatalyst(
-                new ItemStack(ModBlocks.PORCELAIN_CASTING_BASIN.get().asItem()),
-                CastingBasinCategory.RECIPE_TYPE);
+        if (ModList.get().isLoaded("create")) {
+            CreateJEICompat.registerCatalysts(registration);
+        }
     }
 }

@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -24,6 +25,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class ModFluids {
     public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, Progressioned.MOD_ID);
@@ -39,21 +41,34 @@ public class ModFluids {
     public static final FluidHolder<FluidType> MOLTEN_BRONZE = registerFluid("molten_bronze", 0xffed7014);
     public static final FluidHolder<FluidType> MOLTEN_ROSE_GOLD = registerFluid("molten_rose_gold", 0xffe79380);
 
+    public static final FluidHolder<FluidType> MOLTEN_ZINC = registerFluid("molten_zinc", 0xffb9e9c1,
+            () -> ModList.get().isLoaded("create"));
+    public static final FluidHolder<FluidType> MOLTEN_BRASS = registerFluid("molten_brass", 0xfffbcc68,
+            () -> ModList.get().isLoaded("create"));
+
     public static FluidHolder<FluidType> registerFluid(String name, int color) {
-        DeferredHolder<FluidType, FluidType> type = FLUID_TYPES.register(name, () -> new FluidType(
-                FluidType.Properties.create()
-                        .canSwim(false)
-                        .canDrown(false)
-                        .canConvertToSource(false)
-                        .lightLevel(15)
-                        .density(3000)
-                        .viscosity(6000)
-                        .temperature(1300)
-                        .motionScale(0.002335)
-                        .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL_LAVA)
-                        .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY_LAVA)
-                        .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.LAVA_EXTINGUISH)
-        ));
+        return registerFluid(name, color, () -> true);
+    }
+
+    public static FluidHolder<FluidType> registerFluid(String name, int color, Supplier<Boolean> condition) {
+        if (!condition.get()) {
+            return null;
+        }
+
+        FluidType.Properties typeProperties = FluidType.Properties.create()
+                .canSwim(false)
+                .canDrown(false)
+                .canConvertToSource(false)
+                .lightLevel(15)
+                .density(3000)
+                .viscosity(6000)
+                .temperature(1300)
+                .motionScale(0.002335)
+                .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL_LAVA)
+                .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY_LAVA)
+                .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.LAVA_EXTINGUISH);
+
+        DeferredHolder<FluidType, FluidType> type = FLUID_TYPES.register(name, () -> new FluidType(typeProperties));
 
         @SuppressWarnings("unchecked")
         DeferredHolder<Fluid, BaseFlowingFluid.Source>[] source = new DeferredHolder[1];

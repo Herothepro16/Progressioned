@@ -1,0 +1,25 @@
+{
+  "type": "progressioned:casting",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:nuggets/zinc"
+      }
+    }
+  ],
+  "mold": {
+    "item": "progressioned:nugget_mold"
+  },
+  "fluid": {
+    "fluid": "progressioned:molten_zinc",
+    "amount": 16
+  },
+  "result": {
+    "tag": "c:nuggets/zinc",
+    "count": 1
+  },
+  "cooling_time": 100,
+  "consume_cast": false
+}

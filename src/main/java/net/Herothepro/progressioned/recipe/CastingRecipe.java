@@ -13,16 +13,20 @@ import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 public class CastingRecipe implements Recipe<CastingRecipeInput> {
     private final Ingredient moldInput;
     private final SizedFluidIngredient fluidInput;
-    private final ItemStack output;
+    private final RecipeResult result;
     private final int coolingTime;
     private final boolean consumeCast;
 
-    public CastingRecipe(Ingredient moldInput, SizedFluidIngredient fluidInput, ItemStack output, int coolingTime, boolean consumeCast) {
+    public CastingRecipe(Ingredient moldInput, SizedFluidIngredient fluidInput, RecipeResult result, int coolingTime, boolean consumeCast) {
         this.moldInput = moldInput;
         this.fluidInput = fluidInput;
-        this.output = output;
+        this.result = result;
         this.coolingTime = coolingTime;
         this.consumeCast = consumeCast;
+    }
+
+    public CastingRecipe(Ingredient moldInput, SizedFluidIngredient fluidInput, ItemStack output, int coolingTime, boolean consumeCast) {
+        this(moldInput, fluidInput, RecipeResult.ofStack(output), coolingTime, consumeCast);
     }
 
     @Override
@@ -46,9 +50,13 @@ public class CastingRecipe implements Recipe<CastingRecipeInput> {
         return consumeCast;
     }
 
+    public RecipeResult getResult() {
+        return result;
+    }
+
     @Override
     public ItemStack assemble(CastingRecipeInput input, HolderLookup.Provider registries) {
-        return output.copy();
+        return result.resolve().copy();
     }
 
     @Override
@@ -58,7 +66,7 @@ public class CastingRecipe implements Recipe<CastingRecipeInput> {
 
     @Override
     public ItemStack getResultItem(HolderLookup.Provider registries) {
-        return output;
+        return result.resolve();
     }
 
     @Override

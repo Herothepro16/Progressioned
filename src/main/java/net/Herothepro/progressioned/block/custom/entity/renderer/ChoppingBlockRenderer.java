@@ -20,9 +20,9 @@ public class ChoppingBlockRenderer implements BlockEntityRenderer<ChoppingBlockE
         if (log.isEmpty()) return;
 
         poseStack.pushPose();
-        poseStack.translate(0.5, 0.60, 0.5);
+        poseStack.translate(0.5, 0.6, 0.5);
         poseStack.mulPose(Axis.XP.rotationDegrees(0));
-        poseStack.scale(1f, 1f, 1f);
+        poseStack.scale(1.15f, 1.15f, 1.15f);
 
         Minecraft.getInstance().getItemRenderer().renderStatic(
                 log, ItemDisplayContext.FIXED,

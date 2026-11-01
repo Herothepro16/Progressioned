@@ -18,6 +18,22 @@ public class ModConfig {
             .comment("Allow knives from other mods (tagged under c:tools/knives) to drop Plant Fiber and Straw")
             .define("knifeCompat", false);
 
+    public static final ModConfigSpec.BooleanValue OPTIONAL_MELTING = BUILDER
+            .comment("Allows raw ores to be smelted or blasted into ingots.")
+            .define("optionalMelting", false);
+
+    public static final ModConfigSpec.BooleanValue ALLOW_HAND_WOOD_MINING = BUILDER
+            .comment("Allows logs and planks to be mined by hand without requiring a flint tool.")
+            .define("allowHandWoodMining", false);
+
+    public static final ModConfigSpec.BooleanValue OPTIONAL_CHOPPING_BLOCK = BUILDER
+            .comment("Disables the recipe change that forces logs to be sawed into planks.")
+            .define("optionalChoppingBlock", false);
+
+    public static final ModConfigSpec.BooleanValue OPTIONAL_KILN = BUILDER
+            .comment("Disables custom stone tool recipes and the custom furnace recipe.")
+            .define("optionalKiln", false);
+
     public static final ModConfigSpec.IntValue PLANT_FIBER_DROP_CHANCE = BUILDER
             .comment("Percentage chance (0-100) for Plant Fiber to drop from grass and ferns.")
             .defineInRange("plantFiberDropChance", 75, 0, 100);

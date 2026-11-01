@@ -1,0 +1,12 @@
+{
+  "type": "progressioned:knapping",
+  "ingredient": { "item": "progressioned:flint_shard" },
+  "result": {
+    "id": "progressioned:flint_chip",
+    "count": 1
+  },
+  "chance": 0.2,
+  "target": "c:stones",
+  "success_sound": "minecraft:block.gravel.break",
+  "fail_sound": "minecraft:block.gravel.break"
+}

@@ -8,8 +8,10 @@ import net.Herothepro.progressioned.item.ModItems;
 import net.Herothepro.progressioned.recipe.CastingRecipe;
 import net.Herothepro.progressioned.recipe.ChoppingRecipe;
 import net.Herothepro.progressioned.recipe.DamagingShapelessRecipe;
+import net.Herothepro.progressioned.recipe.MeltingRecipe;
 import net.Herothepro.progressioned.util.ModTags;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
@@ -17,13 +19,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 
 import java.util.List;
@@ -37,7 +41,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     record ShapedToolSpec(
             String name,
             ItemLike result,
-            ItemLike head
+            ItemLike head,
+            ItemLike binding
     ) {}
 
     record CastingSpec(
@@ -48,17 +53,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             int fluidAmount,
             int coolingTime,
             boolean consumeCast
-    ) {}
-
-    record WoodVariant(
-            String name,
-            Item planks,
-            net.minecraft.world.level.block.Block post,
-            net.minecraft.world.level.block.Block strippedPost,
-            net.minecraft.world.level.ItemLike log,
-            net.minecraft.world.level.ItemLike wood,
-            net.minecraft.world.level.ItemLike strippedLog,
-            net.minecraft.world.level.ItemLike strippedWood
     ) {}
 
     @Override
@@ -114,6 +108,39 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .requires(ModItems.COPPER_DUST,1)
                 .requires(ModItems.SILVER_DUST,1)
                 .unlockedBy("has_silver_dust", has(ModItems.SILVER_DUST.get())).save(recipeOutput);
+
+        // Nuggetifying
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.TIN_NUGGET,9)
+                .requires(ModItems.TIN_INGOT)
+                .unlockedBy("has_tin_ingot", has(ModItems.TIN_INGOT)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SILVER_NUGGET,9)
+                .requires(ModItems.SILVER_INGOT)
+                .unlockedBy("has_silver_ingot", has(ModItems.SILVER_INGOT)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.BRONZE_NUGGET,9)
+                .requires(ModItems.BRONZE_INGOT)
+                .unlockedBy("has_bronze_ingot", has(ModItems.BRONZE_INGOT)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ROSE_GOLD_NUGGET,9)
+                .requires(ModItems.ROSE_GOLD_INGOT)
+                .unlockedBy("has_rose_gold_ingot", has(ModItems.ROSE_GOLD_INGOT)).save(recipeOutput);
+
+        // De-Nuggetifying
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.TIN_INGOT)
+                .requires(ModItems.TIN_NUGGET, 9)
+                .unlockedBy("has_tin_nugget", has(ModItems.TIN_NUGGET))
+                .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "tin_ingot_from_nuggets"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SILVER_INGOT)
+                .requires(ModItems.SILVER_NUGGET, 9)
+                .unlockedBy("has_silver_nugget", has(ModItems.SILVER_NUGGET))
+                .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "silver_ingot_from_nuggets"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.BRONZE_INGOT)
+                .requires(ModItems.BRONZE_NUGGET, 9)
+                .unlockedBy("has_bronze_nugget", has(ModItems.BRONZE_NUGGET))
+                .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "bronze_ingot_from_nuggets"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ROSE_GOLD_INGOT)
+                .requires(ModItems.ROSE_GOLD_NUGGET, 9)
+                .unlockedBy("has_rose_gold_nugget", has(ModItems.ROSE_GOLD_NUGGET))
+                .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "rose_gold_ingot_from_nuggets"));
+
         // Block Crafting
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.CHARCOAL_BLOCK)
                 .requires(Items.CHARCOAL, 9)
@@ -171,8 +198,12 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         damagingShapelessRecipe(recipeOutput, "straw_cord",
                 new ItemStack(ModItems.STRAW_CORD.get(), 1),
-                List.of(Ingredient.of(ModItems.STRAW),
-                        Ingredient.of(ModItems.STRAW)),
+                List.of(Ingredient.of(ModItems.STRAW)),
+                Ingredient.of(ModTags.Items.KNIVES), 1);
+
+        damagingShapelessRecipe(recipeOutput, "leather_cord",
+                new ItemStack(ModItems.LEATHER_CORD.get(), 2),
+                List.of(Ingredient.of(Items.LEATHER)),
                 Ingredient.of(ModTags.Items.KNIVES), 1);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.BUNDLE)
@@ -182,8 +213,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         // Clay Stuff
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.PORCELAIN_CLAY_BALL)
-                .requires(Items.CLAY_BALL, 1)
-                .requires(Items.BONE_MEAL, 2)
+                .requires(Items.CLAY_BALL).requires(Items.BONE_MEAL)
                 .unlockedBy("has_bone_meal", has(Items.BONE_MEAL)).save(recipeOutput);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.UNFIRED_CLAY_BUCKET)
@@ -201,7 +231,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('P', ModBlocks.PORCELAIN_BRICKS)
                 .unlockedBy("has_porcelain_clay_bricks", has(ModBlocks.PORCELAIN_BRICKS)).save(recipeOutput);
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.PORCELAIN_BRICKS), RecipeCategory.MISC,
-                        ModBlocks.PORCELAIN_BRICK_SLAB,2)
+                        ModBlocks.PORCELAIN_BRICK_SLAB, 2)
                 .unlockedBy("has_porcelain_bricks", has(ModBlocks.PORCELAIN_BRICKS))
                 .save(recipeOutput, "porcelain_brick_slab_from_stonecutting");
 
@@ -210,7 +240,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('P', ModBlocks.PORCELAIN_BRICKS)
                 .unlockedBy("has_porcelain_clay_bricks", has(ModBlocks.PORCELAIN_BRICKS)).save(recipeOutput);
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.PORCELAIN_BRICKS), RecipeCategory.MISC,
-                        ModBlocks.PORCELAIN_BRICK_STAIRS,1)
+                        ModBlocks.PORCELAIN_BRICK_STAIRS, 1)
                 .unlockedBy("has_porcelain_bricks", has(ModBlocks.PORCELAIN_BRICKS))
                 .save(recipeOutput, "porcelain_brick_stairs_from_stonecutting");
 
@@ -219,7 +249,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('P', ModBlocks.PORCELAIN_BRICKS)
                 .unlockedBy("has_porcelain_clay_bricks", has(ModBlocks.PORCELAIN_BRICKS)).save(recipeOutput);
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(ModBlocks.PORCELAIN_BRICKS), RecipeCategory.MISC,
-                        ModBlocks.PORCELAIN_BRICK_WALL,1)
+                        ModBlocks.PORCELAIN_BRICK_WALL, 1)
                 .unlockedBy("has_porcelain_bricks", has(ModBlocks.PORCELAIN_BRICKS))
                 .save(recipeOutput, "porcelain_brick_wall_from_stonecutting");
 
@@ -228,7 +258,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('P', ModBlocks.PORCELAIN_BRICKS).define('B', ModItems.PORCELAIN_CLAY_BRICK)
                 .unlockedBy("has_porcelain_clay_bricks", has(ModBlocks.PORCELAIN_BRICKS)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.PORCELAIN_HEATER, 1)
-                .pattern("PBP").pattern("BCB").pattern("PBP")
+                .pattern("BBB").pattern("BCB").pattern("BPB")
                 .define('P', ModBlocks.PORCELAIN_BRICKS).define('B', ModItems.PORCELAIN_CLAY_BRICK)
                 .define('C', ItemTags.COALS)
                 .unlockedBy("has_porcelain_clay_bricks", has(ModBlocks.PORCELAIN_BRICKS)).save(recipeOutput);
@@ -260,28 +290,34 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         // Copper Tool Recipes
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_SWORD)
-                .pattern(" P ").pattern(" P ").pattern(" S ")
+                .pattern(" P ").pattern(" PL").pattern(" S ")
                 .define('S', Items.STICK).define('P', ModItems.COPPER_PLATE)
+                .define('L',ModItems.STRAW_CORD)
                 .unlockedBy("has_copper_plate", has(ModItems.COPPER_PLATE)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_PICKAXE)
-                .pattern("PCP").pattern(" S ").pattern(" S ")
-                .define('S', Items.STICK).define('C', Items.COPPER_INGOT).define('P', ModItems.COPPER_PLATE)
+                .pattern("PCP").pattern(" SL").pattern(" S ")
+                .define('S', Items.STICK).define('C', Items.COPPER_INGOT)
+                .define('P', ModItems.COPPER_PLATE).define('L',ModItems.STRAW_CORD)
                 .unlockedBy("has_copper_plate", has(ModItems.COPPER_PLATE)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_AXE)
-                .pattern("CP ").pattern("PS ").pattern(" S ")
-                .define('S', Items.STICK).define('C', Items.COPPER_INGOT).define('P', ModItems.COPPER_PLATE)
+                .pattern("CP ").pattern("PSL").pattern(" S ")
+                .define('S', Items.STICK).define('C', Items.COPPER_INGOT)
+                .define('L',ModItems.STRAW_CORD).define('P', ModItems.COPPER_PLATE)
                 .unlockedBy("has_copper_ingot", has(Items.COPPER_INGOT)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_SHOVEL)
-                .pattern(" P ").pattern(" S ").pattern(" S ")
+                .pattern(" P ").pattern(" SL").pattern(" S ")
                 .define('S', Items.STICK).define('P', ModItems.COPPER_PLATE)
+                .define('L',ModItems.STRAW_CORD)
                 .unlockedBy("has_copper_ingot", has(Items.COPPER_INGOT)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_HOE)
-                .pattern("PC ").pattern(" S ").pattern(" S ")
-                .define('S', Items.STICK).define('C', Items.COPPER_INGOT).define('P', ModItems.COPPER_PLATE)
+                .pattern("PC ").pattern(" SL").pattern(" S ")
+                .define('S', Items.STICK).define('C', Items.COPPER_INGOT)
+                .define('L',ModItems.STRAW_CORD).define('P', ModItems.COPPER_PLATE)
                 .unlockedBy("has_copper_ingot", has(Items.COPPER_INGOT)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_SPEAR)
-                .pattern("  C").pattern(" S ").pattern("S  ")
+                .pattern("  C").pattern(" SL").pattern("S  ")
                 .define('S', Items.STICK).define('C', Items.COPPER_INGOT)
+                .define('L',ModItems.STRAW_CORD)
                 .unlockedBy("has_copper_ingot", has(Items.COPPER_INGOT)).save(recipeOutput);
 
         // Bone tool Recipes
@@ -309,6 +345,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('S', Items.STICK).define('C', ModItems.SHARP_BONE)
                 .define('P', ModItems.PLANT_STRING)
                 .unlockedBy("has_sharp_bone", has(ModItems.SHARP_BONE)).save(recipeOutput);
+
         // Amethyst Bone
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.AMETHYST_BONE_SWORD)
                 .pattern(" A ").pattern("ABA").pattern(" S ")
@@ -330,6 +367,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('B', ModItems.BONE_SPEAR).define('A', Items.AMETHYST_SHARD)
                 .define('S', Items.IRON_INGOT)
                 .unlockedBy("has_bone_spear", has(ModItems.BONE_SPEAR)).save(recipeOutput);
+
         // Golden Bone
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.GOLDEN_BONE_SWORD)
                 .pattern(" A ").pattern("ABA").pattern(" S ")
@@ -352,19 +390,46 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('S', Items.IRON_INGOT)
                 .unlockedBy("has_bone_spear", has(ModItems.BONE_SPEAR)).save(recipeOutput);
 
+        // Bronze Tool Recipes
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BRONZE_SWORD)
+                .pattern(" P ").pattern(" PL").pattern(" S ")
+                .define('S', Items.STICK).define('P', ModItems.BRONZE_PLATE)
+                .define('L',ModItems.LEATHER_CORD)
+                .unlockedBy("has_bronze_plate", has(ModItems.BRONZE_PLATE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BRONZE_PICKAXE)
+                .pattern("PCP").pattern(" SL").pattern(" S ")
+                .define('S', Items.STICK).define('C', ModItems.BRONZE_INGOT)
+                .define('P', ModItems.BRONZE_PLATE).define('L',ModItems.LEATHER_CORD)
+                .unlockedBy("has_bronze_plate", has(ModItems.BRONZE_PLATE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BRONZE_AXE)
+                .pattern("CP ").pattern("PSL").pattern(" S ")
+                .define('S', Items.STICK).define('C', ModItems.BRONZE_INGOT)
+                .define('P', ModItems.BRONZE_PLATE).define('L',ModItems.LEATHER_CORD)
+                .unlockedBy("has_bronze_ingot", has(ModItems.BRONZE_INGOT)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BRONZE_SHOVEL)
+                .pattern(" P ").pattern(" SL").pattern(" S ")
+                .define('S', Items.STICK).define('P', ModItems.BRONZE_PLATE)
+                .define('L',ModItems.LEATHER_CORD)
+                .unlockedBy("has_bronze_ingot", has(ModItems.BRONZE_INGOT)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BRONZE_HOE)
+                .pattern("PC ").pattern(" SL").pattern(" S ")
+                .define('S', Items.STICK).define('C', ModItems.BRONZE_INGOT)
+                .define('P', ModItems.BRONZE_PLATE).define('L',ModItems.LEATHER_CORD)
+                .unlockedBy("has_bronze_ingot", has(ModItems.BRONZE_INGOT)).save(recipeOutput);
+
         // Workstation Stuff
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.FURNACE)
                 .pattern("SSS").pattern("SCS").pattern("MMM")
                 .define('S', Items.STONE).define('M', Items.SMOOTH_STONE).define('C', Items.COAL_BLOCK)
                 .unlockedBy("has_stone", has(Items.STONE))
-                .save(recipeOutput,ResourceLocation.fromNamespaceAndPath("minecraft", "furnace"));
+                .save(recipeOutput, ResourceLocation.fromNamespaceAndPath("minecraft", "furnace"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CHOPPING_BLOCK)
                 .pattern(" L ").pattern(" F ").pattern("   ")
                 .define('L', ItemTags.LOGS).define('F', ModItems.FLINT_SHARD)
                 .unlockedBy("has_flint_shard", has(ModItems.FLINT_SHARD)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.PORCELAIN_KILN)
-                .pattern("PPP").pattern("P P").pattern("BBB")
-                .define('P', ModItems.PORCELAIN_CLAY_BRICK).define('B', Items.CLAY_BALL)
+                .pattern("PPP").pattern("P P").pattern("PBP")
+                .define('P', ModItems.PORCELAIN_CLAY_BRICK).define('B', Items.CLAY)
                 .unlockedBy("has_porcelain_clay_brick", has(ModItems.PORCELAIN_CLAY_BRICK)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.WORKSTONE)
                 .pattern(" S ").pattern(" L ").pattern("   ")
@@ -410,26 +475,31 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('L', ItemTags.LOGS)
                 .unlockedBy("has_diamond", has(Items.DIAMOND)).save(recipeOutput);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.STONE_HAMMER)
+                .pattern(" CO").pattern(" SC").pattern("S  ")
+                .define('C', Items.STONE).define('S', Items.STICK)
+                .define('O', ModItems.STRAW_CORD)
+                .unlockedBy("has_copper_ingot", has(Items.COPPER_INGOT)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_HAMMER)
-                .pattern("BCC").pattern("CS ").pattern(" S ")
-                .define('C', Items.COPPER_INGOT).define('S', Items.STICK)
-                .define('B', Blocks.COPPER_BLOCK)
+                .pattern(" BO").pattern(" SC").pattern("S  ")
+                .define('C', ModItems.COPPER_PLATE).define('S', Items.STICK)
+                .define('B', Blocks.COPPER_BLOCK).define('O', ModItems.STRAW_CORD)
                 .unlockedBy("has_copper_ingot", has(Items.COPPER_INGOT)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.IRON_HAMMER)
-                .pattern("BII").pattern("IS ").pattern(" S ")
+                .pattern(" BO").pattern(" SI").pattern("S  ")
                 .define('S', Items.STICK).define('I', ModItems.IRON_PLATE)
-                .define('B', Blocks.IRON_BLOCK)
+                .define('B', Blocks.IRON_BLOCK).define('O', Items.STRING)
                 .unlockedBy("has_iron_plate", has(ModItems.IRON_PLATE)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.DIAMOND_HAMMER)
-                .pattern("BDD").pattern("DS ").pattern(" S ")
+                .pattern(" BO").pattern(" SD").pattern("S  ")
                 .define('S', Items.STICK).define('D', Items.DIAMOND)
-                .define('B', Blocks.DIAMOND_BLOCK)
+                .define('B', Blocks.DIAMOND_BLOCK).define('O', Items.STRING)
                 .unlockedBy("has_diamond", has(Items.DIAMOND)).save(recipeOutput);
 
         // Bronze Armor
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BRONZE_HELMET)
                 .pattern("PPP").pattern("P P").pattern("   ")
-                .define('P', ModItems.BRONZE_PLATE) 
+                .define('P', ModItems.BRONZE_PLATE)
                 .unlockedBy("has_bronze_plate", has(ModItems.BRONZE_PLATE)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BRONZE_CHESTPLATE)
                 .pattern("P P").pattern("PPP").pattern("PPP")
@@ -532,40 +602,40 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         damagingShapelessRecipe(recipeOutput, "gravel_to_flint_with_fiber_mesh",
                 new ItemStack(Items.FLINT, 1),
-                List.of(Ingredient.of(Items.GRAVEL), Ingredient.of(Items.GRAVEL), Ingredient.of(Items.GRAVEL)),
+                List.of(Ingredient.of(Items.GRAVEL), Ingredient.of(Items.GRAVEL)),
                 Ingredient.of(ModItems.FIBER_MESH), 1);
 
         ShapedToolSpec[] shapedTools = {
                 // Copper
-                new ShapedToolSpec("copper_sword", ModItems.COPPER_SWORD, ModItems.COPPER_SWORD_BLADE),
-                new ShapedToolSpec("copper_pickaxe", ModItems.COPPER_PICKAXE, ModItems.COPPER_PICKAXE_HEAD),
-                new ShapedToolSpec("copper_axe", ModItems.COPPER_AXE, ModItems.COPPER_AXE_HEAD),
-                new ShapedToolSpec("copper_shovel", ModItems.COPPER_SHOVEL, ModItems.COPPER_SHOVEL_HEAD),
-                new ShapedToolSpec("copper_hoe", ModItems.COPPER_HOE, ModItems.COPPER_HOE_HEAD),
+                new ShapedToolSpec("copper_sword", ModItems.COPPER_SWORD, ModItems.COPPER_SWORD_BLADE, ModItems.STRAW_CORD),
+                new ShapedToolSpec("copper_pickaxe", ModItems.COPPER_PICKAXE, ModItems.COPPER_PICKAXE_HEAD, ModItems.STRAW_CORD),
+                new ShapedToolSpec("copper_axe", ModItems.COPPER_AXE, ModItems.COPPER_AXE_HEAD, ModItems.STRAW_CORD),
+                new ShapedToolSpec("copper_shovel", ModItems.COPPER_SHOVEL, ModItems.COPPER_SHOVEL_HEAD, ModItems.STRAW_CORD),
+                new ShapedToolSpec("copper_hoe", ModItems.COPPER_HOE, ModItems.COPPER_HOE_HEAD, ModItems.STRAW_CORD),
                 // Bronze
-                new ShapedToolSpec("bronze_sword", ModItems.BRONZE_SWORD, ModItems.BRONZE_SWORD_BLADE),
-                new ShapedToolSpec("bronze_pickaxe", ModItems.BRONZE_PICKAXE, ModItems.BRONZE_PICKAXE_HEAD),
-                new ShapedToolSpec("bronze_axe", ModItems.BRONZE_AXE, ModItems.BRONZE_AXE_HEAD),
-                new ShapedToolSpec("bronze_shovel", ModItems.BRONZE_SHOVEL, ModItems.BRONZE_SHOVEL_HEAD),
-                new ShapedToolSpec("bronze_hoe", ModItems.BRONZE_HOE, ModItems.BRONZE_HOE_HEAD),
+                new ShapedToolSpec("bronze_sword", ModItems.BRONZE_SWORD, ModItems.BRONZE_SWORD_BLADE, ModItems.LEATHER_CORD.get()),
+                new ShapedToolSpec("bronze_pickaxe", ModItems.BRONZE_PICKAXE, ModItems.BRONZE_PICKAXE_HEAD, ModItems.LEATHER_CORD.get()),
+                new ShapedToolSpec("bronze_axe", ModItems.BRONZE_AXE, ModItems.BRONZE_AXE_HEAD, ModItems.LEATHER_CORD.get()),
+                new ShapedToolSpec("bronze_shovel", ModItems.BRONZE_SHOVEL, ModItems.BRONZE_SHOVEL_HEAD, ModItems.LEATHER_CORD.get()),
+                new ShapedToolSpec("bronze_hoe", ModItems.BRONZE_HOE, ModItems.BRONZE_HOE_HEAD, ModItems.LEATHER_CORD.get()),
                 // Iron
-                new ShapedToolSpec("iron_sword", Items.IRON_SWORD, ModItems.IRON_SWORD_BLADE),
-                new ShapedToolSpec("iron_pickaxe", Items.IRON_PICKAXE, ModItems.IRON_PICKAXE_HEAD),
-                new ShapedToolSpec("iron_axe", Items.IRON_AXE, ModItems.IRON_AXE_HEAD),
-                new ShapedToolSpec("iron_shovel", Items.IRON_SHOVEL, ModItems.IRON_SHOVEL_HEAD),
-                new ShapedToolSpec("iron_hoe", Items.IRON_HOE, ModItems.IRON_HOE_HEAD),
+                new ShapedToolSpec("iron_sword", Items.IRON_SWORD, ModItems.IRON_SWORD_BLADE, Items.STRING),
+                new ShapedToolSpec("iron_pickaxe", Items.IRON_PICKAXE, ModItems.IRON_PICKAXE_HEAD, Items.STRING),
+                new ShapedToolSpec("iron_axe", Items.IRON_AXE, ModItems.IRON_AXE_HEAD, Items.STRING),
+                new ShapedToolSpec("iron_shovel", Items.IRON_SHOVEL, ModItems.IRON_SHOVEL_HEAD, Items.STRING),
+                new ShapedToolSpec("iron_hoe", Items.IRON_HOE, ModItems.IRON_HOE_HEAD, Items.STRING),
                 // Gold
-                new ShapedToolSpec("golden_sword", Items.GOLDEN_SWORD, ModItems.GOLD_SWORD_BLADE),
-                new ShapedToolSpec("golden_pickaxe", Items.GOLDEN_PICKAXE, ModItems.GOLD_PICKAXE_HEAD),
-                new ShapedToolSpec("golden_axe", Items.GOLDEN_AXE, ModItems.GOLD_AXE_HEAD),
-                new ShapedToolSpec("golden_shovel", Items.GOLDEN_SHOVEL, ModItems.GOLD_SHOVEL_HEAD),
-                new ShapedToolSpec("golden_hoe",Items.GOLDEN_HOE, ModItems.GOLD_HOE_HEAD),
+                new ShapedToolSpec("golden_sword", Items.GOLDEN_SWORD, ModItems.GOLD_SWORD_BLADE, Items.STRING),
+                new ShapedToolSpec("golden_pickaxe", Items.GOLDEN_PICKAXE, ModItems.GOLD_PICKAXE_HEAD, Items.STRING),
+                new ShapedToolSpec("golden_axe", Items.GOLDEN_AXE, ModItems.GOLD_AXE_HEAD, Items.STRING),
+                new ShapedToolSpec("golden_shovel", Items.GOLDEN_SHOVEL, ModItems.GOLD_SHOVEL_HEAD, Items.STRING),
+                new ShapedToolSpec("golden_hoe", Items.GOLDEN_HOE, ModItems.GOLD_HOE_HEAD, Items.STRING),
                 // Rose Gold
-                new ShapedToolSpec("rose_gold_sword", ModItems.ROSE_GOLD_SWORD, ModItems.ROSE_GOLD_SWORD_BLADE),
-                new ShapedToolSpec("rose_gold_pickaxe", ModItems.ROSE_GOLD_PICKAXE, ModItems.ROSE_GOLD_PICKAXE_HEAD),
-                new ShapedToolSpec("rose_gold_axe", ModItems.ROSE_GOLD_AXE, ModItems.ROSE_GOLD_AXE_HEAD),
-                new ShapedToolSpec("rose_gold_shovel", ModItems.ROSE_GOLD_SHOVEL, ModItems.ROSE_GOLD_SHOVEL_HEAD),
-                new ShapedToolSpec("rose_gold_hoe", ModItems.ROSE_GOLD_HOE, ModItems.ROSE_GOLD_HOE_HEAD)
+                new ShapedToolSpec("rose_gold_sword", ModItems.ROSE_GOLD_SWORD, ModItems.ROSE_GOLD_SWORD_BLADE, Items.STRING),
+                new ShapedToolSpec("rose_gold_pickaxe", ModItems.ROSE_GOLD_PICKAXE, ModItems.ROSE_GOLD_PICKAXE_HEAD, Items.STRING),
+                new ShapedToolSpec("rose_gold_axe", ModItems.ROSE_GOLD_AXE, ModItems.ROSE_GOLD_AXE_HEAD, Items.STRING),
+                new ShapedToolSpec("rose_gold_shovel", ModItems.ROSE_GOLD_SHOVEL, ModItems.ROSE_GOLD_SHOVEL_HEAD, Items.STRING),
+                new ShapedToolSpec("rose_gold_hoe", ModItems.ROSE_GOLD_HOE, ModItems.ROSE_GOLD_HOE_HEAD, Items.STRING)
         };
 
         for (ShapedToolSpec tool : shapedTools) {
@@ -575,9 +645,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                     .pattern("   ")
                     .define('H', tool.head())
                     .define('S', Items.STICK)
-                    .define('P', Items.STRING)
+                    .define('P', Ingredient.of(tool.binding()))
                     .unlockedBy("has_" + tool.name(), has(tool.head()))
-                    .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, tool.name()+"from_head"));
+                    .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, tool.name() + "from_head"));
         }
 
         CastingSpec[] castingRecipes = {
@@ -626,50 +696,95 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 new CastingSpec("gold_hoe_head", ModItems.GOLD_HOE_HEAD, ModItems.HOE_HEAD_MOLD,
                         ModFluids.MOLTEN_GOLD, 288, 100, false),
                 // Rose Gold
-                new CastingSpec("rose_gold_sword_blade", ModItems.ROSE_GOLD_SWORD_BLADE.get(), ModItems.SWORD_BLADE_MOLD.get(), 
+                new CastingSpec("rose_gold_sword_blade", ModItems.ROSE_GOLD_SWORD_BLADE.get(), ModItems.SWORD_BLADE_MOLD.get(),
                         ModFluids.MOLTEN_ROSE_GOLD, 288, 100, false),
-                new CastingSpec("rose_gold_pickaxe_head", ModItems.ROSE_GOLD_PICKAXE_HEAD.get(), ModItems.PICKAXE_HEAD_MOLD.get(), 
+                new CastingSpec("rose_gold_pickaxe_head", ModItems.ROSE_GOLD_PICKAXE_HEAD.get(), ModItems.PICKAXE_HEAD_MOLD.get(),
                         ModFluids.MOLTEN_ROSE_GOLD, 432, 100, false),
-                new CastingSpec("rose_gold_axe_head", ModItems.ROSE_GOLD_AXE_HEAD.get(), ModItems.AXE_HEAD_MOLD.get(), 
+                new CastingSpec("rose_gold_axe_head", ModItems.ROSE_GOLD_AXE_HEAD.get(), ModItems.AXE_HEAD_MOLD.get(),
                         ModFluids.MOLTEN_ROSE_GOLD, 432, 100, false),
-                new CastingSpec("rose_gold_shovel_head", ModItems.ROSE_GOLD_SHOVEL_HEAD.get(), ModItems.SHOVEL_HEAD_MOLD.get(), 
+                new CastingSpec("rose_gold_shovel_head", ModItems.ROSE_GOLD_SHOVEL_HEAD.get(), ModItems.SHOVEL_HEAD_MOLD.get(),
                         ModFluids.MOLTEN_ROSE_GOLD, 144, 100, false),
-                new CastingSpec("rose_gold_hoe_head", ModItems.ROSE_GOLD_HOE_HEAD, ModItems.HOE_HEAD_MOLD, 
+                new CastingSpec("rose_gold_hoe_head", ModItems.ROSE_GOLD_HOE_HEAD, ModItems.HOE_HEAD_MOLD,
                         ModFluids.MOLTEN_ROSE_GOLD, 288, 100, false),
         };
 
         for (CastingSpec spec : castingRecipes) {
             castingRecipe(recipeOutput, spec.name(), spec.result(), spec.mold(),
                     spec.fluid(), spec.fluidAmount(), spec.coolingTime(), spec.consumeCast());
+
+            meltingRecipe(recipeOutput, spec.name() + "_melting", spec.result(),
+                    spec.fluid(), spec.fluidAmount(), 400);
         }
 
-        WoodVariant[] variants = {
-                new WoodVariant("oak", Items.OAK_PLANKS, ModBlocks.OAK_POST.get(), ModBlocks.STRIPPED_OAK_POST.get(), Items.OAK_LOG, Items.OAK_WOOD, Items.STRIPPED_OAK_LOG, Items.STRIPPED_OAK_WOOD),
-                new WoodVariant("spruce", Items.SPRUCE_PLANKS, ModBlocks.SPRUCE_POST.get(), ModBlocks.STRIPPED_SPRUCE_POST.get(), Items.SPRUCE_LOG, Items.SPRUCE_WOOD, Items.STRIPPED_SPRUCE_LOG, Items.STRIPPED_SPRUCE_WOOD),
-                new WoodVariant("birch", Items.BIRCH_PLANKS, ModBlocks.BIRCH_POST.get(), ModBlocks.STRIPPED_BIRCH_POST.get(), Items.BIRCH_LOG, Items.BIRCH_WOOD, Items.STRIPPED_BIRCH_LOG, Items.STRIPPED_BIRCH_WOOD),
-                new WoodVariant("jungle", Items.JUNGLE_PLANKS, ModBlocks.JUNGLE_POST.get(), ModBlocks.STRIPPED_JUNGLE_POST.get(), Items.JUNGLE_LOG, Items.JUNGLE_WOOD, Items.STRIPPED_JUNGLE_LOG, Items.STRIPPED_JUNGLE_WOOD),
-                new WoodVariant("acacia", Items.ACACIA_PLANKS, ModBlocks.ACACIA_POST.get(), ModBlocks.STRIPPED_ACACIA_POST.get(), Items.ACACIA_LOG, Items.ACACIA_WOOD, Items.STRIPPED_ACACIA_LOG, Items.STRIPPED_ACACIA_WOOD),
-                new WoodVariant("dark_oak", Items.DARK_OAK_PLANKS, ModBlocks.DARK_OAK_POST.get(), ModBlocks.STRIPPED_DARK_OAK_POST.get(), Items.DARK_OAK_LOG, Items.DARK_OAK_WOOD, Items.STRIPPED_DARK_OAK_LOG, Items.STRIPPED_DARK_OAK_WOOD),
-                new WoodVariant("mangrove", Items.MANGROVE_PLANKS, ModBlocks.MANGROVE_POST.get(), ModBlocks.STRIPPED_MANGROVE_POST.get(), Items.MANGROVE_LOG, Items.MANGROVE_WOOD, Items.STRIPPED_MANGROVE_LOG, Items.STRIPPED_MANGROVE_WOOD),
-                new WoodVariant("cherry", Items.CHERRY_PLANKS, ModBlocks.CHERRY_POST.get(), ModBlocks.STRIPPED_CHERRY_POST.get(), Items.CHERRY_LOG, Items.CHERRY_WOOD, Items.STRIPPED_CHERRY_LOG, Items.STRIPPED_CHERRY_WOOD),
-        };
+        for (ModBlocks.WoodDefinition wood : ModBlocks.WOODS) {
+            String expectedPrefix = wood.modId().equals(Progressioned.MOD_ID) || wood.modId().equals("minecraft")
+                    ? ""
+                    : wood.modId() + "_";
 
-        for (WoodVariant v : variants) {
-            TagKey<Item> postTag = ItemTags.create(ResourceLocation.fromNamespaceAndPath("progressioned", v.name() + "_posts"));
+            String postPath = expectedPrefix + wood.woodName() + "_post";
 
-            damagingShapelessRecipe(recipeOutput, v.name() + "_posts_to_plank",
-                    new ItemStack(v.planks(), 1),
-                    List.of(Ingredient.of(postTag)),
-                    Ingredient.of(ItemTags.AXES), 1);
+            Block postBlock = ModBlocks.BLOCKS.getEntries().stream()
+                    .filter(e -> e.getId().getPath().equals(postPath))
+                    .map(e -> (Block) e.get()).findFirst().orElse(null);
 
-            choppingRecipe(recipeOutput, v.name() + "_log_to_post", Ingredient.of(v.log()),
-                    new ItemStack(v.post().asItem(), 2), 5);
-            choppingRecipe(recipeOutput, v.name() + "_wood_to_post", Ingredient.of(v.wood()),
-                    new ItemStack(v.post().asItem(), 2), 5);
-            choppingRecipe(recipeOutput, "stripped_" + v.name() + "_log_to_post", Ingredient.of(v.strippedLog()),
-                    new ItemStack(v.strippedPost().asItem(), 2), 5);
-            choppingRecipe(recipeOutput, "stripped_" + v.name() + "_wood_to_post", Ingredient.of(v.strippedWood()),
-                    new ItemStack(v.strippedPost().asItem(), 2), 5);
+            Block strippedPostBlock = null;
+            if (wood.hasStripped()) {
+                String strippedPostPath = expectedPrefix + wood.strippedWoodName() + "_post";
+
+                strippedPostBlock = ModBlocks.BLOCKS.getEntries().stream()
+                        .filter(e -> e.getId().getPath().equals(strippedPostPath))
+                        .map(e -> (Block) e.get()).findFirst().orElse(null);
+            }
+
+            if (postBlock != null) {
+                String itemNamespace = wood.modId().equals(Progressioned.MOD_ID) ? "minecraft" : wood.modId();
+
+                Item planksItem = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(itemNamespace, wood.planksName()));
+                Item logItem = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(itemNamespace, wood.woodName() + "_log"));
+                Item woodItem = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(itemNamespace, wood.woodName() + "_wood"));
+
+                Item strippedLogItem = null;
+                Item strippedWoodItem = null;
+                if (wood.hasStripped()) {
+                    strippedLogItem = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(itemNamespace, wood.strippedWoodName() + "_log"));
+                    strippedWoodItem = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(itemNamespace, wood.strippedWoodName() + "_wood"));
+                }
+
+                String namePrefix = wood.modId().equals(Progressioned.MOD_ID) || wood.modId().equals("minecraft") ? "" : wood.modId() + "_";
+
+                if (planksItem != null && planksItem != Items.AIR) {
+                    String tagName = (wood.modId().equals(Progressioned.MOD_ID) || wood.modId().equals("minecraft"))
+                            ? wood.woodName() + "_posts"
+                            : wood.modId() + "_" + wood.woodName() + "_posts";
+
+                    TagKey<Item> postTag = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, tagName));
+
+                    damagingShapelessRecipe(recipeOutput, namePrefix + wood.woodName() + "_posts_to_plank",
+                            new ItemStack(planksItem, 1),
+                            List.of(Ingredient.of(postTag)),
+                            Ingredient.of(ItemTags.AXES), 1);
+                }
+
+                if (logItem != null && logItem != Items.AIR) {
+                    choppingRecipe(recipeOutput, namePrefix + wood.woodName() + "_log_to_post", Ingredient.of(logItem),
+                            new ItemStack(postBlock.asItem(), 2), 5);
+                }
+                if (woodItem != null && woodItem != Items.AIR) {
+                    choppingRecipe(recipeOutput, namePrefix + wood.woodName() + "_wood_to_post", Ingredient.of(woodItem),
+                            new ItemStack(postBlock.asItem(), 2), 5);
+                }
+
+                if (strippedPostBlock != null) {
+                    if (strippedLogItem != null && strippedLogItem != Items.AIR) {
+                        choppingRecipe(recipeOutput, namePrefix + wood.strippedWoodName() + "_log_to_post", Ingredient.of(strippedLogItem),
+                                new ItemStack(strippedPostBlock.asItem(), 2), 5);
+                    }
+                    if (strippedWoodItem != null && strippedWoodItem != Items.AIR) {
+                        choppingRecipe(recipeOutput, namePrefix + wood.strippedWoodName() + "_wood_to_post", Ingredient.of(strippedWoodItem),
+                                new ItemStack(strippedPostBlock.asItem(), 2), 5);
+                    }
+                }
+            }
         }
     }
 
@@ -702,6 +817,18 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                         new ItemStack(result.asItem(), 1),
                         coolingTime,
                         consumeCast
+                ),
+                null);
+    }
+
+    private void meltingRecipe(RecipeOutput output, String name, ItemLike input,
+                               FluidHolder<?> fluid, int fluidAmount, int cookingTime) {
+        output.accept(
+                ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "melting/" + name),
+                new MeltingRecipe(
+                        Ingredient.of(input),
+                        new FluidStack(fluid.source().get(), fluidAmount),
+                        cookingTime
                 ),
                 null);
     }

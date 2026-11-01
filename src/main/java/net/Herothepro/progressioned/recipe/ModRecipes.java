@@ -18,6 +18,13 @@ public class ModRecipes {
     public static final DeferredRegister<RecipeType<?>> TYPES =
             DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, Progressioned.MOD_ID);
 
+    public static final DeferredHolder<RecipeType<?>, RecipeType<KnappingRecipe>> KNAPPING_TYPE =
+            TYPES.register("knapping", () -> RecipeType.simple(
+                    ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "knapping")));
+
+    public static final DeferredHolder<RecipeSerializer<?>, KnappingRecipe.Serializer> KNAPPING_SERIALIZER =
+            SERIALIZERS.register("knapping", KnappingRecipe.Serializer::new);
+
     public static final DeferredHolder<RecipeType<?>, RecipeType<ChoppingRecipe>> CHOPPING_TYPE =
             TYPES.register("chopping", () -> RecipeType.simple(
                     ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "chopping")));
@@ -46,8 +53,7 @@ public class ModRecipes {
         @Override
         public String toString() {
             return "casting";
-        }
-    });
+        }});
 
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<CastingRecipe>> CASTING_SERIALIZER =
             SERIALIZERS.register("casting", () -> CastingRecipeSerializer.INSTANCE);
