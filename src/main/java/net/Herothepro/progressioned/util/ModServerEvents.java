@@ -6,6 +6,7 @@ import net.Herothepro.progressioned.recipe.DamagingShapelessRecipe;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -13,7 +14,7 @@ import net.minecraft.world.item.crafting.*;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
-import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,11 +25,13 @@ public class ModServerEvents {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @SubscribeEvent
-    public static void onServerStarting(ServerStartingEvent event) {
-        RecipeManager recipeManager = event.getServer().getRecipeManager();
-        if (!ModConfig.OPTIONAL_CHOPPING_BLOCK.get()) {
-            replaceLogToPlankRecipes(recipeManager);
-        }
+    public static void onAddReloadListeners(AddReloadListenerEvent event) {
+        RecipeManager recipeManager = event.getServerResources().getRecipeManager();
+        event.addListener((ResourceManagerReloadListener) resourceManager -> {
+            if (!ModConfig.OPTIONAL_CHOPPING_BLOCK.get()) {
+                replaceLogToPlankRecipes(recipeManager);
+            }
+        });
     }
 
     private static void replaceLogToPlankRecipes(RecipeManager recipeManager) {

@@ -48,7 +48,11 @@ public class ModBlocks {
 
     public static final DeferredBlock<CampfireBaseBlock> CAMPFIRE_BASE = registerBlock("campfire_base",
             () -> new CampfireBaseBlock(BlockBehaviour.Properties.of()
-                    .strength(2.0f).sound(SoundType.WOOD).noOcclusion()));
+                    .strength(2.0f)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()
+                    .isViewBlocking((s, l, p) -> false)
+                    .isSuffocating((s, l, p) -> false)));
 
     public static final DeferredBlock<KilnBlock> PORCELAIN_KILN = registerBlock("porcelain_kiln",
             () -> new KilnBlock(BlockBehaviour.Properties.of()
