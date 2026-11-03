@@ -15,6 +15,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,14 +25,25 @@ import java.util.*;
 public class ModServerEvents {
     private static final Logger LOGGER = LogManager.getLogger();
 
+    private static volatile RecipeManager pendingRecipeManager;
+
     @SubscribeEvent
     public static void onAddReloadListeners(AddReloadListenerEvent event) {
         RecipeManager recipeManager = event.getServerResources().getRecipeManager();
-        event.addListener((ResourceManagerReloadListener) resourceManager -> {
-            if (!ModConfig.OPTIONAL_CHOPPING_BLOCK.get()) {
-                replaceLogToPlankRecipes(recipeManager);
-            }
-        });
+        event.addListener((ResourceManagerReloadListener) resourceManager -> pendingRecipeManager = recipeManager);
+    }
+
+    @SubscribeEvent
+    public static void onTagsUpdated(TagsUpdatedEvent event) {
+        if (event.getUpdateCause() != TagsUpdatedEvent.UpdateCause.SERVER_DATA_LOAD) return;
+
+        RecipeManager recipeManager = pendingRecipeManager;
+        pendingRecipeManager = null;
+        if (recipeManager == null) return;
+
+        if (!ModConfig.OPTIONAL_CHOPPING_BLOCK.get()) {
+            replaceLogToPlankRecipes(recipeManager);
+        }
     }
 
     private static void replaceLogToPlankRecipes(RecipeManager recipeManager) {
