@@ -2,6 +2,8 @@ package net.Herothepro.progressioned.util;
 
 import net.Herothepro.progressioned.Progressioned;
 import net.Herothepro.progressioned.block.custom.entity.ModBlockEntities;
+import net.Herothepro.progressioned.item.ModItems;
+import net.Herothepro.progressioned.item.custom.ClayBucketFluidHandler;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -26,5 +28,11 @@ public class ModCapabilites {
                 ModBlockEntities.BASIN_BE.get(), (basin, side) -> basin.tank);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
                 ModBlockEntities.BASIN_BE.get(), (basin, side) -> basin.inventory);
+
+        event.registerItem(Capabilities.FluidHandler.ITEM,
+                (stack, ctx) -> new ClayBucketFluidHandler(stack),
+                ModItems.CLAY_BUCKET.get(),
+                ModItems.CLAY_WATER_BUCKET.get(),
+                ModItems.CLAY_LAVA_BUCKET.get());
     }
 }

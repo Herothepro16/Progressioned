@@ -29,7 +29,7 @@ public class HeaterMenu extends AbstractContainerMenu {
         this.blockEntity = (HeaterBlockEntity) entity;
         this.data = data;
 
-        this.addSlot(new SlotItemHandler(this.blockEntity.itemHandler, 0, 80, 43));
+        this.addSlot(new SlotItemHandler(this.blockEntity.itemHandler, 0, 80, 28));
 
         addPlayerInventory(playerInv);
         addPlayerHotbar(playerInv);
@@ -98,14 +98,14 @@ public class HeaterMenu extends AbstractContainerMenu {
     private void addPlayerInventory(Inventory playerInv) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInv, l + i * 9 + 9, 8 + l * 18, 66 + i * 18));
+                this.addSlot(new Slot(playerInv, l + i * 9 + 9, 8 + l * 18, 51 + i * 18));
             }
         }
     }
 
     private void addPlayerHotbar(Inventory playerInv) {
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInv, i, 8 + i * 18, 124));
+            this.addSlot(new Slot(playerInv, i, 8 + i * 18, 109));
         }
     }
 }

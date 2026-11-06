@@ -7,6 +7,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 
@@ -17,10 +18,9 @@ public class ClayLavaBucketItem extends BucketItem {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
         InteractionResultHolder<ItemStack> result = super.use(level, player, hand);
 
-        if (result.getResult().consumesAction()) {
+        if (result.getResult().consumesAction() && result.getObject().is(Items.BUCKET)) {
             if (!level.isClientSide) {
                 level.playSound(null, player.getX(), player.getY(), player.getZ(),
                         SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);

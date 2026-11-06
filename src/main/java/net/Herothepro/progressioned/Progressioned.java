@@ -6,6 +6,7 @@ import net.Herothepro.progressioned.block.custom.entity.ModBlockEntities;
 import net.Herothepro.progressioned.fluid.ModFluids;
 import net.Herothepro.progressioned.item.ModCreativeModeTabs;
 import net.Herothepro.progressioned.item.ModItems;
+import net.Herothepro.progressioned.item.custom.ClayBucketInteractions;
 import net.Herothepro.progressioned.recipe.ModRecipes;
 import net.Herothepro.progressioned.util.gui.ModMenuTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -59,6 +60,8 @@ public class Progressioned {
         event.enqueueWork(() -> {
             FireBlock fire = (FireBlock) Blocks.FIRE;
             fire.setFlammable(Blocks.COAL_BLOCK, 0, 0);
+
+            ClayBucketInteractions.register();
         });
     }
 
