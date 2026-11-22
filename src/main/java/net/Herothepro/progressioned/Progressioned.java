@@ -8,6 +8,7 @@ import net.Herothepro.progressioned.item.ModCreativeModeTabs;
 import net.Herothepro.progressioned.item.ModItems;
 import net.Herothepro.progressioned.item.custom.ClayBucketInteractions;
 import net.Herothepro.progressioned.recipe.ModRecipes;
+import net.Herothepro.progressioned.util.LeatherModifier;
 import net.Herothepro.progressioned.util.gui.ModMenuTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Blocks;
@@ -54,6 +55,8 @@ public class Progressioned {
         ModCreativeModeTabs.register(modEventBus);
 
         ModRecipes.register(modEventBus);
+
+        LeatherModifier.LOOT_MODIFIERS.register(modEventBus);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

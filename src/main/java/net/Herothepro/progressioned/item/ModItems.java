@@ -39,6 +39,9 @@ public class ModItems {
     public static final DeferredItem<Item> STRAW_CORD = ITEMS.register("straw_cord",
             () -> new Item(new Item.Properties()));
 
+    public static final DeferredItem<Item> SALT = ITEMS.register("salt",
+            () -> new Item(new Item.Properties()));
+
     public static final DeferredItem<Item> MUD_BALL = ITEMS.register("mud_ball",
             () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> MUD_BRICK = ITEMS.register("mud_brick",
@@ -55,6 +58,16 @@ public class ModItems {
     public static final DeferredItem<FireStickItem> FIRE_STICK = ITEMS.register("fire_stick",
             () -> new FireStickItem(new Item.Properties().stacksTo(1)));
 
+    public static final DeferredItem<Item> RAW_HIDE = ITEMS.register("raw_hide",
+            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> HIDE = ITEMS.register("hide",
+            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> SALTED_HIDE = ITEMS.register("salted_hide",
+            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> DRIED_HIDE = ITEMS.register("dried_hide",
+            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> WET_TANNED_HIDE = ITEMS.register("wet_tanned_hide",
+            () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> LEATHER_CORD = ITEMS.register("leather_cord",
             () -> new Item(new Item.Properties()));
 
@@ -146,7 +159,7 @@ public class ModItems {
     public static final DeferredItem<Item> CLAY_BUCKET = ITEMS.register("clay_bucket",
             () -> new ClayEmptyBucketItem(new Item.Properties().stacksTo(4)));
     public static final DeferredItem<Item> CLAY_WATER_BUCKET = ITEMS.register("clay_water_bucket",
-            () -> new ClayWaterBucketItem(new Item.Properties().stacksTo(1)));
+            () -> new ClayWaterBucketItem(new Item.Properties().stacksTo(1).craftRemainder(ModItems.CLAY_BUCKET.get())));
     public static final DeferredItem<Item> CLAY_LAVA_BUCKET = ITEMS.register("clay_lava_bucket",
             () -> new ClayLavaBucketItem(new Item.Properties().stacksTo(1)));
 

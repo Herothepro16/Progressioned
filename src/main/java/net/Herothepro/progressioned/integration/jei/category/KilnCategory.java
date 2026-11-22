@@ -37,7 +37,7 @@ public class KilnCategory implements IRecipeCategory<KilnRecipe> {
     public RecipeType<KilnRecipe> getRecipeType() { return RECIPE_TYPE; }
 
     @Override
-    public Component getTitle() { return Component.translatable("block.progressioned.porcelain_kiln"); }
+    public Component getTitle() { return Component.translatable("jei.category.progressioned.porcelain_kiln"); }
 
     @Override
     public int getWidth() { return 82; }

@@ -52,6 +52,19 @@ public class ModBlockEntities {
                     () -> BlockEntityType.Builder.of(WorkstoneBlockEntity::new,
                             ModBlocks.WORKSTONE.get()).build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DryingRackBlockEntity>> DRYING_RACK_BE =
+            BLOCK_ENTITY_TYPES.register("drying_rack",
+                    () -> BlockEntityType.Builder.of(DryingRackBlockEntity::new,
+                            ModBlocks.OAK_DRYING_RACK.get(),
+                            ModBlocks.SPRUCE_DRYING_RACK.get(),
+                            ModBlocks.BIRCH_DRYING_RACK.get(),
+                            ModBlocks.JUNGLE_DRYING_RACK.get(),
+                            ModBlocks.ACACIA_DRYING_RACK.get(),
+                            ModBlocks.DARK_OAK_DRYING_RACK.get(),
+                            ModBlocks.MANGROVE_DRYING_RACK.get(),
+                            ModBlocks.CHERRY_DRYING_RACK.get()
+                    ).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITY_TYPES.register(eventBus);
     }

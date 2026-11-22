@@ -6,7 +6,10 @@ import net.Herothepro.progressioned.block.custom.PostBlock;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -21,6 +24,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         blockWithItem(ModBlocks.CHARCOAL_BLOCK);
+        blockWithItem(ModBlocks.SALT_BLOCK);
         blockWithItem(ModBlocks.PORCELAIN_BRICKS);
 
         slabBlock(ModBlocks.PORCELAIN_BRICK_SLAB.get(),
@@ -77,25 +81,36 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 ResourceLocation sideTex = ResourceLocation.fromNamespaceAndPath(logNamespace, "block/" + logName);
                 ResourceLocation topTex = ResourceLocation.fromNamespaceAndPath(logNamespace, "block/" + topLogName);
 
-                String templateModel = isStripped ? "block/stripped_post_template" : "block/post_template";
+                String templatePrefix = isStripped ? "block/templates/stripped_post_template_" : "block/templates/post_template_";
 
-                ModelFile model;
-                if (isStripped) {
-                    model = models().withExistingParent(path, modLoc(templateModel))
-                            .texture("0", sideTex)
-                            .texture("1", topTex)
-                            .texture("particle", sideTex)
-                            .ao(false);
-                } else {
-                    model = models().withExistingParent(path, modLoc(templateModel))
-                            .texture("0", sideTex)
-                            .texture("2", topTex)
-                            .texture("particle", sideTex)
-                            .ao(false);
+                ModelFile[][] models = new ModelFile[3][3];
+                for (int a = 0; a < 3; a++) {
+                    for (int b = 0; b < 3; b++) {
+                        var builder = models().withExistingParent(path + "_" + a + "_" + b, modLoc(templatePrefix + a + "_" + b))
+                                .texture("0", sideTex)
+                                .texture("particle", sideTex)
+                                .ao(false);
+                        if (isStripped) {
+                            builder.texture("1", topTex);
+                        } else {
+                            builder.texture("2", topTex);
+                        }
+                        models[a][b] = builder;
+                    }
                 }
 
-                this.axisBlock(postBlock, model, model);
-                simpleBlockItem(postBlock, model);
+                getVariantBuilder(postBlock).forAllStatesExcept(state -> {
+                    ModelFile model = models[state.getValue(PostBlock.POS_A)][state.getValue(PostBlock.POS_B)];
+                    ConfiguredModel.Builder<?> builder = ConfiguredModel.builder().modelFile(model);
+                    switch (state.getValue(RotatedPillarBlock.AXIS)) {
+                        case X -> builder.rotationX(90).rotationY(90);
+                        case Z -> builder.rotationX(90);
+                        default -> { }
+                    }
+                    return builder.build();
+                }, BlockStateProperties.WATERLOGGED);
+
+                simpleBlockItem(postBlock, models[1][1]);
             }
         }
     }

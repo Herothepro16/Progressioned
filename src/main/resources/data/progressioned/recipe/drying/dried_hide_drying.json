@@ -1,0 +1,6 @@
+{
+  "type": "progressioned:drying",
+  "ingredient": { "item": "progressioned:salted_hide" },
+  "result": { "id": "progressioned:dried_hide", "count": 1 },
+  "time": 600
+}

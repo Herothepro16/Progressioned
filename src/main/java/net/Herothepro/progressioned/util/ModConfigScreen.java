@@ -22,6 +22,7 @@ public class ModConfigScreen extends Screen {
     private boolean originalAllowHandWoodMining;
     private boolean originalOptionalChoppingBlock;
     private boolean originalOptionalKiln;
+    private boolean originalRevertLeatherDrops;
     private int originalPlantFiberChance;
     private int originalStrawChance;
 
@@ -32,6 +33,7 @@ public class ModConfigScreen extends Screen {
     private boolean allowHandWoodMining;
     private boolean optionalChoppingBlock;
     private boolean optionalKiln;
+    private boolean revertLeatherDrops;
     private int plantFiberChance;
     private int strawChance;
 
@@ -42,6 +44,7 @@ public class ModConfigScreen extends Screen {
     private Button allowHandWoodMiningButton;
     private Button optionalChoppingBlockButton;
     private Button optionalKilnButton;
+    private Button revertLeatherDropsButton;
     private Button resetButton;
 
     public ModConfigScreen(Screen parent) {
@@ -68,6 +71,9 @@ public class ModConfigScreen extends Screen {
 
         this.originalOptionalKiln = ModConfig.OPTIONAL_KILN.get();
         this.optionalKiln = this.originalOptionalKiln;
+
+        this.originalRevertLeatherDrops = ModConfig.REVERT_LEATHER_DROPS.get();
+        this.revertLeatherDrops = this.originalRevertLeatherDrops;
 
         this.originalPlantFiberChance = ModConfig.PLANT_FIBER_DROP_CHANCE.get();
         this.plantFiberChance = this.originalPlantFiberChance;
@@ -168,11 +174,23 @@ public class ModConfigScreen extends Screen {
                 .tooltip(Tooltip.create(kilnTooltip))
                 .build());
 
+        Component leatherTooltip = Component.literal("Disables the leather changes: animals drop normal leather instead of Raw Hide")
+                .append("\n")
+                .append(Component.literal("Default : " + ModConfig.REVERT_LEATHER_DROPS.getDefault()).withStyle(ChatFormatting.DARK_GRAY));
+
+        this.revertLeatherDropsButton = this.addRenderableWidget(Button.builder(Component.literal(revertLeatherDrops ? "True" : "False"), button -> {
+                    revertLeatherDrops = !revertLeatherDrops;
+                    updateButtonStates();
+                })
+                .bounds(buttonX, startY + (spacing * 7), 90, 20)
+                .tooltip(Tooltip.create(leatherTooltip))
+                .build());
+
         Component fiberTooltip = Component.literal("Chance to drop Plant Fiber when breaking grass with a knife")
                 .append("\n")
                 .append(Component.literal("Default : " + ModConfig.PLANT_FIBER_DROP_CHANCE.getDefault() + "%").withStyle(ChatFormatting.DARK_GRAY));
 
-        AbstractSliderButton fiberSlider = new AbstractSliderButton(buttonX, startY + (spacing * 7), 90, 20, Component.literal(plantFiberChance + "%"), plantFiberChance / 100.0) {
+        AbstractSliderButton fiberSlider = new AbstractSliderButton(buttonX, startY + (spacing * 8), 90, 20, Component.literal(plantFiberChance + "%"), plantFiberChance / 100.0) {
             @Override
             protected void updateMessage() {
                 this.setMessage(Component.literal(plantFiberChance + "%"));
@@ -190,7 +208,7 @@ public class ModConfigScreen extends Screen {
                 .append("\n")
                 .append(Component.literal("Default : " + ModConfig.STRAW_DROP_CHANCE.getDefault() + "%").withStyle(ChatFormatting.DARK_GRAY));
 
-        AbstractSliderButton strawSlider = new AbstractSliderButton(buttonX, startY + (spacing * 8), 90, 20, Component.literal(strawChance + "%"), strawChance / 100.0) {
+        AbstractSliderButton strawSlider = new AbstractSliderButton(buttonX, startY + (spacing * 9), 90, 20, Component.literal(strawChance + "%"), strawChance / 100.0) {
             @Override
             protected void updateMessage() {
                 this.setMessage(Component.literal(strawChance + "%"));
@@ -214,6 +232,7 @@ public class ModConfigScreen extends Screen {
             allowHandWoodMining = (boolean) ModConfig.ALLOW_HAND_WOOD_MINING.getDefault();
             optionalChoppingBlock = (boolean) ModConfig.OPTIONAL_CHOPPING_BLOCK.getDefault();
             optionalKiln = (boolean) ModConfig.OPTIONAL_KILN.getDefault();
+            revertLeatherDrops = (boolean) ModConfig.REVERT_LEATHER_DROPS.getDefault();
             plantFiberChance = (int) ModConfig.PLANT_FIBER_DROP_CHANCE.getDefault();
             strawChance = (int) ModConfig.STRAW_DROP_CHANCE.getDefault();
             this.clearWidgets();
@@ -228,6 +247,7 @@ public class ModConfigScreen extends Screen {
             ModConfig.ALLOW_HAND_WOOD_MINING.set(this.allowHandWoodMining);
             ModConfig.OPTIONAL_CHOPPING_BLOCK.set(this.optionalChoppingBlock);
             ModConfig.OPTIONAL_KILN.set(this.optionalKiln);
+            ModConfig.REVERT_LEATHER_DROPS.set(this.revertLeatherDrops);
             ModConfig.PLANT_FIBER_DROP_CHANCE.set(this.plantFiberChance);
             ModConfig.STRAW_DROP_CHANCE.set(this.strawChance);
 
@@ -261,6 +281,9 @@ public class ModConfigScreen extends Screen {
         if (this.optionalKilnButton != null) {
             this.optionalKilnButton.setMessage(Component.literal(optionalKiln ? "True" : "False"));
         }
+        if (this.revertLeatherDropsButton != null) {
+            this.revertLeatherDropsButton.setMessage(Component.literal(revertLeatherDrops ? "True" : "False"));
+        }
 
         boolean isAtDefault = (canFlintMineCopper == (boolean) ModConfig.CAN_FLINT_MINE_COPPER.getDefault()) &&
                 (allowCampfireHeating == (boolean) ModConfig.ALLOW_CAMPFIRE_HEATING.getDefault()) &&
@@ -269,6 +292,7 @@ public class ModConfigScreen extends Screen {
                 (allowHandWoodMining == (boolean) ModConfig.ALLOW_HAND_WOOD_MINING.getDefault()) &&
                 (optionalChoppingBlock == (boolean) ModConfig.OPTIONAL_CHOPPING_BLOCK.getDefault()) &&
                 (optionalKiln == (boolean) ModConfig.OPTIONAL_KILN.getDefault()) &&
+                (revertLeatherDrops == (boolean) ModConfig.REVERT_LEATHER_DROPS.getDefault()) &&
                 (plantFiberChance == (int) ModConfig.PLANT_FIBER_DROP_CHANCE.getDefault()) &&
                 (strawChance == (int) ModConfig.STRAW_DROP_CHANCE.getDefault());
         if (this.resetButton != null) this.resetButton.active = !isAtDefault;
@@ -303,8 +327,9 @@ public class ModConfigScreen extends Screen {
             guiGraphics.drawString(this.font, Component.literal("Allow Wood to be mined by hand"), textX, textY + (24 * 4), 0xFFFFFF);
             guiGraphics.drawString(this.font, Component.literal("Optional Chopping Block"), textX, textY + (24 * 5), 0xFFFFFF);
             guiGraphics.drawString(this.font, Component.literal("Optional Kiln"), textX, textY + (24 * 6), 0xFFFFFF);
-            guiGraphics.drawString(this.font, Component.literal("Plant Fiber Drop Chance"), textX, textY + (24 * 7), 0xFFFFFF);
-            guiGraphics.drawString(this.font, Component.literal("Straw Cord Drop Chance"), textX, textY + (24 * 8), 0xFFFFFF);
+            guiGraphics.drawString(this.font, Component.literal("Revert Leather Drops"), textX, textY + (24 * 7), 0xFFFFFF);
+            guiGraphics.drawString(this.font, Component.literal("Plant Fiber Drop Chance"), textX, textY + (24 * 8), 0xFFFFFF);
+            guiGraphics.drawString(this.font, Component.literal("Straw Cord Drop Chance"), textX, textY + (24 * 9), 0xFFFFFF);
         }
     }
 }

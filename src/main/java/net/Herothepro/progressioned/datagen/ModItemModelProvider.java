@@ -49,6 +49,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.STRAW_CORD.get());
         basicItem(ModItems.FIBER_MESH.get());
         basicItem(ModItems.SHARP_BONE.get());
+        basicItem(ModItems.SALT.get());
         basicItem(ModItems.MUD_BALL.get());
         basicItem(ModItems.MUD_BRICK.get());
         basicItem(ModItems.PORCELAIN_CLAY_BALL.get());
@@ -60,6 +61,12 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.CLAY_LAVA_BUCKET.get());
 
         handheldItem(ModItems.FIRE_STICK.get());
+
+        handheldItem(ModItems.RAW_HIDE.get());
+        handheldItem(ModItems.HIDE.get());
+        handheldItem(ModItems.SALTED_HIDE.get());
+        handheldItem(ModItems.DRIED_HIDE.get());
+        handheldItem(ModItems.WET_TANNED_HIDE.get());
 
         handheldItem(ModItems.LEATHER_CORD.get());
 

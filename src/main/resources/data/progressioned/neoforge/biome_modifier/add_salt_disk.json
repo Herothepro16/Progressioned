@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#progressioned:salt_biomes",
+  "features": "progressioned:salt_disk",
+  "step": "underground_ores"
+}

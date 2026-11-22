@@ -34,6 +34,10 @@ public class ModConfig {
             .comment("Disables custom stone tool recipes and the custom furnace recipe.")
             .define("optionalKiln", false);
 
+    public static final ModConfigSpec.BooleanValue REVERT_LEATHER_DROPS = BUILDER
+            .comment("Disables the leather drop changes , animals drop leather instead of Raw Hide.")
+            .define("revertLeatherDrops", false);
+
     public static final ModConfigSpec.IntValue PLANT_FIBER_DROP_CHANCE = BUILDER
             .comment("Percentage chance (0-100) for Plant Fiber to drop from grass and ferns.")
             .defineInRange("plantFiberDropChance", 75, 0, 100);

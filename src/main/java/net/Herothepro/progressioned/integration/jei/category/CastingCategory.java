@@ -41,7 +41,7 @@ public class CastingCategory implements IRecipeCategory<CastingRecipe> {
 
     @Override
     public Component getTitle() {
-        return Component.translatable("block.progressioned.porcelain_casting_table");
+        return Component.translatable("jei.category.progressioned.porcelain_casting_table");
     }
 
     @Override

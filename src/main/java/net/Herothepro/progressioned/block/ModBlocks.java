@@ -7,6 +7,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -23,8 +24,11 @@ public class ModBlocks {
     public static final DeferredBlock<Block> CHARCOAL_BLOCK = registerBlock("charcoal_block",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COAL_BLOCK)));
 
-    public static final DeferredBlock<Block> THATCH = registerBlock("thatch",
-            () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK)));
+    public static final DeferredBlock<Block> SALT_BLOCK = registerBlock("salt_block",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SAND)));
+
+    public static final DeferredBlock<HayBlock> THATCH = registerBlock("thatch",
+            () -> new HayBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK)));
     public static final DeferredBlock<RotatableSlabBlock> THATCH_SLAB = registerBlock("thatch_slab",
             () -> new RotatableSlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK)));
 
@@ -57,6 +61,23 @@ public class ModBlocks {
     public static final DeferredBlock<KilnBlock> PORCELAIN_KILN = registerBlock("porcelain_kiln",
             () -> new KilnBlock(BlockBehaviour.Properties.of()
                     .noOcclusion().strength(2.0f).lightLevel(state -> state.getValue(KilnBlock.LIT) ? 13 : 0)));
+
+    public static final DeferredBlock<DryingRackBlock> OAK_DRYING_RACK = registerBlock("oak_drying_rack",
+            () -> new DryingRackBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion()));
+    public static final DeferredBlock<DryingRackBlock> SPRUCE_DRYING_RACK = registerBlock("spruce_drying_rack",
+            () -> new DryingRackBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_PLANKS).noOcclusion()));
+    public static final DeferredBlock<DryingRackBlock> BIRCH_DRYING_RACK = registerBlock("birch_drying_rack",
+            () -> new DryingRackBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BIRCH_PLANKS).noOcclusion()));
+    public static final DeferredBlock<DryingRackBlock> JUNGLE_DRYING_RACK = registerBlock("jungle_drying_rack",
+            () -> new DryingRackBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_PLANKS).noOcclusion()));
+    public static final DeferredBlock<DryingRackBlock> ACACIA_DRYING_RACK = registerBlock("acacia_drying_rack",
+            () -> new DryingRackBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_PLANKS).noOcclusion()));
+    public static final DeferredBlock<DryingRackBlock> DARK_OAK_DRYING_RACK = registerBlock("dark_oak_drying_rack",
+            () -> new DryingRackBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_OAK_PLANKS).noOcclusion()));
+    public static final DeferredBlock<DryingRackBlock> MANGROVE_DRYING_RACK = registerBlock("mangrove_drying_rack",
+            () -> new DryingRackBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MANGROVE_PLANKS).noOcclusion()));
+    public static final DeferredBlock<DryingRackBlock> CHERRY_DRYING_RACK = registerBlock("cherry_drying_rack",
+            () -> new DryingRackBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_PLANKS).noOcclusion()));
 
     public static final DeferredBlock<Block> PORCELAIN_MELTER = registerBlock("porcelain_melter",
             () -> new MelterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS).noOcclusion()));

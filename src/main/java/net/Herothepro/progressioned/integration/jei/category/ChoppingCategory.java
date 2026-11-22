@@ -52,7 +52,7 @@ public class ChoppingCategory implements IRecipeCategory<ChoppingRecipe> {
     public RecipeType<ChoppingRecipe> getRecipeType() { return RECIPE_TYPE; }
 
     @Override
-    public Component getTitle() { return Component.translatable("block.progressioned.chopping_block"); }
+    public Component getTitle() { return Component.translatable("jei.category.progressioned.chopping"); }
 
     @Override
     public @Nullable IDrawable getIcon() { return icon; }

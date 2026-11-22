@@ -1,0 +1,6 @@
+{
+  "type": "progressioned:drying",
+  "ingredient": { "item": "progressioned:wet_tanned_hide" },
+  "result": { "id": "minecraft:leather", "count": 1 },
+  "time": 600
+}

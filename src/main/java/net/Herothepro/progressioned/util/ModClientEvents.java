@@ -19,6 +19,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
@@ -38,6 +39,7 @@ public class ModClientEvents {
             event.registerBlockEntityRenderer(ModBlockEntities.FAUCET_BE.get(), FaucetBlockEntityRenderer::new);
             event.registerBlockEntityRenderer(ModBlockEntities.TABLE_BE.get(), TableBlockEntityRenderer::new);
             event.registerBlockEntityRenderer(ModBlockEntities.BASIN_BE.get(), BasinBlockEntityRenderer::new);
+            event.registerBlockEntityRenderer(ModBlockEntities.DRYING_RACK_BE.get(), DryingRackBlockEntityRenderer::new);
         }
 
         @SubscribeEvent

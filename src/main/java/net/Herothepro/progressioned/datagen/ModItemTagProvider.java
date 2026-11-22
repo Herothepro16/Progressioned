@@ -14,6 +14,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.Nullable;
@@ -211,6 +212,9 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModItems.CLAY_BUCKET.get())
                 .add(ModItems.CLAY_WATER_BUCKET.get())
                 .add(ModItems.CLAY_LAVA_BUCKET.get());
+
+        tag(Tags.Items.BUCKETS_WATER)
+                .add(ModItems.CLAY_WATER_BUCKET.get());
 
         tag(commonTag("bricks"))
                 .add(ModItems.PORCELAIN_CLAY_BRICK.get())

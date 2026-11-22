@@ -53,7 +53,7 @@ public class KnappingCategory implements IRecipeCategory<KnappingRecipe> {
     public RecipeType<KnappingRecipe> getRecipeType() { return RECIPE_TYPE; }
 
     @Override
-    public Component getTitle() { return Component.translatable("gui.progressioned.category.knapping"); }
+    public Component getTitle() { return Component.translatable("jei.category.progressioned.knapping"); }
 
     @Override
     public int getWidth() { return WIDTH; }

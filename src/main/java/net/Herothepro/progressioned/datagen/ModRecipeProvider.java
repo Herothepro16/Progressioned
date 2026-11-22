@@ -26,6 +26,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
@@ -104,7 +105,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .requires(ModItems.COPPER_DUST,3)
                 .unlockedBy("has_tin_dust", has(ModItems.TIN_DUST.get())).save(recipeOutput);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ROSE_GOLD_DUST.get(), 4)
-                .requires(ModItems.GOLD_DUST,3)
+                .requires(ModItems.GOLD_DUST,2)
                 .requires(ModItems.COPPER_DUST,1)
                 .requires(ModItems.SILVER_DUST,1)
                 .unlockedBy("has_silver_dust", has(ModItems.SILVER_DUST.get())).save(recipeOutput);
@@ -148,6 +149,13 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.CHARCOAL , 9)
                 .requires(ModBlocks.CHARCOAL_BLOCK, 1)
                 .unlockedBy("has_charcoal_block", has(ModBlocks.CHARCOAL_BLOCK)).save(recipeOutput);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.SALT_BLOCK)
+                .requires(ModItems.SALT, 9)
+                .unlockedBy("has_salt", has(ModItems.SALT)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SALT , 9)
+                .requires(ModBlocks.SALT_BLOCK, 1)
+                .unlockedBy("has_salt_block", has(ModBlocks.SALT_BLOCK)).save(recipeOutput);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.TIN_BLOCK)
                 .requires(ModItems.TIN_INGOT, 9)
@@ -201,15 +209,28 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 List.of(Ingredient.of(ModItems.STRAW)),
                 Ingredient.of(ModTags.Items.KNIVES), 1);
 
-        damagingShapelessRecipe(recipeOutput, "leather_cord",
-                new ItemStack(ModItems.LEATHER_CORD.get(), 2),
-                List.of(Ingredient.of(Items.LEATHER)),
-                Ingredient.of(ModTags.Items.KNIVES), 1);
-
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.BUNDLE)
                 .pattern(" S ").pattern(" L ").pattern("   ")
                 .define('S', ModItems.STRAW_CORD).define('L', Items.LEATHER)
                 .unlockedBy("has_straw_cord", has(ModItems.STRAW_CORD)).save(recipeOutput);
+
+        // Leatherworking
+        damagingShapelessRecipe(recipeOutput, "hide",
+                new ItemStack(ModItems.HIDE.get(), 1),
+                List.of(Ingredient.of(ModItems.RAW_HIDE)),
+                Ingredient.of(ModTags.Items.COMMON_KNIVES), 1);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SALTED_HIDE)
+                .requires(ModItems.HIDE).requires(ModItems.SALT)
+                .requires(Tags.Items.BUCKETS_WATER)
+                .unlockedBy("has_hide", has(ModItems.HIDE)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.WET_TANNED_HIDE)
+                .requires(ModItems.DRIED_HIDE).requires(Tags.Items.BUCKETS_WATER)
+                .unlockedBy("has_dried_hide", has(ModItems.DRIED_HIDE)).save(recipeOutput);
+
+        damagingShapelessRecipe(recipeOutput, "leather_cord",
+                new ItemStack(ModItems.LEATHER_CORD.get(), 2),
+                List.of(Ingredient.of(Items.LEATHER)),
+                Ingredient.of(ModTags.Items.KNIVES), 1);
 
         // Clay Stuff
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.PORCELAIN_CLAY_BALL)
@@ -287,6 +308,40 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("   ").pattern("TTT").pattern("   ")
                 .define('T', ModBlocks.THATCH)
                 .unlockedBy("has_thatch", has(ModBlocks.THATCH)).save(recipeOutput);
+        
+        // Drying Rack Recipes
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.OAK_DRYING_RACK)
+                .pattern("   ").pattern("BPB").pattern("   ")
+                .define('B', Blocks.OAK_BUTTON).define('P', Blocks.OAK_SLAB)
+                .unlockedBy("has_oak_slab", has(Blocks.OAK_SLAB)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.SPRUCE_DRYING_RACK)
+                .pattern("   ").pattern("BPB").pattern("   ")
+                .define('B', Blocks.SPRUCE_BUTTON).define('P', Blocks.SPRUCE_SLAB)
+                .unlockedBy("has_spruce_slab", has(Blocks.SPRUCE_SLAB)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.BIRCH_DRYING_RACK)
+                .pattern("   ").pattern("BPB").pattern("   ")
+                .define('B', Blocks.BIRCH_BUTTON).define('P', Blocks.BIRCH_SLAB)
+                .unlockedBy("has_birch_slab", has(Blocks.BIRCH_SLAB)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.JUNGLE_DRYING_RACK)
+                .pattern("   ").pattern("BPB").pattern("   ")
+                .define('B', Blocks.JUNGLE_BUTTON).define('P', Blocks.JUNGLE_SLAB)
+                .unlockedBy("has_jungle_slab", has(Blocks.JUNGLE_SLAB)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ACACIA_DRYING_RACK)
+                .pattern("   ").pattern("BPB").pattern("   ")
+                .define('B', Blocks.ACACIA_BUTTON).define('P', Blocks.ACACIA_SLAB)
+                .unlockedBy("has_acacia_slab", has(Blocks.ACACIA_SLAB)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.DARK_OAK_DRYING_RACK)
+                .pattern("   ").pattern("BPB").pattern("   ")
+                .define('B', Blocks.DARK_OAK_BUTTON).define('P', Blocks.DARK_OAK_SLAB)
+                .unlockedBy("has_dark_oak_slab", has(Blocks.DARK_OAK_SLAB)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.MANGROVE_DRYING_RACK)
+                .pattern("   ").pattern("BPB").pattern("   ")
+                .define('B', Blocks.MANGROVE_BUTTON).define('P', Blocks.MANGROVE_SLAB)
+                .unlockedBy("has_mangrove_slab", has(Blocks.MANGROVE_SLAB)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CHERRY_DRYING_RACK)
+                .pattern("   ").pattern("BPB").pattern("   ")
+                .define('B', Blocks.CHERRY_BUTTON).define('P', Blocks.CHERRY_SLAB)
+                .unlockedBy("has_cherry_slab", has(Blocks.CHERRY_SLAB)).save(recipeOutput);
 
         // Copper Tool Recipes
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_SWORD)

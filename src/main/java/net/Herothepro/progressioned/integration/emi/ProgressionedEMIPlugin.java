@@ -7,7 +7,9 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiStack;
 import net.Herothepro.progressioned.Progressioned;
 import net.Herothepro.progressioned.block.ModBlocks;
+import net.Herothepro.progressioned.block.custom.DryingRackBlock;
 import net.Herothepro.progressioned.recipe.*;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -44,6 +46,10 @@ public class ProgressionedEMIPlugin implements EmiPlugin {
     public static final EmiRecipeCategory KNAPPING_CATEGORY = new EmiRecipeCategory(
             ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "knapping"),
             EmiStack.of(Blocks.STONE));
+
+    public static final EmiRecipeCategory DRYING_CATEGORY = new EmiRecipeCategory(
+            ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "drying"),
+            EmiStack.of(ModBlocks.OAK_DRYING_RACK.get()));
 
     @Override
     public void register(EmiRegistry registry) {
@@ -90,6 +96,15 @@ public class ProgressionedEMIPlugin implements EmiPlugin {
         for (RecipeHolder<KnappingRecipe> holder : manager.getAllRecipesFor(ModRecipes.KNAPPING_TYPE.get())) {
             registry.addRecipe(new KnappingEMIRecipe(holder.id(), holder.value()));
         }
+
+        registry.addCategory(DRYING_CATEGORY);
+        BuiltInRegistries.BLOCK.stream()
+                .filter(b -> b instanceof DryingRackBlock)
+                .forEach(b -> registry.addWorkstation(DRYING_CATEGORY, EmiStack.of(b)));
+        for (RecipeHolder<DryingRecipe> holder : manager.getAllRecipesFor(ModRecipes.DRYING_TYPE.get())) {
+            registry.addRecipe(new DryingEMIRecipe(holder.id(), holder.value()));
+        }
+
         if (ModList.get().isLoaded("create")) {
             CreateEMICompat.register(registry);
         }

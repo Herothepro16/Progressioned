@@ -7,10 +7,12 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.Herothepro.progressioned.Progressioned;
 import net.Herothepro.progressioned.block.ModBlocks;
+import net.Herothepro.progressioned.block.custom.DryingRackBlock;
 import net.Herothepro.progressioned.integration.jei.category.*;
 import net.Herothepro.progressioned.integration.jei.CreateJEICompat;
 import net.Herothepro.progressioned.recipe.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -37,8 +39,8 @@ public class ProgressionedJEIPlugin implements IModPlugin {
         registration.addRecipeCategories(new CastingCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new CastingBasinCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new KnappingCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new DryingCategory(registration.getJeiHelpers().getGuiHelper()));
 
-        // Knapping with a Create deployer (separate tab, only when Create is installed)
         if (ModList.get().isLoaded("create")) {
             CreateJEICompat.registerCategories(registration);
         }
@@ -83,6 +85,11 @@ public class ProgressionedJEIPlugin implements IModPlugin {
                 .stream().map(RecipeHolder::value).toList();
         registration.addRecipes(KnappingCategory.RECIPE_TYPE, knappingRecipes);
 
+        List<DryingRecipe> dryingRecipes = recipeManager
+                .getAllRecipesFor(ModRecipes.DRYING_TYPE.get())
+                .stream().map(RecipeHolder::value).toList();
+        registration.addRecipes(DryingCategory.RECIPE_TYPE, dryingRecipes);
+
         if (ModList.get().isLoaded("create")) {
             CreateJEICompat.registerRecipes(registration, knappingRecipes);
         }
@@ -97,6 +104,10 @@ public class ProgressionedJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.PORCELAIN_CASTING_TABLE.get().asItem()), CastingCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.PORCELAIN_CASTING_BASIN.get().asItem()), CastingBasinCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(Blocks.STONE), KnappingCategory.RECIPE_TYPE);
+
+        BuiltInRegistries.BLOCK.stream()
+                .filter(b -> b instanceof DryingRackBlock)
+                .forEach(b -> registration.addRecipeCatalyst(new ItemStack(b), DryingCategory.RECIPE_TYPE));
 
         if (ModList.get().isLoaded("create")) {
             CreateJEICompat.registerCatalysts(registration);

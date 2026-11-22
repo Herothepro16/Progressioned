@@ -39,7 +39,7 @@ public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
     public RecipeType<MeltingRecipe> getRecipeType() { return RECIPE_TYPE; }
 
     @Override
-    public Component getTitle() { return Component.translatable("block.progressioned.porcelain_melter"); }
+    public Component getTitle() { return Component.translatable("jei.category.progressioned.porcelain_melter"); }
 
     @Override
     public int getWidth() { return 132; }

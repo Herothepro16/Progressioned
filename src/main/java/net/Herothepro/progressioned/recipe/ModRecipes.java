@@ -70,6 +70,12 @@ public class ModRecipes {
     public static final DeferredHolder<RecipeSerializer<?>, WorkstoneRecipe.Serializer> WORKSTONE_SERIALIZER =
             SERIALIZERS.register("workstone_hammering", WorkstoneRecipe.Serializer::new);
 
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<DryingRecipe>> DRYING_SERIALIZER =
+            SERIALIZERS.register("drying", DryingRecipe.Serializer::new);
+
+    public static final DeferredHolder<RecipeType<?>, RecipeType<DryingRecipe>> DRYING_TYPE =
+            TYPES.register("drying", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(Progressioned.MOD_ID, "drying")));
+
     public static void register(IEventBus eventBus) {
         SERIALIZERS.register(eventBus);
         TYPES.register(eventBus);

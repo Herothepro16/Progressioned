@@ -8,6 +8,9 @@ import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.Set;
@@ -22,6 +25,14 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         dropSelf(ModBlocks.CHARCOAL_BLOCK.get());
+        this.add(ModBlocks.SALT_BLOCK.get(), block ->
+                this.createSilkTouchDispatchTable(block,
+                        this.applyExplosionDecay(block,
+                                LootItem.lootTableItem(ModItems.SALT.get())
+                                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(4.0F)))
+                        )
+                )
+        );
         dropSelf(ModBlocks.THATCH.get());
         this.add(ModBlocks.THATCH_SLAB.get(), block -> createSlabItemTable(ModBlocks.THATCH_SLAB.get()));
 
@@ -39,6 +50,15 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.PORCELAIN_FAUCET.get());
         dropSelf(ModBlocks.PORCELAIN_CASTING_TABLE.get());
         dropSelf(ModBlocks.PORCELAIN_CASTING_BASIN.get());
+
+        dropSelf(ModBlocks.OAK_DRYING_RACK.get());
+        dropSelf(ModBlocks.SPRUCE_DRYING_RACK.get());
+        dropSelf(ModBlocks.BIRCH_DRYING_RACK.get());
+        dropSelf(ModBlocks.JUNGLE_DRYING_RACK.get());
+        dropSelf(ModBlocks.ACACIA_DRYING_RACK.get());
+        dropSelf(ModBlocks.DARK_OAK_DRYING_RACK.get());
+        dropSelf(ModBlocks.MANGROVE_DRYING_RACK.get());
+        dropSelf(ModBlocks.CHERRY_DRYING_RACK.get());
 
         dropSelf(ModBlocks.TIN_BLOCK.get());
         dropSelf(ModBlocks.SILVER_BLOCK.get());

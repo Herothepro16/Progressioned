@@ -60,7 +60,7 @@ public class WorkstoneCategory implements IRecipeCategory<WorkstoneRecipe> {
 
     @Override
     public Component getTitle() {
-        return Component.translatable("block.progressioned.workstone");
+        return Component.translatable("jei.category.progressioned.workstone");
     }
 
     @Override

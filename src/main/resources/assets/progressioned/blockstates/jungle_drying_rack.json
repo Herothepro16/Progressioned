@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "progressioned:block/jungle_drying_rack" },
+    "facing=east":  { "model": "progressioned:block/jungle_drying_rack", "y": 90 },
+    "facing=south": { "model": "progressioned:block/jungle_drying_rack", "y": 180 },
+    "facing=west":  { "model": "progressioned:block/jungle_drying_rack", "y": 270 }
+  }
+}

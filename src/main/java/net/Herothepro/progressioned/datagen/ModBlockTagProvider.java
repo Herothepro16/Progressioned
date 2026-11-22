@@ -93,6 +93,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
 
         tag(BlockTags.MINEABLE_WITH_AXE)
                 .addTag(ModTags.Blocks.POSTS)
+                .addTag(ModTags.Blocks.DRYING_RACKS)
                 .addTag(BlockTags.LOGS)
                 .add(ModBlocks.CHOPPING_BLOCK.get())
                 .add(ModBlocks.CAMPFIRE_BASE.get())
@@ -119,6 +120,9 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.RAW_SILVER_BLOCK.get())
                 .addTag(ModTags.Blocks.TIN_ORES)
                 .addTag(ModTags.Blocks.SILVER_ORES);
+
+        tag(BlockTags.MINEABLE_WITH_SHOVEL)
+                .add(ModBlocks.SALT_BLOCK.get());
 
         tag(BlockTags.MINEABLE_WITH_HOE)
                 .add(ModBlocks.THATCH.get())
@@ -205,5 +209,15 @@ public class ModBlockTagProvider extends BlockTagsProvider {
 
         tag(ModTags.Blocks.KILN_HEATING_BLOCK)
                 .add(Blocks.FIRE);
+
+        tag(ModTags.Blocks.DRYING_RACKS)
+                .add(ModBlocks.OAK_DRYING_RACK.get())
+                .add(ModBlocks.SPRUCE_DRYING_RACK.get())
+                .add(ModBlocks.BIRCH_DRYING_RACK.get())
+                .add(ModBlocks.JUNGLE_DRYING_RACK.get())
+                .add(ModBlocks.ACACIA_DRYING_RACK.get())
+                .add(ModBlocks.DARK_OAK_DRYING_RACK.get())
+                .add(ModBlocks.MANGROVE_DRYING_RACK.get())
+                .add(ModBlocks.CHERRY_DRYING_RACK.get());
     }
 }

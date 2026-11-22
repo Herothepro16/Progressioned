@@ -41,6 +41,8 @@ public class ModTags {
 
         public static final TagKey<Block> POSTS = createTag("posts");
 
+        public static final TagKey<Block> DRYING_RACKS = createTag("drying_racks");
+
         public static final TagKey<Block> KILN_HEATING_BLOCK = createTag("kiln_heating_block");
 
         private static TagKey<Block> createTag(String name) {
@@ -57,6 +59,8 @@ public class ModTags {
         public static final TagKey<Item> HAMMERS = createTag("hammers");
 
         public static final TagKey<Item> POSTS = createTag("posts");
+
+        public static final TagKey<Item> DRYING_RACKS = createTag("drying_racks");
 
         public static final TagKey<Item> COMMON_KNIVES = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "tools/knife"));
 
